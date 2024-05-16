@@ -3,7 +3,7 @@ import masterLogo from "../assets/images/master-logo.jpg";
 
 export const LoginFooter = () => {
   return (
-    <footer class="absolute bottom-0 p-10 text-neutral-content">
+    <footer className="absolute bottom-0 p-10 text-neutral-content">
       <aside>
         <div className="flex">
           <img

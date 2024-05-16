@@ -21,7 +21,6 @@ export const Login = () => {
 
   const handlePasswordInput = (e) => {
     setPassword(e.target.value);
-    console.log(password);
   };
 
   const handleLogin = async () => {
@@ -47,7 +46,7 @@ export const Login = () => {
       </div>
       <div className="w-[100%] md:w-[50%] lg:w-[35%] h-screen py-20 relative">
         <div className="w-full flex flex-col gap-2 items-center py-5">
-          <div class="bg-primary text-white rounded-full flex justify-center items-center w-10 h-10">
+          <div className="bg-primary text-white rounded-full flex justify-center items-center w-10 h-10">
             <Icon icon={"material-symbols:lock-outline"} className="text-xl" />
           </div>
           <h3 className="text-xl font-normal tracking-tight">Sign In</h3>
