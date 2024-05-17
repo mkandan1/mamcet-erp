@@ -1,45 +1,43 @@
-import './App.css'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { Login } from './screens/Login'
-import { ForgotPassword } from './screens/ForgotPasword'
-import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { Authorization } from '../api/Auth';
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Login } from "./screens/Login";
+import { ForgotPassword } from "./screens/ForgotPasword";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Authorization } from "../api/Auth";
+import { FullScreenLoading } from "./components/Loading";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
-  const [isCheckingAuthCompleted, setIsCheckingAuthCompleted] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state)=> (state.auth.loggedin))
+  const isLoading = useSelector((state)=> (state.auth.loading))
 
-  useEffect(() => {
-    localStorage.getItem('mamcet_auth') ? setIsLoggedIn(true) : setIsLoggedIn(false);
-
+  useEffect(()=> {
     Authorization.onAuthState(dispatch)
-      .then(status => {
-        setIsLoggedIn(true);
-      })
-      .catch(err => {
-        localStorage.removeItem('mamcet_auth')
-        setIsLoggedIn(false);
-      })
-      .finally(() => {
-        setIsCheckingAuthCompleted(true)
-      })
-  }, [])
+  }, [dispatch])
 
-  if (!isCheckingAuthCompleted) {
-    return
+  if(isLoading){
+    return 
   }
-
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<h1>Hello</h1>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/forgot-password' element={<ForgotPassword/>}/>
-      </Routes>
-    </Router>
-  )
+      <Router>
+        <div className="relative">
+          {isAuthenticated ? (
+            <Routes>
+              <Route path="/" element={<h1>Dashboard</h1>} />
+              <Route path="/courses" element={<h1>Courses</h1>} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/*" element={<Login />} />
+            </Routes>
+          )}
+        </div>
+      </Router>
+  );
 }
 
-export default App
+export default App;

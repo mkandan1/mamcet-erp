@@ -1,5 +1,13 @@
-export const setLoggedIn = ({user}) => ({
-    type: 'LOGGED_IN',
+export const authRequest = () => ({
+    type: 'AUTH_REQUEST',
+});
+
+export const authFailure = () => ({
+    type: 'AUTH_FAILURE',
+});
+
+export const authSucess = ({user}) => ({
+    type: 'AUTH_SUCCESS',
     payload: {user}
 });
 

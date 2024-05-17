@@ -31,7 +31,6 @@ export const Login = () => {
 
     await Auth.signInWithEmailAndPassword(email, password)
       .then((data) => {
-        console.log(data);
         setStatus("success");
       })
       .catch((err) => {
