@@ -8,7 +8,7 @@ import { LinkTag } from "../components/Link";
 import { LoginFooter } from "../components/Footer";
 import { links } from "../data/constants";
 import { FailedAlert, SuccessAlert } from "../components/Alert";
-import { Auth } from "../../api/Auth";
+import { Auth } from "../api/Auth";
 
 export const Login = () => {
   const [email, setEmail] = useState();
