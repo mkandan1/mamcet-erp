@@ -5,7 +5,9 @@ import { ForgotPassword } from "./screens/ForgotPasword";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { Authorization } from "../api/Auth";
-import { FullScreenLoading } from "./components/Loading";
+import { Dashboard } from "./screens/Dashboard";
+import { Courses } from "./screens/Courses";
+import { CreateCourse } from "./screens/CreateCourse";
 
 function App() {
   const dispatch = useDispatch()
@@ -24,8 +26,9 @@ function App() {
         <div className="relative">
           {isAuthenticated ? (
             <Routes>
-              <Route path="/" element={<h1>Dashboard</h1>} />
-              <Route path="/courses" element={<h1>Courses</h1>} />
+              <Route path="/" element={<Dashboard/>} />
+              <Route path="/course/all" element={<Courses/>} />
+              <Route path="/course/create" element={<CreateCourse/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
             </Routes>

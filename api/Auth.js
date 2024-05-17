@@ -17,8 +17,6 @@ export class Authorization {
         window.location.href = "/login";
         return;
       }
-
-      console.log(userAuthStateResult)
       dispatch(authSucess({ user: userAuthStateResult.user }));
       return;
     } catch (err) {

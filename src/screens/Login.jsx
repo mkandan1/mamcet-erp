@@ -32,6 +32,9 @@ export const Login = () => {
     await Auth.signInWithEmailAndPassword(email, password)
       .then((data) => {
         setStatus("success");
+        setTimeout(()=>{
+          window.location.href = '/'
+        }, 2000)
       })
       .catch((err) => {
         console.error(err);
