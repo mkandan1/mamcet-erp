@@ -1,42 +1,75 @@
-export const TextInput = ({ label, type, placeholder, required, onChange }) => {
+export const TextInput = ({
+  type,
+  value,
+  onChange,
+  label,
+  rowStart,
+  colStart,
+  required,
+  inputColSize,
+}) => {
   return (
-    <div className="gap-x-4 items-center col-span-2 grid grid-cols-6">
-      <Label label={label} required={required} />
-      <input
-        type={type}
-        placeholder={placeholder}
-        className="input input-bordered w-1/5 col-span-4"
-        onChange={onChange}
-      />
-    </div>
+    <>
+      <div
+        className={`col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
+          rowStart ? rowStart : ""
+        } col-start-${colStart ? colStart : ""}`}
+      >
+        <Label label={label} required={required} />
+        <input
+          type={type}
+          value={value}
+          onChange={(e)=>onChange(e.target.value)}
+          className={`bg-white border-[1px] col-span-${
+            inputColSize ? inputColSize : "2"
+          } border-gray-300 rounded-md h-[42px] text-gray-500 font-manrope w-full text-sm`}
+        ></input>
+      </div>
+    </>
   );
 };
 
 export const SelectInput = ({
-  label,
+  value,
+  onChange,
   options,
   placeholder,
+  label,
+  rowStart,
   required,
-  onChange,
+  colStart,
 }) => {
   return (
-    <div className="gap-x-4 items-center col-span-2 grid grid-cols-6">
-      <Label label={label} required={required} />
-      <select class="select select-ghost max-w-xs input-bordered w-1/5 col-span-4">
-        <option disabled selected>
-          {placeholder}
-        </option>
-        <option>Svelte</option>
-        <option>Vue</option>
-        <option>React</option>
-      </select>
-    </div>
+    <>
+      <div
+        className={`row-span-1 col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
+          rowStart ? rowStart : ""
+        } col-start-${colStart ? colStart : ""}`}
+      >
+        <Label label={label} required={required}/>
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)} // Ensure you pass the selected value to the parent component
+          className={`bg-white border-[1px] col-span-2 border-gray-300 outline-none rounded-md h-[42px] text-gray-500 font-manrope w-full text-sm`}
+        >
+          <option value="">
+            {placeholder}
+          </option>
+          {options &&
+            options.map((option, i) => (
+              <option key={i} value={option}>
+                {option}
+              </option>
+            ))}
+        </select>
+      </div>
+    </>
   );
 };
 
 const Label = ({ label, required }) => {
   return (
-    <label className="text-md tracking-tight col-span-1 text-end">
+    <label className="text-gray-500 col-span-2 font-medium text-base text-start">
       {label} {required ? <span className="text-red-500">*</span> : <></>}
     </label>
   );

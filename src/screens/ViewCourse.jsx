@@ -7,15 +7,17 @@ import { InputLayout } from "../components/InputLayout";
 import { PageHeading } from "../components/PageHeading";
 import { IconButton } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API } from "../api/API";
 import { showToast } from "../redux/actions/toastActions";
 import { useDispatch } from "react-redux";
 import { hasNullValues } from "../services/DataPreprocessing";
+import { getId } from "../services/URLProcessing";
 
-export const CreateCourse = () => {
+export const ViewCourse = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
+  const [courseId, setCourseID] = useState(getId());
   const [courseData, setCourseData] = useState({
     institution: null,
     program: null,
@@ -24,27 +26,29 @@ export const CreateCourse = () => {
     name: null,
   });
 
-  const handleCourseCreation = () => {
-    if(hasNullValues(courseData)){
-      return dispatch(showToast({type: 'error', text: 'Fill all required fileds', icon: 'carbon:close-filled'}))
-    }
-    API.postRequest("/course/add", courseData)
-      .then((data) => {
-        if (data.success == true) {
-          dispatch(showToast({type: 'success', text: data.message, icon: 'lets-icons:check-fill'}));
-        }
+  useEffect(() => {
+    API.getRequest("/course/" + courseId)
+      .then((snapshot) => {
+        setCourseData(snapshot.course);
+        courseData._id = snapshot.course._id
       })
       .catch((err) => {
-        dispatch(showToast({type: 'error', text: err.response.data.message, icon: 'carbon:close-filled'}));
+        dispatch(
+          showToast({
+            type: "error",
+            text: err.response.data.message,
+            icon: "carbon:close-filled",
+          })
+        );
       });
-  };
+  }, []);
 
   return (
     <Container>
       <Breadcamps
-        paths={{ Home: "/", Courses: "/courses/all", "Create course": "" }}
+        paths={{ Home: "/", Courses: "/course/all", "View course": "" }}
       />
-      <PageHeading heading={"Create Course"}></PageHeading>
+      <PageHeading heading={"View Course"}></PageHeading>
 
       <FormLayout cols={"12"} rows={3}>
         <InputLayout cols={"12"} rows={"3"}>
@@ -52,6 +56,7 @@ export const CreateCourse = () => {
             label={"Institution"}
             placeholder={"Select Institution"}
             options={["M.A.M. College of Engineering & Technology"]}
+            value={courseData.institution}
             required={true}
             colStart={1}
             rowStart={1}
@@ -63,6 +68,7 @@ export const CreateCourse = () => {
             label={"Program"}
             placeholder={"Select Program"}
             options={["PG", "UG"]}
+            value={courseData.program}
             required={true}
             colStart={1}
             rowStart={2}
@@ -73,6 +79,7 @@ export const CreateCourse = () => {
           <SelectInput
             label={"Duration"}
             placeholder={"Select Duration"}
+            value={courseData.duration}
             required={true}
             options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
             colStart={1}
@@ -84,6 +91,7 @@ export const CreateCourse = () => {
           <SelectInput
             label={"Teaching mode"}
             placeholder={"Select Teaching mode"}
+            value={courseData.teaching_mode}
             required={true}
             options={["Online", "Offline"]}
             colStart={6}
@@ -95,6 +103,7 @@ export const CreateCourse = () => {
           <TextInput
             label={"Course name"}
             placeholder={"Enter course name"}
+            value={courseData.name}
             required={true}
             colStart={6}
             rowStart={2}
@@ -104,22 +113,6 @@ export const CreateCourse = () => {
           />
         </InputLayout>
       </FormLayout>
-      <ButtonLayout cols={12} marginTop={14}>
-        <IconButton
-          text={"Create course"}
-          icon={"ic:round-plus"}
-          textColor={"white"}
-          bgColor={"bg-blue-700"}
-          onClick={() => handleCourseCreation()}
-        />
-        <IconButton
-          text={"Cancel"}
-          icon={"ic:close"}
-          textColor={"gray-500"}
-          bgColor={"bg-white"}
-          onClick={() => navigator("/course/all")}
-        />
-      </ButtonLayout> 
     </Container>
   );
 };

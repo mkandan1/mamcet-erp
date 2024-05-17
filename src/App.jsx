@@ -4,10 +4,12 @@ import { Login } from "./screens/Login";
 import { ForgotPassword } from "./screens/ForgotPasword";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { Authorization } from "../api/Auth";
+import { Authorization } from "./api/Auth";
 import { Dashboard } from "./screens/Dashboard";
 import { Courses } from "./screens/Courses";
 import { CreateCourse } from "./screens/CreateCourse";
+import { EditCourse } from "./screens/EditCourse";
+import { ViewCourse } from "./screens/ViewCourse";
 
 function App() {
   const dispatch = useDispatch()
@@ -29,6 +31,8 @@ function App() {
               <Route path="/" element={<Dashboard/>} />
               <Route path="/course/all" element={<Courses/>} />
               <Route path="/course/create" element={<CreateCourse/>} />
+              <Route path="/course/edit/:id" element={<EditCourse/>} />
+              <Route path="/course/:id" element={<ViewCourse/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
             </Routes>
