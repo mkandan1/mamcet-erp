@@ -2,7 +2,11 @@ import { Breadcamps } from "../components/Breadcumps";
 import { ButtonLayout } from "../components/ButtonLayout";
 import { Container } from "../components/Container";
 import { FormLayout } from "../components/FormLayout";
-import { SelectInput, TextInput } from "../components/Input";
+import {
+  CustomCreateSelect,
+  SelectInput,
+  TextInput,
+} from "../components/Input";
 import { InputLayout } from "../components/InputLayout";
 import { PageHeading } from "../components/PageHeading";
 import { IconButton } from "../components/Button";
@@ -24,13 +28,14 @@ export const ViewCourse = () => {
     duration: null,
     teaching_mode: null,
     name: null,
+    regulation: null,
   });
 
   useEffect(() => {
     API.getRequest("/course/" + courseId)
       .then((snapshot) => {
         setCourseData(snapshot.course);
-        courseData._id = snapshot.course._id
+        courseData._id = snapshot.course._id;
       })
       .catch((err) => {
         dispatch(
@@ -50,8 +55,8 @@ export const ViewCourse = () => {
       />
       <PageHeading heading={"View Course"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={3}>
-        <InputLayout cols={"12"} rows={"3"}>
+      <FormLayout cols={12} rows={8}>
+        <InputLayout cols={12} rows={12}>
           <SelectInput
             label={"Institution"}
             placeholder={"Select Institution"}
@@ -60,6 +65,7 @@ export const ViewCourse = () => {
             required={true}
             colStart={1}
             rowStart={1}
+            disabled={true}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, institution: value }))
             }
@@ -70,6 +76,7 @@ export const ViewCourse = () => {
             options={["PG", "UG"]}
             value={courseData.program}
             required={true}
+            disabled={true}
             colStart={1}
             rowStart={2}
             onChange={(value) =>
@@ -81,6 +88,7 @@ export const ViewCourse = () => {
             placeholder={"Select Duration"}
             value={courseData.duration}
             required={true}
+            disabled={true}
             options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
             colStart={1}
             rowStart={3}
@@ -93,6 +101,7 @@ export const ViewCourse = () => {
             placeholder={"Select Teaching mode"}
             value={courseData.teaching_mode}
             required={true}
+            disabled={true}
             options={["Online", "Offline"]}
             colStart={6}
             rowStart={1}
@@ -105,12 +114,31 @@ export const ViewCourse = () => {
             placeholder={"Enter course name"}
             value={courseData.name}
             required={true}
+            disabled={true}
             colStart={6}
             rowStart={2}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, name: value }))
             }
           />
+          <CustomCreateSelect
+            label={"Regulation"}
+            value={courseData.regulation}
+            options={[]}
+            disabled={true}
+            onChange={(value) =>
+              setCourseData((prev) => ({ ...prev, regulation: value }))
+            }
+          />
+          <ButtonLayout cols={12} marginTop={14}>
+            <IconButton
+              text={"Cancel"}
+              icon={"ic:close"}
+              textColor={"gray-500"}
+              bgColor={"bg-white"}
+              onClick={() => navigator("/course/all")}
+            />
+          </ButtonLayout>
         </InputLayout>
       </FormLayout>
     </Container>

@@ -9,7 +9,7 @@ import { API } from "../api/API";
 import { useDispatch } from "react-redux";
 import { showToast } from "../redux/actions/toastActions";
 
-export const Courses = () => {
+export const Subjects = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [courses, setCourses] = useState([]);
@@ -20,7 +20,6 @@ export const Courses = () => {
     { label: "Course Name", field: "name" },
     { label: "Duration", field: "duration" },
     { label: "Teaching Mode", field: "teaching_mode" },
-    { label: "Regulation", field: "regulation" },
   ];
 
   useEffect(() => {
@@ -49,36 +48,36 @@ export const Courses = () => {
   
   const handleCourseEdit = () => {
     if(selectedRowId != null){
-      navigate('/course/edit/'+selectedRowId)
+      navigate('/course/subject/edit/'+selectedRowId)
     }
   }
 
   const handleCourseView = () => {
     if(selectedRowId != null){
-      navigate('/course/'+selectedRowId)
+      navigate('/course/subject/'+selectedRowId)
     }
   }
 
   return (
     <Container>
-      <Breadcamps paths={{ Home: "/", Courses: "/courses/all" }} />
-      <PageHeading heading={"Course List"}>
+      <Breadcamps paths={{ Home: "/", Subjects: "/course/subject" }} />
+      <PageHeading heading={"Subject List"}>
         <IconButton
-          text={"New Course"}
+          text={"New Subject"}
           icon={"ic:round-plus"}
           bgColor={"bg-blue-500"}
           textColor={"white"}
-          onClick={() => navigate("/course/create")}
+          onClick={() => navigate("/course/subject/create")}
         />
         <IconButton
-          text={"View Course"}
+          text={"View Subject"}
           icon={"ep:view"}
           bgColor={"bg-blue-500"}
           textColor={"white"}
           onClick={()=> handleCourseView()}
         />
         <IconButton
-          text={"Edit Course"}
+          text={"Edit Subject"}
           icon={"fa-regular:edit"}
           bgColor={"bg-blue-500"}
           textColor={"white"}

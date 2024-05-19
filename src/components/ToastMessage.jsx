@@ -6,7 +6,7 @@ import { hideToast } from "../redux/actions/toastActions";
 
 export const ToastMessage = () => {
   const dispatch = useDispatch();
-  const { show, type, text, icon } = useSelector((state) => state.toast);
+  const { show, type, text } = useSelector((state) => state.toast);
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,10 +18,10 @@ export const ToastMessage = () => {
     return;
   }
   return (
-    <div className="absolute right-10 bottom-5">
+    <div className="absolute right-10 bottom-24">
       <Toast>
         <Icon
-          icon={icon}
+          icon={type == "success" ? "lets-icons:check-fill" : "carbon:close-filled"}
           className={`rounded-full p-1 ${
             type == "success"
               ? "text-green-500 bg-green-200"

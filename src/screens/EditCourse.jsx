@@ -2,7 +2,11 @@ import { Breadcamps } from "../components/Breadcumps";
 import { ButtonLayout } from "../components/ButtonLayout";
 import { Container } from "../components/Container";
 import { FormLayout } from "../components/FormLayout";
-import { SelectInput, TextInput } from "../components/Input";
+import {
+  CustomCreateSelect,
+  SelectInput,
+  TextInput,
+} from "../components/Input";
 import { InputLayout } from "../components/InputLayout";
 import { PageHeading } from "../components/PageHeading";
 import { IconButton } from "../components/Button";
@@ -13,6 +17,7 @@ import { showToast } from "../redux/actions/toastActions";
 import { useDispatch } from "react-redux";
 import { hasNullValues } from "../services/DataPreprocessing";
 import { getId } from "../services/URLProcessing";
+import { NavigateAfterTime } from "../services/MainServices";
 
 export const EditCourse = () => {
   const navigator = useNavigate();
@@ -24,20 +29,20 @@ export const EditCourse = () => {
     duration: null,
     teaching_mode: null,
     name: null,
+    regulation: null,
   });
 
   useEffect(() => {
     API.getRequest("/course/" + courseId)
       .then((snapshot) => {
         setCourseData(snapshot.course);
-        courseData._id = snapshot.course._id
+        courseData._id = snapshot.course._id;
       })
       .catch((err) => {
         dispatch(
           showToast({
             type: "error",
             text: err.response.data.message,
-            icon: "carbon:close-filled",
           })
         );
       });
@@ -49,7 +54,6 @@ export const EditCourse = () => {
         showToast({
           type: "error",
           text: "Fill all required fileds",
-          icon: "carbon:close-filled",
         })
       );
     }
@@ -60,7 +64,6 @@ export const EditCourse = () => {
             showToast({
               type: "success",
               text: data.message,
-              icon: "lets-icons:check-fill",
             })
           );
         }
@@ -70,7 +73,28 @@ export const EditCourse = () => {
           showToast({
             type: "error",
             text: err.response.data.message,
-            icon: "carbon:close-filled",
+          })
+        );
+      });
+  };
+
+  const handleCourseDelete = () => {
+    API.deleteRequest("/course/delete", courseId)
+      .then((result) => {
+        dispatch(
+          showToast({
+            type: "success",
+            text: "Course deleted successfully",
+          })
+        );
+
+        NavigateAfterTime('/course/all', navigator, 500)
+      })
+      .catch((err) => {
+        dispatch(
+          showToast({
+            type: "error",
+            text: err.message,
           })
         );
       });
@@ -83,8 +107,8 @@ export const EditCourse = () => {
       />
       <PageHeading heading={"Edit Course"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={3}>
-        <InputLayout cols={"12"} rows={"3"}>
+      <FormLayout cols={"12"} rows={8}>
+        <InputLayout cols={"12"} rows={12}>
           <SelectInput
             label={"Institution"}
             placeholder={"Select Institution"}
@@ -144,6 +168,15 @@ export const EditCourse = () => {
               setCourseData((prev) => ({ ...prev, name: value }))
             }
           />
+          <CustomCreateSelect
+            label={"Regulation"}
+            value={courseData.regulation}
+            options={[]}
+            disabled={true}
+            onChange={(value) =>
+              setCourseData((prev) => ({ ...prev, regulation: value }))
+            }
+          />
         </InputLayout>
       </FormLayout>
       <ButtonLayout cols={12} marginTop={14}>
@@ -153,6 +186,13 @@ export const EditCourse = () => {
           textColor={"white"}
           bgColor={"bg-blue-700"}
           onClick={() => handleCourseChanges()}
+        />
+        <IconButton
+          text={"Delete"}
+          icon={"octicon:trash-16"}
+          textColor={"white"}
+          bgColor={"bg-red-700"}
+          onClick={() => handleCourseDelete()}
         />
         <IconButton
           text={"Cancel"}
