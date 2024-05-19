@@ -7,7 +7,6 @@ export const Dashboard = () => {
     <Container>
       <Breadcamps paths={{'Home': '/','Dashboard': '/'}}/>
       <div className="flex gap-2 flex-wrap">
-
       </div>
     </Container>
   );

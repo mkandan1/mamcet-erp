@@ -5,7 +5,6 @@ import { IconInput } from "../components/IconInput";
 import { CheckBox } from "../components/CheckBox";
 import { Button } from "../components/Button";
 import { LinkTag } from "../components/Link";
-import { LoginFooter } from "../components/Footer";
 import { links } from "../data/constants";
 import { FailedAlert, SuccessAlert } from "../components/Alert";
 import { Auth } from "../api/Auth";
@@ -65,7 +64,7 @@ export const Login = () => {
           <></>
         )}
 
-        <div className="px-10 flex flex-col gap-y-4 py-4">
+        <div className="px-10 flex flex-col gap-y-6 py-4">
           <IconInput
             type={"email"}
             placeholder={"Email"}
@@ -88,7 +87,6 @@ export const Login = () => {
             <LinkTag text={"Don't have an account? sign up"} href={"/signup"} />
           </div>
         </div>
-        <LoginFooter />
       </div>
     </div>
   );

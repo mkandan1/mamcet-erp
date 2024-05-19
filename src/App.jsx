@@ -10,6 +10,7 @@ import { Courses } from "./screens/Courses";
 import { CreateCourse } from "./screens/CreateCourse";
 import { EditCourse } from "./screens/EditCourse";
 import { ViewCourse } from "./screens/ViewCourse";
+import { Profile } from "./screens/Profile";
 
 function App() {
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ function App() {
               <Route path="/course/:id" element={<ViewCourse/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/Profile" element={<Profile/>} />
             </Routes>
           ) : (
             <Routes>
