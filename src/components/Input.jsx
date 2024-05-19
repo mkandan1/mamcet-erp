@@ -89,7 +89,8 @@ export const ToggleInput = ({
       <Label label={label} required={required} />
       <input
         type="checkbox"
-        onChange={onChange}
+        checked={checked}
+        onChange={(e)=> onChange(e.target.checked)}
         disabled={disabled ? disabled : false}
       />
     </div>

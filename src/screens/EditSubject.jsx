@@ -2,7 +2,12 @@ import { Breadcamps } from "../components/Breadcumps";
 import { ButtonLayout } from "../components/ButtonLayout";
 import { Container } from "../components/Container";
 import { FormLayout } from "../components/FormLayout";
-import { SelectInput, TextInput, ToggleInput } from "../components/Input";
+import {
+  CustomCreateSelect,
+  SelectInput,
+  TextInput,
+  ToggleInput,
+} from "../components/Input";
 import { InputLayout } from "../components/InputLayout";
 import { PageHeading } from "../components/PageHeading";
 import { IconButton } from "../components/Button";
@@ -12,11 +17,14 @@ import { API } from "../api/API";
 import { showToast } from "../redux/actions/toastActions";
 import { useDispatch } from "react-redux";
 import { hasNullValues } from "../services/DataPreprocessing";
+import { getId } from "../services/URLProcessing";
+import { NavigateAfterTime } from "../services/MainServices";
 import { Queries } from "../api/Query";
 
-export const CreateSubject = () => {
+export const EditSubject = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
+  const [subjectId, setSubjectId] = useState(getId());
   const [fetchedQuery, setFetchedQuery] = useState({
     regulations: [],
   });
@@ -26,7 +34,7 @@ export const CreateSubject = () => {
     sub_credits: null,
     sub_type: null,
     sub_regulation: null,
-    sub_mandatory: null,
+    sub_mandatory: false,
   });
 
   useEffect(() => {
@@ -40,7 +48,23 @@ export const CreateSubject = () => {
       });
   }, []);
 
-  const handleSubjectCreation = () => {
+  useEffect(() => {
+    API.getRequest("/subject/" + subjectId)
+      .then((snapshot) => {
+        setSubjectData(snapshot.subject);
+        subjectData._id = snapshot.subject._id;
+      })
+      .catch((err) => {
+        dispatch(
+          showToast({
+            type: "error",
+            text: err.response.data.message,
+          })
+        );
+      });
+  }, []);
+
+  const handleSubjectChanges = () => {
     if (hasNullValues(subjectData)) {
       return dispatch(
         showToast({
@@ -49,8 +73,7 @@ export const CreateSubject = () => {
         })
       );
     }
-    console.log(subjectData)
-    API.postRequest("/subject/add", subjectData)
+    API.putRequest("/subject/edit", subjectData)
       .then((data) => {
         if (data.success == true) {
           dispatch(
@@ -68,20 +91,37 @@ export const CreateSubject = () => {
             text: err.response.data.message,
           })
         );
-        console.trace(err)
+      });
+  };
+
+  const handleSubjectDelete = () => {
+    API.deleteRequest("/subject/delete", subjectId)
+      .then((result) => {
+        dispatch(
+          showToast({
+            type: "success",
+            text: "Subject deleted successfully",
+          })
+        );
+
+        NavigateAfterTime('/course/subject', navigator, 500)
+      })
+      .catch((err) => {
+        dispatch(
+          showToast({
+            type: "error",
+            text: err.message,
+          })
+        );
       });
   };
 
   return (
     <Container>
       <Breadcamps
-        paths={{
-          Home: "/",
-          Subjects: "/course/subject",
-          "Create subject": "",
-        }}
+        paths={{ Home: "/", Subject: "/course/subject", "Edit subject": "" }}
       />
-      <PageHeading heading={"Create Course"}></PageHeading>
+      <PageHeading heading={"Edit Subject"}></PageHeading>
 
       <FormLayout cols={"12"} rows={3}>
         <InputLayout cols={"12"} rows={"3"}>
@@ -89,6 +129,7 @@ export const CreateSubject = () => {
             label={"Subject name"}
             placeholder={"Enter Subject Name"}
             required={true}
+            value={subjectData.sub_name}
             colStart={1}
             rowStart={1}
             onChange={(value) =>
@@ -99,6 +140,7 @@ export const CreateSubject = () => {
             label={"Subject code"}
             placeholder={"Enter Subject Code"}
             required={true}
+            value={subjectData.sub_code}
             colStart={1}
             rowStart={2}
             onChange={(value) =>
@@ -109,6 +151,7 @@ export const CreateSubject = () => {
             label={"Subject credits"}
             placeholder={"Enter Subject Credits"}
             required={true}
+            value={subjectData.sub_credits}
             colStart={1}
             rowStart={3}
             onChange={(value) =>
@@ -120,19 +163,21 @@ export const CreateSubject = () => {
             placeholder={"Select Subject Type"}
             options={["Theory", "Lab"]}
             required={true}
+            value={subjectData.sub_type}
             colStart={2}
             rowStart={1}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_type: value }))
             }
           />
-          <SelectInput 
-            label={'Regulation'}
-            placeholder={'Select regulation'}
+          <SelectInput
+            label={"Regulation"}
+            placeholder={"Select regulation"}
             required={true}
+            value={subjectData.sub_regulation}
+            options={fetchedQuery.regulations}
             colStart={2}
             rowStart={2}
-            options={fetchedQuery.regulations}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_regulation: value }))
             }
@@ -141,6 +186,7 @@ export const CreateSubject = () => {
             label={"Mandatory course"}
             checked={subjectData.sub_mandatory}
             required={true}
+            value={subjectData.sub_mandatory}
             colStart={2}
             rowStart={3}
             onChange={(value) =>
@@ -151,11 +197,18 @@ export const CreateSubject = () => {
       </FormLayout>
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton
-          text={"Create subject"}
-          icon={"ic:round-plus"}
+          text={"Save changes"}
+          icon={"ic:baseline-save"}
           textColor={"white"}
           bgColor={"bg-blue-700"}
-          onClick={() => handleSubjectCreation()}
+          onClick={() => handleSubjectChanges()}
+        />
+        <IconButton
+          text={"Delete"}
+          icon={"octicon:trash-16"}
+          textColor={"white"}
+          bgColor={"bg-red-700"}
+          onClick={() => handleSubjectDelete()}
         />
         <IconButton
           text={"Cancel"}
