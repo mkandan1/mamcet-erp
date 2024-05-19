@@ -83,6 +83,19 @@ export const ViewCourse = () => {
               setCourseData((prev) => ({ ...prev, program: value }))
             }
           />
+          <CustomCreateSelect
+            label={"Department"}
+            placeholder={"Select Department"}
+            options={[]}
+            required={true}
+            colStart={1}
+            rowStart={3}
+            disabled={true}
+            value={courseData.department}
+            onChange={(value) =>
+              setCourseData((prev) => ({ ...prev, department: value }))
+            }
+          />
           <SelectInput
             label={"Duration"}
             placeholder={"Select Duration"}
@@ -91,7 +104,7 @@ export const ViewCourse = () => {
             disabled={true}
             options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
             colStart={1}
-            rowStart={3}
+            rowStart={4}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, duration: value }))
             }

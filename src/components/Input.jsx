@@ -152,7 +152,7 @@ export const CustomCreateSelect = ({
 
   const rawOptions = options.map(option => ({
     label: option,
-    value: option.toLowerCase().replace(/\s+/g, '')
+    value: option
   }));
   return (
     <div

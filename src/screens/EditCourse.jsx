@@ -18,11 +18,16 @@ import { useDispatch } from "react-redux";
 import { hasNullValues } from "../services/DataPreprocessing";
 import { getId } from "../services/URLProcessing";
 import { NavigateAfterTime } from "../services/MainServices";
+import { Queries } from "../api/Query";
 
 export const EditCourse = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const [courseId, setCourseID] = useState(getId());
+  const [fetchedQuery, setFetchedQuery] = useState({
+    regulations: [],
+    departments: [],
+  });
   const [courseData, setCourseData] = useState({
     institution: null,
     program: null,
@@ -30,7 +35,25 @@ export const EditCourse = () => {
     teaching_mode: null,
     name: null,
     regulation: null,
+    department: null
   });
+
+  useEffect(() => {
+    Queries.getRegulations()
+      .then((snapshot) => {
+        setFetchedQuery((prev)=> ({...prev, regulations: snapshot.queries.regulation}))
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+      Queries.getDepartment()
+      .then((snapshot) => {
+        setFetchedQuery((prev)=> ({...prev, departments: snapshot.queries.department}))
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
   useEffect(() => {
     API.getRequest("/course/" + courseId)
@@ -131,6 +154,18 @@ export const EditCourse = () => {
             rowStart={2}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, program: value }))
+            }
+          />
+          <CustomCreateSelect
+            label={"Department"}
+            placeholder={"Select Department"}
+            options={fetchedQuery.departments}
+            required={true}
+            colStart={1}
+            rowStart={3}
+            value={courseData.department}
+            onChange={(value) =>
+              setCourseData((prev) => ({ ...prev, department: value }))
             }
           />
           <SelectInput

@@ -24,13 +24,15 @@ export const CreateCourse = () => {
   const [courseData, setCourseData] = useState({
     institution: null,
     program: null,
+    department: null,
     duration: null,
     teaching_mode: null,
     name: null,
     regulation: null,
   });
   const [fetchedData, setFetchedData] = useState({
-    regulations: []
+    regulations: [],
+    departments: []
   })
 
   useEffect(() => {
@@ -40,7 +42,13 @@ export const CreateCourse = () => {
       })
       .catch((err) => {
         console.log(err.message);
-        dis
+      });
+      Queries.getDepartment()
+      .then((snapshot) => {
+        setFetchedData((prev)=> ({...prev, departments: snapshot.queries.department}))
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
   }, []);
 
@@ -105,13 +113,25 @@ export const CreateCourse = () => {
               setCourseData((prev) => ({ ...prev, program: value }))
             }
           />
+          <CustomCreateSelect
+            label={"Department"}
+            placeholder={"Select Department"}
+            options={fetchedData.departments}
+            required={true}
+            colStart={1}
+            rowStart={3}
+            value={courseData.department}
+            onChange={(value) =>
+              setCourseData((prev) => ({ ...prev, department: value }))
+            }
+          />
           <SelectInput
             label={"Duration"}
             placeholder={"Select Duration"}
             required={true}
             options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
             colStart={1}
-            rowStart={3}
+            rowStart={4}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, duration: value }))
             }
@@ -143,7 +163,10 @@ export const CreateCourse = () => {
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, regulation: value }))
             }
+            required={true}
             value={courseData.regulation}
+            colStart={6}
+            rowStart={3}
           />
         </InputLayout>
       </FormLayout>

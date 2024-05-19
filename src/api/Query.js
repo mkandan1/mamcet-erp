@@ -69,6 +69,23 @@ class Queries {
     }
   }
 
+  static async getDepartment() {
+    try {
+      return new Promise(async (resolve, reject) => {
+        const query = [{ collectionName: "courses", fields: ["department"] }];
+        this.getQueries(query).then((data) => {
+          if (data.success) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
+        });
+      });
+    } catch (err) {
+      return err;
+    }
+  }
+
   static async getCourse() {
     try {
       return new Promise(async (resolve, reject) => {
