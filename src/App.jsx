@@ -15,6 +15,9 @@ import { CreateSubject } from "./screens/CreateSubject";
 import { Batches } from "./screens/Batches";
 import { EditSubject } from "./screens/EditSubject";
 import { ViewSubject } from "./screens/ViewSubject";
+import { CreateBatch } from "./screens/CreateBatch";
+import { EditBatch } from "./screens/EditBatch";
+import { ViewBatch } from "./screens/ViewBatch";
 
 function App() {
   const dispatch = useDispatch()
@@ -43,6 +46,9 @@ function App() {
               <Route path="/course/subject/edit/:id" element={<EditSubject/>} />
               <Route path="/course/subject/:id" element={<ViewSubject/>} />
               <Route path="/course/batch" element={<Batches/>} />
+              <Route path="/course/batch/create" element={<CreateBatch/>} />
+              <Route path="/course/batch/edit/:id" element={<EditBatch/>} />
+              <Route path="/course/batch/:id" element={<ViewBatch/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
             </Routes>
