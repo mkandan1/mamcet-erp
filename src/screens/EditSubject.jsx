@@ -6,6 +6,7 @@ import {
   CustomCreateSelect,
   SelectInput,
   TextInput,
+  ToggleInput,
 } from "../components/Input";
 import { InputLayout } from "../components/InputLayout";
 import { PageHeading } from "../components/PageHeading";
@@ -20,22 +21,20 @@ import { getId } from "../services/URLProcessing";
 import { NavigateAfterTime } from "../services/MainServices";
 import { Queries } from "../api/Query";
 
-export const EditCourse = () => {
+export const EditSubject = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
-  const [courseId, setCourseID] = useState(getId());
+  const [subjectId, setSubjectId] = useState(getId());
   const [fetchedQuery, setFetchedQuery] = useState({
     regulations: [],
-    departments: [],
   });
-  const [courseData, setCourseData] = useState({
-    institution: null,
-    program: null,
-    duration: null,
-    teaching_mode: null,
-    name: null,
-    regulation: null,
-    department: null
+  const [subjectData, setSubjectData] = useState({
+    sub_name: null,
+    sub_code: null,
+    sub_credits: null,
+    sub_type: null,
+    sub_regulation: null,
+    sub_mandatory: false,
   });
 
   useEffect(() => {
@@ -45,21 +44,15 @@ export const EditCourse = () => {
       })
       .catch((err) => {
         console.log(err.message);
-      });
-      Queries.getDepartment()
-      .then((snapshot) => {
-        setFetchedQuery((prev)=> ({...prev, departments: snapshot.queries.department}))
-      })
-      .catch((err) => {
-        console.log(err.message);
+        dis
       });
   }, []);
 
   useEffect(() => {
-    API.getRequest("/course/" + courseId)
+    API.getRequest("/subject/" + subjectId)
       .then((snapshot) => {
-        setCourseData(snapshot.course);
-        courseData._id = snapshot.course._id;
+        setSubjectData(snapshot.subject);
+        subjectData._id = snapshot.subject._id;
       })
       .catch((err) => {
         dispatch(
@@ -71,8 +64,8 @@ export const EditCourse = () => {
       });
   }, []);
 
-  const handleCourseChanges = () => {
-    if (hasNullValues(courseData)) {
+  const handleSubjectChanges = () => {
+    if (hasNullValues(subjectData)) {
       return dispatch(
         showToast({
           type: "error",
@@ -80,7 +73,7 @@ export const EditCourse = () => {
         })
       );
     }
-    API.putRequest("/course/edit", courseData)
+    API.putRequest("/subject/edit", subjectData)
       .then((data) => {
         if (data.success == true) {
           dispatch(
@@ -101,17 +94,17 @@ export const EditCourse = () => {
       });
   };
 
-  const handleCourseDelete = () => {
-    API.deleteRequest("/course/delete", courseId)
+  const handleSubjectDelete = () => {
+    API.deleteRequest("/subject/delete", subjectId)
       .then((result) => {
         dispatch(
           showToast({
             type: "success",
-            text: "Course deleted successfully",
+            text: "Subject deleted successfully",
           })
         );
 
-        NavigateAfterTime('/course/all', navigator, 500)
+        NavigateAfterTime('/course/subject', navigator, 500)
       })
       .catch((err) => {
         dispatch(
@@ -126,90 +119,78 @@ export const EditCourse = () => {
   return (
     <Container>
       <Breadcamps
-        paths={{ Home: "/", Courses: "/course/all", "Edit course": "" }}
+        paths={{ Home: "/", Subject: "/course/subject", "Edit subject": "" }}
       />
-      <PageHeading heading={"Edit Course"}></PageHeading>
+      <PageHeading heading={"Edit Subject"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={8}>
-        <InputLayout cols={"12"} rows={12}>
-          <SelectInput
-            label={"Institution"}
-            placeholder={"Select Institution"}
-            options={["M.A.M. College of Engineering & Technology"]}
-            value={courseData.institution}
+      <FormLayout cols={"12"} rows={3}>
+        <InputLayout cols={"12"} rows={"3"}>
+          <TextInput
+            label={"Subject name"}
+            placeholder={"Enter Subject Name"}
             required={true}
+            value={subjectData.sub_name}
             colStart={1}
             rowStart={1}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, institution: value }))
-            }
-          />
-          <SelectInput
-            label={"Program"}
-            placeholder={"Select Program"}
-            options={["PG", "UG"]}
-            value={courseData.program}
-            required={true}
-            colStart={1}
-            rowStart={2}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, program: value }))
-            }
-          />
-          <CustomCreateSelect
-            label={"Department"}
-            placeholder={"Select Department"}
-            options={fetchedQuery.departments}
-            required={true}
-            colStart={1}
-            rowStart={3}
-            value={courseData.department}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, department: value }))
-            }
-          />
-          <SelectInput
-            label={"Duration"}
-            placeholder={"Select Duration"}
-            value={courseData.duration}
-            required={true}
-            options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
-            colStart={1}
-            rowStart={3}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, duration: value }))
-            }
-          />
-          <SelectInput
-            label={"Teaching mode"}
-            placeholder={"Select Teaching mode"}
-            value={courseData.teaching_mode}
-            required={true}
-            options={["Online", "Offline"]}
-            colStart={6}
-            rowStart={1}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, teaching_mode: value }))
+              setSubjectData((prev) => ({ ...prev, sub_name: value }))
             }
           />
           <TextInput
-            label={"Course name"}
-            placeholder={"Enter course name"}
-            value={courseData.name}
+            label={"Subject code"}
+            placeholder={"Enter Subject Code"}
             required={true}
-            colStart={6}
+            value={subjectData.sub_code}
+            colStart={1}
             rowStart={2}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, name: value }))
+              setSubjectData((prev) => ({ ...prev, sub_code: value }))
             }
           />
-          <CustomCreateSelect
-            label={"Regulation"}
-            value={courseData.regulation}
-            options={[]}
-            disabled={true}
+          <TextInput
+            label={"Subject credits"}
+            placeholder={"Enter Subject Credits"}
+            required={true}
+            value={subjectData.sub_credits}
+            colStart={1}
+            rowStart={3}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, regulation: value }))
+              setSubjectData((prev) => ({ ...prev, sub_credits: value }))
+            }
+          />
+          <SelectInput
+            label={"Subject Type"}
+            placeholder={"Select Subject Type"}
+            options={["Theory", "Lab"]}
+            required={true}
+            value={subjectData.sub_type}
+            colStart={2}
+            rowStart={1}
+            onChange={(value) =>
+              setSubjectData((prev) => ({ ...prev, sub_type: value }))
+            }
+          />
+          <SelectInput
+            label={"Regulation"}
+            placeholder={"Select regulation"}
+            required={true}
+            value={subjectData.sub_regulation}
+            options={fetchedQuery.regulations}
+            colStart={2}
+            rowStart={2}
+            onChange={(value) =>
+              setSubjectData((prev) => ({ ...prev, sub_regulation: value }))
+            }
+          />
+          <ToggleInput
+            label={"Mandatory course"}
+            checked={subjectData.sub_mandatory}
+            required={true}
+            value={subjectData.sub_mandatory}
+            colStart={2}
+            rowStart={3}
+            onChange={(value) =>
+              setSubjectData((prev) => ({ ...prev, sub_mandatory: value }))
             }
           />
         </InputLayout>
@@ -220,21 +201,21 @@ export const EditCourse = () => {
           icon={"ic:baseline-save"}
           textColor={"white"}
           bgColor={"bg-blue-700"}
-          onClick={() => handleCourseChanges()}
+          onClick={() => handleSubjectChanges()}
         />
         <IconButton
           text={"Delete"}
           icon={"octicon:trash-16"}
           textColor={"white"}
           bgColor={"bg-red-700"}
-          onClick={() => handleCourseDelete()}
+          onClick={() => handleSubjectDelete()}
         />
         <IconButton
           text={"Cancel"}
           icon={"ic:close"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
-          onClick={() => navigator("/course/all")}
+          onClick={() => navigator("/course/subject")}
         />
       </ButtonLayout>
     </Container>

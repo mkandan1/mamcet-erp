@@ -19,7 +19,7 @@ export const Drawer = () => {
       title: 'Admissions',
       icon: 'mdi:smart-card-outline',
       subMenuItems: [
-        { id: 11, title: 'Admission Registry', url: '/admissions/registry' },
+        { id: 11, title: 'Admission Registry', url: '/admission/registry' },
       ],
       isExpanded: false,
     },
@@ -28,8 +28,8 @@ export const Drawer = () => {
       title: 'Employees',
       icon: 'clarity:employee-solid',
       subMenuItems: [
-        { id: 11, title: 'Employees Onboarding', url: '/employees/onboarding' },
-        { id: 12, title: 'Employees List', url: '/employees/all' },
+        { id: 11, title: 'Employees Onboarding', url: '/employee/onboarding' },
+        { id: 12, title: 'Employees List', url: '/employee/all' },
       ],
       isExpanded: false,
     },
@@ -39,9 +39,9 @@ export const Drawer = () => {
       icon: 'tdesign:course',
       subMenuItems: [
         { id: 11, title: 'All courses', url: '/course/all' },
-        { id: 12, title: 'All subjects', url: '/course/subjects' },
+        { id: 12, title: 'All subjects', url: '/course/subject' },
         { id: 13, title: 'Subject mapping', url: '/course/subject-mapping' },
-        { id: 14, title: 'Batches', url: '/course/batches' },
+        { id: 14, title: 'Batches', url: '/course/batch' },
       ],
       isExpanded: false,
     },
@@ -50,7 +50,7 @@ export const Drawer = () => {
       title: 'Students',
       icon: 'ph:student-fill',
       subMenuItems: [
-        { id: 11, title: 'All students', url: '/students/all' },
+        { id: 11, title: 'All students', url: '/student/all' },
       ],
       isExpanded: false,
     },
@@ -74,7 +74,7 @@ export const Drawer = () => {
   };
 
   return (
-    <div className='h-screen top-16 fixed w-52 2xl:w-64 bg-gray-50'>
+    <div className='h-screen top-16 fixed z-[1] w-52 2xl:w-64 bg-gray-50'>
         <div className='row-span-2 col-span-2 row-start-1 flex flex-col items-center justify-center px-8 py-4 gap-x-1 border-b border-r border-gray-200 bg-white md:col-span-2'>
           <img src='https://firebasestorage.googleapis.com/v0/b/mymamcet.appspot.com/o/mamcet%2Fassets%2Fimage%2Fmamcet%20logo.jpg?alt=media&token=e2cf6795-eb9c-43c4-8e62-0f3bbecee8e4' className='w-20' alt="mamcet logo" />
         </div>
