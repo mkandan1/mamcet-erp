@@ -15,18 +15,18 @@ export const Subjects = () => {
   const [courses, setCourses] = useState([]);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const header = [
-    { label: "Institution", field: "institution" },
-    { label: "Program", field: "program" },
-    { label: "Course Name", field: "name" },
-    { label: "Duration", field: "duration" },
-    { label: "Teaching Mode", field: "teaching_mode" },
+    { label: "Subject Name", field: "sub_name" },
+    { label: "Subject Code", field: "sub_code" },
+    { label: "Subject Credits", field: "sub_credits" },
+    { label: "Subject Type", field: "sub_type" },
+    { label: "Subject Regulation", field: "sub_regulation" },
   ];
 
   useEffect(() => {
-    API.getRequest("/course")
+    API.getRequest("/subject")
       .then((snapshot) => {
         if (snapshot.success == true) {
-          setCourses(snapshot.courses);
+          setCourses(snapshot.subjects);
         }
       })
       .catch((err) => {

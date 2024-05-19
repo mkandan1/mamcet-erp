@@ -2,7 +2,12 @@ import { Breadcamps } from "../components/Breadcumps";
 import { ButtonLayout } from "../components/ButtonLayout";
 import { Container } from "../components/Container";
 import { FormLayout } from "../components/FormLayout";
-import { SelectInput, TextInput, ToggleInput } from "../components/Input";
+import {
+  CustomCreateSelect,
+  SelectInput,
+  TextInput,
+  ToggleInput,
+} from "../components/Input";
 import { InputLayout } from "../components/InputLayout";
 import { PageHeading } from "../components/PageHeading";
 import { IconButton } from "../components/Button";
@@ -12,76 +17,44 @@ import { API } from "../api/API";
 import { showToast } from "../redux/actions/toastActions";
 import { useDispatch } from "react-redux";
 import { hasNullValues } from "../services/DataPreprocessing";
-import { Queries } from "../api/Query";
+import { getId } from "../services/URLProcessing";
 
-export const CreateSubject = () => {
+export const ViewSubject = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
-  const [fetchedQuery, setFetchedQuery] = useState({
-    regulations: [],
-  });
+  const [subjectId, setSubjectId] = useState(getId());
   const [subjectData, setSubjectData] = useState({
     sub_name: null,
     sub_code: null,
     sub_credits: null,
     sub_type: null,
     sub_regulation: null,
-    sub_mandatory: null,
+    sub_mandatory: false,
   });
 
   useEffect(() => {
-    Queries.getRegulations()
+    API.getRequest("/subject/" + subjectId)
       .then((snapshot) => {
-        setFetchedQuery((prev)=> ({...prev, regulations: snapshot.queries.regulation}))
-      })
-      .catch((err) => {
-        console.log(err.message);
-        dis
-      });
-  }, []);
-
-  const handleSubjectCreation = () => {
-    if (hasNullValues(subjectData)) {
-      return dispatch(
-        showToast({
-          type: "error",
-          text: "Fill all required fileds",
-        })
-      );
-    }
-    console.log(subjectData)
-    API.postRequest("/subject/add", subjectData)
-      .then((data) => {
-        if (data.success == true) {
-          dispatch(
-            showToast({
-              type: "success",
-              text: data.message,
-            })
-          );
-        }
+        setSubjectData(snapshot.subject);
+        subjectData._id = snapshot.subject._id;
       })
       .catch((err) => {
         dispatch(
           showToast({
             type: "error",
             text: err.response.data.message,
+            icon: "carbon:close-filled",
           })
         );
-        console.trace(err)
       });
-  };
+  }, []);
 
   return (
     <Container>
       <Breadcamps
-        paths={{
-          Home: "/",
-          Subjects: "/course/subject",
-          "Create subject": "",
-        }}
+        paths={{ Home: "/", Courses: "/course/all", "View course": "" }}
       />
-      <PageHeading heading={"Create Course"}></PageHeading>
+      <PageHeading heading={"View Course"}></PageHeading>
 
       <FormLayout cols={"12"} rows={3}>
         <InputLayout cols={"12"} rows={"3"}>
@@ -89,8 +62,10 @@ export const CreateSubject = () => {
             label={"Subject name"}
             placeholder={"Enter Subject Name"}
             required={true}
+            value={subjectData.sub_name}
             colStart={1}
             rowStart={1}
+            disabled={true}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_name: value }))
             }
@@ -99,8 +74,10 @@ export const CreateSubject = () => {
             label={"Subject code"}
             placeholder={"Enter Subject Code"}
             required={true}
+            value={subjectData.sub_code}
             colStart={1}
             rowStart={2}
+            disabled={true}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_code: value }))
             }
@@ -109,8 +86,10 @@ export const CreateSubject = () => {
             label={"Subject credits"}
             placeholder={"Enter Subject Credits"}
             required={true}
+            value={subjectData.sub_credits}
             colStart={1}
             rowStart={3}
+            disabled={true}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_credits: value }))
             }
@@ -120,19 +99,23 @@ export const CreateSubject = () => {
             placeholder={"Select Subject Type"}
             options={["Theory", "Lab"]}
             required={true}
+            value={subjectData.sub_type}
             colStart={2}
             rowStart={1}
+            disabled={true}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_type: value }))
             }
           />
-          <SelectInput 
-            label={'Regulation'}
-            placeholder={'Select regulation'}
+          <SelectInput
+            label={"Regulation"}
+            placeholder={"Select regulation"}
             required={true}
+            value={subjectData.sub_regulation}
+            options={[subjectData.sub_regulation]}
             colStart={2}
             rowStart={2}
-            options={fetchedQuery.regulations}
+            disabled={true}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_regulation: value }))
             }
@@ -141,8 +124,10 @@ export const CreateSubject = () => {
             label={"Mandatory course"}
             checked={subjectData.sub_mandatory}
             required={true}
+            value={subjectData.sub_mandatory}
             colStart={2}
             rowStart={3}
+            disabled={true}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_mandatory: value }))
             }
@@ -150,13 +135,6 @@ export const CreateSubject = () => {
         </InputLayout>
       </FormLayout>
       <ButtonLayout cols={12} marginTop={14}>
-        <IconButton
-          text={"Create subject"}
-          icon={"ic:round-plus"}
-          textColor={"white"}
-          bgColor={"bg-blue-700"}
-          onClick={() => handleSubjectCreation()}
-        />
         <IconButton
           text={"Cancel"}
           icon={"ic:close"}

@@ -13,6 +13,8 @@ import { ViewCourse } from "./screens/ViewCourse";
 import { Subjects } from "./screens/Subjects";
 import { CreateSubject } from "./screens/CreateSubject";
 import { Batches } from "./screens/Batches";
+import { EditSubject } from "./screens/EditSubject";
+import { ViewSubject } from "./screens/ViewSubject";
 
 function App() {
   const dispatch = useDispatch()
@@ -38,6 +40,8 @@ function App() {
               <Route path="/course/:id" element={<ViewCourse/>} />
               <Route path="/course/subject" element={<Subjects/>} />
               <Route path="/course/subject/create" element={<CreateSubject/>} />
+              <Route path="/course/subject/edit/:id" element={<EditSubject/>} />
+              <Route path="/course/subject/:id" element={<ViewSubject/>} />
               <Route path="/course/batch" element={<Batches/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
