@@ -146,7 +146,7 @@ export const EditBatch= () => {
   };
 
   const handleBatchDelete = () => {
-    API.deleteRequest("/batch/delete", BatchId)
+    API.deleteRequest("/batch/delete/", batchId)
       .then((result) => {
         dispatch(
           showToast({
@@ -296,7 +296,7 @@ export const EditBatch= () => {
           icon={"ic:close"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
-          onClick={() => navigator("/Batch/all")}
+          onClick={() => navigator("/course/batch")}
         />
       </ButtonLayout>
     </Container>
