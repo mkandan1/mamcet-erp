@@ -1,3 +1,5 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRef } from "react";
 import CreateSelect from "react-select/creatable";
 
 export const TextInput = ({
@@ -172,6 +174,28 @@ export const CustomCreateSelect = ({
         />
       </div>
     </div>
+  );
+};
+
+export const FileInput = ({ id, accept, label, bgColor, textColor, text, icon, onFileSelect }) => {
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = () => {
+      // Access the selected file using the ref
+      const selectedFile = fileInputRef.current.files[0];
+
+      // Pass the selected file to the parent component or perform other actions
+      onFileSelect(selectedFile);
+  };
+
+  return (
+      <>
+          <label htmlFor={id} className={`flex border rounded-md items-center gap-2 pl-4 text-xs outline font-manrope font-normal tracking-tight w-auto text-${textColor} px-2 bg-${bgColor} cursor-pointer`}>
+              {icon && (<Icon icon={icon} className={`text-${textColor} text-md`} />)}
+              {label}
+          </label>
+          <input type='file' onChange={handleFileSelect} accept={accept} className='hidden' id={id} ref={fileInputRef} />
+      </>
   );
 };
 
