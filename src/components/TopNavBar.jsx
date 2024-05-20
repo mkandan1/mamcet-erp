@@ -22,7 +22,7 @@ export const TopNavBar = () => {
           </div>
         </button>
         <button className="btn btn-ghost btn-circle">
-          <Link href={"/Profile"}>
+          <Link to={"/Profile"}>
             <Avatar/>
           </Link> 
         </button>

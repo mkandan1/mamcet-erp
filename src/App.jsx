@@ -10,9 +10,7 @@ import { Courses } from "./screens/Courses";
 import { CreateCourse } from "./screens/CreateCourse";
 import { EditCourse } from "./screens/EditCourse";
 import { ViewCourse } from "./screens/ViewCourse";
-<<<<<<< HEAD
 import { Profile } from "./screens/Profile";
-=======
 import { Subjects } from "./screens/Subjects";
 import { CreateSubject } from "./screens/CreateSubject";
 import { Batches } from "./screens/Batches";
@@ -21,7 +19,6 @@ import { ViewSubject } from "./screens/ViewSubject";
 import { CreateBatch } from "./screens/CreateBatch";
 import { EditBatch } from "./screens/EditBatch";
 import { ViewBatch } from "./screens/ViewBatch";
->>>>>>> de68b5cda67c8a0ac7f2acec357090c1b8472706
 
 function App() {
   const dispatch = useDispatch()

@@ -89,7 +89,7 @@ class Queries {
   static async getCourse() {
     try {
       return new Promise(async (resolve, reject) => {
-        const query = [{ collectionName: "courses", fields: ["courseName"] }];
+        const query = [{ collectionName: "courses", fields: ["name"] }];
         this.getQueries(query).then((data) => {
           if (data.success) {
             resolve(data);

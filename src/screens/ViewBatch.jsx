@@ -4,8 +4,10 @@ import { Container } from "../components/Container";
 import { FormLayout } from "../components/FormLayout";
 import {
   CustomCreateSelect,
+  FileInput,
   SelectInput,
   TextInput,
+  ToggleInput,
 } from "../components/Input";
 import { InputLayout } from "../components/InputLayout";
 import { PageHeading } from "../components/PageHeading";
@@ -16,80 +18,50 @@ import { API } from "../api/API";
 import { showToast } from "../redux/actions/toastActions";
 import { useDispatch } from "react-redux";
 import { hasNullValues } from "../services/DataPreprocessing";
-import { Queries } from "../api/Query";
+import { getId } from "../services/URLProcessing";
+import { SelectionTable } from "../components/Table";
+import { headers } from "../data/constants";
 
-export const CreateCourse = () => {
+export const ViewBatch = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
-  const [courseData, setCourseData] = useState({
+  const [BatchId, setBatchId] = useState(getId());
+  const [BatchData, setBatchData] = useState({
     institution: null,
     program: null,
     department: null,
-    duration: null,
-    teaching_mode: null,
-    name: null,
+    course_name: null,
+    batch_name: null,
+    academic_year: null,
     regulation: null,
+    students: [],
   });
-  const [fetchedData, setFetchedData] = useState({
-    regulations: [],
-    departments: []
-  })
-
+  
   useEffect(() => {
-    Queries.getRegulations()
+    API.getRequest("/batch/"+BatchId)
       .then((snapshot) => {
-        setFetchedData((prev)=> ({...prev, regulations: snapshot.queries.regulation}))
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-      Queries.getDepartment()
-      .then((snapshot) => {
-        setFetchedData((prev)=> ({...prev, departments: snapshot.queries.department}))
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
-
-  const handleCourseCreation = () => {
-    if (hasNullValues(courseData)) {
-      return dispatch(
-        showToast({
-          type: "error",
-          text: "Fill all required fileds",
-        })
-      );
-    }
-    API.postRequest("/course/add", courseData)
-      .then((data) => {
-        if (data.success == true) {
-          dispatch(
-            showToast({
-              type: "success",
-              text: data.message,
-            })
-          );
-        }
+        setBatchData(snapshot.batch);
+        BatchData._id = snapshot.batch._id;
       })
       .catch((err) => {
         dispatch(
           showToast({
             type: "error",
             text: err.response.data.message,
+            icon: "carbon:close-filled",
           })
         );
       });
-  };
+  }, []);
 
   return (
     <Container>
       <Breadcamps
-        paths={{ Home: "/", Courses: "/courses/all", "Create course": "" }}
+        paths={{ Home: "/", Courses: "/course/all", "View course": "" }}
       />
-      <PageHeading heading={"Create Course"}></PageHeading>
+      <PageHeading heading={"View Course"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={8}>
+      <FormLayout cols={"12"} rows={12}>
         <InputLayout cols={"12"} rows={12}>
           <SelectInput
             label={"Institution"}
@@ -98,8 +70,10 @@ export const CreateCourse = () => {
             required={true}
             colStart={1}
             rowStart={1}
+            value={BatchData.institution}
+            disabled={true}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, institution: value }))
+              setBatchData((prev) => ({ ...prev, institution: value }))
             }
           />
           <SelectInput
@@ -109,82 +83,100 @@ export const CreateCourse = () => {
             required={true}
             colStart={1}
             rowStart={2}
+            value={BatchData.program}
+            disabled={true}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, program: value }))
+              setBatchData((prev) => ({ ...prev, program: value }))
             }
           />
-          <CustomCreateSelect
+          <SelectInput
             label={"Department"}
             placeholder={"Select Department"}
-            options={fetchedData.departments}
+            options={[BatchData.department]}
             required={true}
             colStart={1}
             rowStart={3}
-            value={courseData.department}
+            value={BatchData.department}
+            disabled={true}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, department: value }))
+              setBatchData((prev) => ({ ...prev, department: value }))
             }
           />
+
           <SelectInput
-            label={"Duration"}
-            placeholder={"Select Duration"}
+            label={"Regulation"}
+            placeholder={"Select Regulation"}
+            options={[BatchData.regulation]}
             required={true}
-            options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
             colStart={1}
-            rowStart={4}
+            rowStart={3}
+            value={BatchData.regulation}
+            disabled={true}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, duration: value }))
+              setBatchData((prev) => ({ ...prev, regulation: value }))
             }
           />
           <SelectInput
-            label={"Teaching mode"}
-            placeholder={"Select Teaching mode"}
+            label={"Course"}
+            placeholder={"Select Course"}
+            options={[BatchData.course_name]}
             required={true}
-            options={["Online", "Offline"]}
             colStart={2}
             rowStart={1}
+            value={BatchData.course_name}
+            disabled={true}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, teaching_mode: value }))
+              setBatchData((prev) => ({ ...prev, course_name: value }))
             }
           />
           <TextInput
-            label={"Course name"}
-            placeholder={"Enter course name"}
+            label={"Batch name"}
+            placeholder={"Enter Batch name"}
             required={true}
             colStart={2}
             rowStart={2}
+            value={BatchData.batch_name}
+            disabled={true}
             onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, name: value }))
+              setBatchData((prev) => ({ ...prev, batch_name: value }))
             }
           />
-          <CustomCreateSelect
-            label={"Regulation"}
-            options={fetchedData.regulations}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, regulation: value }))
-            }
+          <SelectInput
+            label={"Academic Year"}
+            placeholder={"Select Academic"}
+            options={[BatchData.academic_year]}
             required={true}
-            value={courseData.regulation}
             colStart={2}
             rowStart={3}
+            value={BatchData.academic_year}
+            disabled={true}
+            onChange={(value) =>
+              setBatchData((prev) => ({ ...prev, academic_year: value }))
+            }
+          />
+          <FileInput
+            bgColor={"blue-500"}
+            textColor={"white"}
+            id={"studentsFile"}
+            accept={".xlsx, .xls"}
+            label={"Upload"}
+            icon={"entypo:upload"}
+            onFileSelect={(file) => handleFileInputChange(file)}
+          />
+
+          <SelectionTable
+            headers={headers.studentTableHeader}
+            data={BatchData.students}
           />
         </InputLayout>
       </FormLayout>
-
       <ButtonLayout cols={12} marginTop={14}>
-        <IconButton
-          text={"Create course"}
-          icon={"ic:round-plus"}
-          textColor={"white"}
-          bgColor={"bg-blue-700"}
-          onClick={() => handleCourseCreation()}
-        />
         <IconButton
           text={"Cancel"}
           icon={"ic:close"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
-          onClick={() => navigator("/course/all")}
+          onClick={() => navigator("/course/Batch")}
         />
       </ButtonLayout>
     </Container>

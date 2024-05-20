@@ -3,7 +3,7 @@ import React from "react";
 
 export const SelectionTable = ({ headers, data, onSelect, rowId }) => {
   return (
-    <div className="overflow-x-auto row-span-12 col-span-12">
+    <div className="overflow-x-auto row-span-12 col-span-12 mt-4">
       <table className="table table-sm">
         <thead className="bg-violet-700 border border-base-300 text-white">
           <tr className="border-b border-base-300">
