@@ -12,7 +12,7 @@ export const Container = ({ children }) => {
           <Drawer />
         </div>
       </div>
-      <div className="md:ml-64 pt-20 px-2 py-2 grid grid-cols-12 grid-rows-12 h-screen">
+      <div className="md:ml-64 pt-20 px-2 py-2 grid grid-cols-12 grid-rows-12 h-screen relative">
         {children}
       </div>
       <ToastMessage/>

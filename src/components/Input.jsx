@@ -11,12 +11,13 @@ export const TextInput = ({
   colStart,
   disabled,
   required,
+  placeholder,
   inputColSize,
 }) => {
   return (
     <>
       <div
-        className={`col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
+        className={`col-span-4 grid grid-rows-1 grid-cols-4 row-start-${
           rowStart ? rowStart : ""
         } col-start-${colStart ? colStart : ""}`}
       >
@@ -26,8 +27,9 @@ export const TextInput = ({
           value={value}
           disabled={disabled ? disabled : false}
           onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder ? placeholder : ''}
           className={`bg-white border-[1px] col-span-${
-            inputColSize ? inputColSize : "2"
+            inputColSize ? inputColSize : "3"
           } border-gray-300 rounded-md pl-3 h-[42px] outline-blue-700 text-gray-500 font-manrope w-full text-sm`}
         ></input>
       </div>
@@ -49,7 +51,7 @@ export const SelectInput = ({
   return (
     <>
       <div
-        className={`row-span-1 col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
+        className={`row-span-1 col-span-4 grid grid-rows-1 grid-cols-4 row-start-${
           rowStart ? rowStart : ""
         } col-start-${colStart ? colStart : ""}`}
       >
@@ -58,7 +60,7 @@ export const SelectInput = ({
           disabled={disabled ? disabled : false}
           value={value}
           onChange={(e) => onChange(e.target.value)} // Ensure you pass the selected value to the parent component
-          className={`bg-white border-[1px] col-span-2 border-gray-300 outline-none rounded-md h-[42px] text-gray-500 font-manrope w-full text-sm`}
+          className={`bg-white border-[1px] col-span-3 border-gray-300 outline-none rounded-md h-[42px] text-gray-500 font-manrope w-full text-sm`}
         >
           <option value="">{placeholder}</option>
           {options &&
@@ -158,12 +160,12 @@ export const CustomCreateSelect = ({
   }));
   return (
     <div
-      className={`row-span-1 col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
+      className={`row-span-1 col-span-4 grid grid-rows-1 grid-cols-4 row-start-${
         rowStart ? rowStart : ""
       } col-start-${colStart ? colStart : ""}`}
     >
       <Label required={required} label={label} />
-      <div className="col-span-2">
+      <div className="col-span-3">
         <CreateSelect
           options={rawOptions}
           placeholder={placeholder}
