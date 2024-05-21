@@ -21,4 +21,11 @@ export const headers = {
         { label: "10th Mark", field: "_10thMark" },
         { label: "12th Mark", field: "_12thMark" },
       ],
+      subjectTableHeader: [
+        { label: "Subject Name", field: "sub_name" },
+        { label: "Subject Code", field: "sub_code" },
+        { label: "Subject Credits", field: "sub_credits" },
+        { label: "Subject Type", field: "sub_type" },
+        { label: "Subject Regulation", field: "sub_regulation" },
+      ],
 }

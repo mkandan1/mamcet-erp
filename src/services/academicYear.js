@@ -11,8 +11,8 @@ export const generateAcademicYears = (batchYear) => {
 }
 
 export const mapAcademicYearToSemesters = (batchYear, academicYear) => {
-    const [startYear, endYear] = academicYear.split(' - ').map(Number);
-    const batchStartYear = parseInt(batchYear.split(' - ')[0], 10);
+    const [startYear, endYear] = academicYear?.split(' - ').map(Number);
+    const batchStartYear = parseInt(batchYear?.split(' - ')[0], 10);
     const semesters = [];
 
     const yearDifference = startYear - batchStartYear;
