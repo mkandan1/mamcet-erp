@@ -14,25 +14,25 @@ export const Drawer = () => {
       ],
       isExpanded: false,
     },
-    {
-      id: 2,
-      title: 'Admissions',
-      icon: 'mdi:smart-card-outline',
-      subMenuItems: [
-        { id: 11, title: 'Admission Registry', url: '/admission/registry' },
-      ],
-      isExpanded: false,
-    },
-    {
-      id: 3,
-      title: 'Employees',
-      icon: 'clarity:employee-solid',
-      subMenuItems: [
-        { id: 11, title: 'Employees Onboarding', url: '/employee/onboarding' },
-        { id: 12, title: 'Employees List', url: '/employee/all' },
-      ],
-      isExpanded: false,
-    },
+    // {
+    //   id: 2,
+    //   title: 'Admissions',
+    //   icon: 'mdi:smart-card-outline',
+    //   subMenuItems: [
+    //     { id: 11, title: 'Admission Registry', url: '/admission/registry' },
+    //   ],
+    //   isExpanded: false,
+    // },
+    // {
+    //   id: 3,
+    //   title: 'Employees',
+    //   icon: 'clarity:employee-solid',
+    //   subMenuItems: [
+    //     { id: 11, title: 'Employees Onboarding', url: '/employee/onboarding' },
+    //     { id: 12, title: 'Employees List', url: '/employee/all' },
+    //   ],
+    //   isExpanded: false,
+    // },
     {
       id: 4,
       title: 'Courses',
@@ -45,15 +45,15 @@ export const Drawer = () => {
       ],
       isExpanded: false,
     },
-    {
-      id: 5,
-      title: 'Students',
-      icon: 'ph:student-fill',
-      subMenuItems: [
-        { id: 11, title: 'All students', url: '/student/all' },
-      ],
-      isExpanded: false,
-    },
+    // {
+    //   id: 5,
+    //   title: 'Students',
+    //   icon: 'ph:student-fill',
+    //   subMenuItems: [
+    //     { id: 11, title: 'All students', url: '/student/all' },
+    //   ],
+    //   isExpanded: false,
+    // },
     {
       id: 6,
       title: 'Exam',

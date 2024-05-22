@@ -1,7 +1,7 @@
 import { IconButton } from "./Button";
 import { Modal } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
-import { HideSubjectImportDialog } from "../redux/actions/dialogActions";
+import { HideMarkAllocationDialog, HideSubjectImportDialog } from "../redux/actions/dialogActions";
 import { MultiSelectionTable } from "./Table";
 import { headers } from "../data/constants";
 import { useEffect, useState } from "react";

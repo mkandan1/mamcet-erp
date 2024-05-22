@@ -146,7 +146,7 @@ export const EditBatch= () => {
   };
 
   const handleBatchDelete = () => {
-    API.deleteRequest("/batch/delete/", batchId)
+    API.deleteRequest("/batch/delete", batchId)
       .then((result) => {
         dispatch(
           showToast({
