@@ -1,11 +1,12 @@
 import React from 'react'
-
-export const FormLayout = ({ children, rows, cols }) => {
+export const FormLayout = ({ children }) => {
     return (
-        <div className={`grid grid-cols-${cols} grid-rows-${rows} row-span-${rows} col-span-${cols} mx-4 p-5`}>
-            <div className={`grid grid-cols-${cols} row-span-${rows} col-span-${cols} w-full h-full gap-x-5`}>
-                {children}
-            </div>
+      <div className="relative px-2 py-2 max-h-screen w-max-screen overflow-auto col-span-12 h-[70vh]">
+        <div className="grid grid-cols-12 grid-rows-auto">
+          <div className="col-span-12 flex flex-col grid-cols-12 grid-rows-auto gap-4">
+            {children}
+          </div>
         </div>
-    )
-}
+      </div>
+    );
+  };

@@ -4,6 +4,7 @@ import { Container } from "../components/Container";
 import { FormLayout } from "../components/FormLayout";
 import {
   CustomCreateSelect,
+  CustomInput,
   FileInput,
   SelectInput,
   TextInput,
@@ -24,6 +25,9 @@ import { ReadFile } from "../services/ReadFile";
 import { headers } from "../data/constants";
 import { BatchAPI } from "../api/BatchAPI";
 import { Batch } from "../../../server/models/Batch";
+import { ShowStudentsImportDialog } from "../redux/actions/dialogActions";
+import { StudentDataImportDialog } from "../components/Dialog";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 export const CreateBatch = () => {
   const navigator = useNavigate();
@@ -110,17 +114,6 @@ export const CreateBatch = () => {
     }
     BatchAPI.createBatch(BatchData, dispatch);
   };
-
-  const handleFileInputChange = async (file) => {
-    ReadFile(file)
-      .then((students) => {
-        setBatchData((prev) => ({ ...prev, students: students }));
-      })
-      .catch((err) => {
-        dispatch(showToast({ type: "error", text: err.message }));
-      });
-  };
-
   return (
     <Container>
       <Breadcamps
@@ -128,105 +121,99 @@ export const CreateBatch = () => {
       />
       <PageHeading heading={"Create Batch"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={12}>
-        <InputLayout cols={"12"} rows={12}>
-          <SelectInput
-            label={"Institution"}
-            placeholder={"Select Institution"}
-            options={["M.A.M. College of Engineering & Technology"]}
-            required={true}
-            colStart={1}
-            rowStart={1}
-            onChange={(value) =>
-              setBatchData((prev) => ({ ...prev, institution: value }))
-            }
-          />
-          <SelectInput
-            label={"Program"}
-            placeholder={"Select Program"}
-            options={["PG", "UG"]}
-            required={true}
-            colStart={1}
-            rowStart={2}
-            onChange={(value) =>
-              setBatchData((prev) => ({ ...prev, program: value }))
-            }
-          />
-          <SelectInput
-            label={"Department"}
-            placeholder={"Select Department"}
-            options={fetchedData.departments}
-            required={true}
-            colStart={1}
-            rowStart={3}
-            value={BatchData.department}
-            onChange={(value) =>
-              setBatchData((prev) => ({ ...prev, department: value }))
-            }
-          />
+      <FormLayout>
+        <SelectInput
+          label={"Institution"}
+          placeholder={"Select Institution"}
+          options={["M.A.M. College of Engineering & Technology"]}
+          required={true}
+          colStart={1}
+          rowStart={1}
+          onChange={(value) =>
+            setBatchData((prev) => ({ ...prev, institution: value }))
+          }
+        />
+        <SelectInput
+          label={"Program"}
+          placeholder={"Select Program"}
+          options={["PG", "UG"]}
+          required={true}
+          colStart={1}
+          rowStart={2}
+          onChange={(value) =>
+            setBatchData((prev) => ({ ...prev, program: value }))
+          }
+        />
+        <SelectInput
+          label={"Department"}
+          placeholder={"Select Department"}
+          options={fetchedData.departments}
+          required={true}
+          colStart={1}
+          rowStart={3}
+          value={BatchData.department}
+          onChange={(value) =>
+            setBatchData((prev) => ({ ...prev, department: value }))
+          }
+        />
 
-          <SelectInput
-            label={"Regulation"}
-            placeholder={"Select Regulation"}
-            options={fetchedData.regulations}
-            required={true}
-            colStart={1}
-            rowStart={3}
-            onChange={(value) =>
-              setBatchData((prev) => ({ ...prev, regulation: value }))
-            }
-          />
-          <SelectInput
-            label={"Course"}
-            placeholder={"Select Course"}
-            options={fetchedData.courses}
-            required={true}
-            colStart={2}
-            rowStart={1}
-            onChange={(value) =>
-              setBatchData((prev) => ({ ...prev, course_name: value }))
-            }
-          />
-          <TextInput
-            label={"Batch name"}
-            placeholder={"Enter Batch name"}
-            required={true}
-            colStart={2}
-            rowStart={2}
-            onChange={(value) =>
-              setBatchData((prev) => ({ ...prev, batch_name: value }))
-            }
-          />
-          <SelectInput
-            label={"Academic Year"}
-            placeholder={"Select Academic"}
-            options={fetchedData.academic_year}
-            required={true}
-            colStart={2}
-            rowStart={3}
-            onChange={(value) =>
-              setBatchData((prev) => ({ ...prev, academic_year: value }))
-            }
-          />
-          <FileInput
-            bgColor={"blue-500"}
-            textColor={"white"}
-            id={"studentsFile"}
-            accept={".xlsx, .xls"}
-            label={"Upload"}
-            icon={"entypo:upload"}
-            onFileSelect={(file) => handleFileInputChange(file)}
-          />
+        <SelectInput
+          label={"Regulation"}
+          placeholder={"Select Regulation"}
+          options={fetchedData.regulations}
+          required={true}
+          colStart={1}
+          rowStart={3}
+          onChange={(value) =>
+            setBatchData((prev) => ({ ...prev, regulation: value }))
+          }
+        />
+        <SelectInput
+          label={"Course"}
+          placeholder={"Select Course"}
+          options={fetchedData.courses}
+          required={true}
+          colStart={2}
+          rowStart={1}
+          onChange={(value) =>
+            setBatchData((prev) => ({ ...prev, course_name: value }))
+          }
+        />
+        <TextInput
+          label={"Batch name"}
+          placeholder={"Enter Batch name"}
+          required={true}
+          colStart={2}
+          rowStart={2}
+          onChange={(value) =>
+            setBatchData((prev) => ({ ...prev, batch_name: value }))
+          }
+        />
+        <SelectInput
+          label={"Academic Year"}
+          placeholder={"Select Academic"}
+          options={fetchedData.academic_year}
+          required={true}
+          colStart={2}
+          rowStart={3}
+          onChange={(value) =>
+            setBatchData((prev) => ({ ...prev, academic_year: value }))
+          }
+        />
 
-          <SelectionTable
-            headers={headers.studentTableHeader}
-            data={BatchData.students}
-            rowId={selectedId}
-            onSelect={(id) => setSelectedId(id)}
+        <CustomInput label={'Students'}>
+          <IconButton
+            text={'Import Students'}
+            textColor={'white'}
+            bgColor={'bg-blue-500'}
+            icon={'pajamas:import'}
+            onClick={() => dispatch(ShowStudentsImportDialog())}
           />
-        </InputLayout>
+          <p>{BatchData.students.length > 0 ? <span className="text-sm mt-4 text-green-700 bg-green-100 p-1 border flex gap-x-2 border-green-400"><Icon icon={'mdi:success-circle'}/> {BatchData.students.length} students imported successfully</span> : <></>}</p>
+        </CustomInput>
+
+        <StudentDataImportDialog onImport={(students) => setBatchData((prev) => ({ ...prev, students: students }))} students={BatchData.students} />
       </FormLayout>
-
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton
           text={"Create Batch"}
@@ -236,8 +223,8 @@ export const CreateBatch = () => {
           onClick={() => handleBatchCreation()}
         />
         <IconButton
-          text={"Cancel"}
-          icon={"ic:close"}
+          text={"Go Back"}
+          icon={"typcn:arrow-back"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
           onClick={() => navigator("/course/batch")}

@@ -40,26 +40,25 @@ export const Drawer = () => {
       subMenuItems: [
         { id: 11, title: 'All courses', url: '/course/all' },
         { id: 12, title: 'All subjects', url: '/course/subject' },
-        { id: 13, title: 'Subject mapping', url: '/course/subject-mapping' },
-        { id: 14, title: 'Batches', url: '/course/batch' },
       ],
       isExpanded: false,
     },
-    // {
-    //   id: 5,
-    //   title: 'Students',
-    //   icon: 'ph:student-fill',
-    //   subMenuItems: [
-    //     { id: 11, title: 'All students', url: '/student/all' },
-    //   ],
-    //   isExpanded: false,
-    // },
+    {
+      id: 5,
+      title: 'Academic',
+      icon: 'ph:student-fill',
+      subMenuItems: [
+        { id: 13, title: 'Batches', url: '/course/batch' },
+        { id: 14, title: 'Semesters', url: '/course/subject-mapping' },
+      ],
+      isExpanded: false,
+    },
     {
       id: 6,
       title: 'Exam',
       icon: 'ph:exam',
       subMenuItems: [
-        { id: 11, title: 'Mark Allocation', url: '/exam/mark-allocation' },
+        { id: 11, title: 'Exams', url: '/exam/all' },
       ],
       isExpanded: false,
     },

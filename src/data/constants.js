@@ -28,4 +28,12 @@ export const headers = {
         { label: "Subject Type", field: "sub_type" },
         { label: "Subject Regulation", field: "sub_regulation" },
       ],
+      ExamScheduleTableHeader: [
+        { label: "Department", field: "department" },
+        { label: "Batch Name", field: "batch_name" },
+        { label: "Semester", field: "semester_name" },
+        { label: "Exam", field: "exam_name" },
+        { label: "Start Date", field: "start_date" },
+        { label: "End Date", field: "end_date" },
+      ],
 }

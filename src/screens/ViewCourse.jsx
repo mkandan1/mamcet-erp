@@ -26,6 +26,7 @@ export const ViewCourse = () => {
     institution: null,
     program: null,
     duration: null,
+    department: null,
     teaching_mode: null,
     name: null,
     regulation: null,
@@ -55,105 +56,97 @@ export const ViewCourse = () => {
       />
       <PageHeading heading={"View Course"}></PageHeading>
 
-      <FormLayout cols={12} rows={8}>
-        <InputLayout cols={12} rows={12}>
-          <SelectInput
-            label={"Institution"}
-            placeholder={"Select Institution"}
-            options={["M.A.M. College of Engineering & Technology"]}
-            value={courseData.institution}
-            required={true}
-            colStart={1}
-            rowStart={1}
-            disabled={true}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, institution: value }))
-            }
-          />
-          <SelectInput
-            label={"Program"}
-            placeholder={"Select Program"}
-            options={["PG", "UG"]}
-            value={courseData.program}
-            required={true}
-            disabled={true}
-            colStart={1}
-            rowStart={2}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, program: value }))
-            }
-          />
-          <CustomCreateSelect
-            label={"Department"}
-            placeholder={"Select Department"}
-            options={[]}
-            required={true}
-            colStart={1}
-            rowStart={3}
-            disabled={true}
-            value={courseData.department}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, department: value }))
-            }
-          />
-          <SelectInput
-            label={"Duration"}
-            placeholder={"Select Duration"}
-            value={courseData.duration}
-            required={true}
-            disabled={true}
-            options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
-            colStart={1}
-            rowStart={4}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, duration: value }))
-            }
-          />
-          <SelectInput
-            label={"Teaching mode"}
-            placeholder={"Select Teaching mode"}
-            value={courseData.teaching_mode}
-            required={true}
-            disabled={true}
-            options={["Online", "Offline"]}
-            colStart={6}
-            rowStart={1}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, teaching_mode: value }))
-            }
-          />
-          <TextInput
-            label={"Course name"}
-            placeholder={"Enter course name"}
-            value={courseData.name}
-            required={true}
-            disabled={true}
-            colStart={6}
-            rowStart={2}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, name: value }))
-            }
-          />
-          <CustomCreateSelect
-            label={"Regulation"}
-            value={courseData.regulation}
-            options={[]}
-            disabled={true}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, regulation: value }))
-            }
-          />
-          <ButtonLayout cols={12} marginTop={14}>
-            <IconButton
-              text={"Cancel"}
-              icon={"ic:close"}
-              textColor={"gray-500"}
-              bgColor={"bg-white"}
-              onClick={() => navigator("/course/all")}
-            />
-          </ButtonLayout>
-        </InputLayout>
+      <FormLayout>
+        <SelectInput
+          label={"Institution"}
+          placeholder={"Select Institution"}
+          options={["M.A.M. College of Engineering & Technology"]}
+          required={true}
+          value={courseData.institution}
+          colStart={"col-start-1"}
+          rowStart={"row-start-1"}
+          disabled={true}
+        />
+        <SelectInput
+          label={"Program"}
+          placeholder={"Select Program"}
+          options={["PG", "UG"]}
+          required={true}
+          value={courseData.program}
+          colStart={"col-start-1"}
+          rowStart={"row-start-2"}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, program: value }))
+          }
+        />
+        <CustomCreateSelect
+          label={"Department"}
+          placeholder={"Select Department"}
+          required={true}
+          colStart={"col-start-1"}
+          rowStart={"row-start-3"}
+          value={courseData.department}
+          options={[courseData.department]}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, department: value }))
+          }
+        />
+        <SelectInput
+          label={"Duration"}
+          placeholder={"Select Duration"}
+          required={true}
+          value={courseData.duration}
+          options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
+          colStart={"col-start-5"}
+          rowStart={"row-start-1"}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, duration: value }))
+          }
+        />
+        <SelectInput
+          label={"Teaching mode"}
+          placeholder={"Select Teaching mode"}
+          required={true}
+          value={courseData.teaching_mode}
+          options={["Online", "Offline"]}
+          colStart={"col-start-5"}
+          rowStart={"row-start-2"}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, teaching_mode: value }))
+          }
+        />
+        <TextInput
+          label={"Course name"}
+          placeholder={"Enter course name"}
+          required={true}
+          value={courseData.name}
+          colStart={"col-start-5"}
+          rowStart={"row-start-3"}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, name: value }))
+          }
+        />
+        <CustomCreateSelect
+          label={"Regulation"}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, regulation: value }))
+          }
+          required={true}
+          colStart={"col-start-8"}
+          rowStart={"row-start-1"}
+          options={[courseData.regulation]}
+          value={courseData.regulation}
+        />
       </FormLayout>
+      <ButtonLayout cols={12} marginTop={14}>
+        <IconButton
+          text={"Go Back"}
+          icon={"typcn:arrow-back"}
+          textColor={"gray-500"}
+          bgColor={"bg-white"}
+          onClick={() => navigator("/course/all")}
+        />
+      </ButtonLayout>
     </Container>
   );
 };

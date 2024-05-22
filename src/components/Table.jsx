@@ -88,7 +88,7 @@ export const MultiSelectionTable = ({ headers, data, onSelect, selectedRow }) =>
   );
 };
 
-export const MarkAllocationTable = ({ students, semesters, exam, onSelect, selectedRow }) => {
+export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelect, selectedRow }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const [scores, setScores] = useState(exam.scores);
@@ -230,6 +230,347 @@ export const MarkAllocationTable = ({ students, semesters, exam, onSelect, selec
             // Render a row with a single cell if there are no students
             <tr className="w-full">
               <td colSpan={headers.length}> {/* Colspan should span all headers */}
+                <div className="w-full flex justify-center items-center">
+                  <div className="flex gap-2 items-center">
+                    <Icon icon={"fluent:box-dismiss-24-filled"} className="text-lg"></Icon>
+                    No data available
+                  </div>
+                </div>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <div className="flex justify-end mt-4">
+        <div className="btn-group">
+          <button
+            className={`btn ${currentPage === 1 ? 'btn-disabled' : ''}`}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={`btn ${currentPage === index + 1 ? 'btn-active' : ''}`}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            className={`btn ${currentPage === totalPages ? 'btn-disabled' : ''}`}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+      <ButtonLayout>
+        <IconButton text={'Save Changes'} onClick={() => handleSaveChanges()} />
+      </ButtonLayout>
+    </div>
+  );
+};
+
+const gradeOptions = [
+  { label: 'O', value: 10 },
+  { label: 'A+', value: 9 },
+  { label: 'A', value: 8 },
+  { label: 'B+', value: 7 },
+  { label: 'B', value: 6 },
+  { label: 'C', value: 5 },
+  { label: 'RA', value: 0 }
+];
+
+const generatePassingYearOptions = (batchName) => {
+  const [startYear, endYear] = batchName.split(' - ').map(Number);
+  const options = [];
+  for (let year = startYear; year <= endYear; year++) {
+    options.push({ label: `APRIL / MAY ${year}`, value: `APRIL / MAY ${year}` });
+    options.push({ label: `NOV / DEC ${year}`, value: `NOV / DEC ${year}` });
+  }
+  return options;
+};
+
+export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, onSelect, selectedRow }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+  const [scores, setScores] = useState(exam.scores);
+  const [students, setStudents] = useState(studentsProp);
+  const studentsPerPage = 10;
+
+  const totalPages = Math.ceil(students.length / studentsPerPage);
+  const indexOfLastStudent = currentPage * studentsPerPage;
+  const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+  const currentStudents = students.slice(indexOfFirstStudent, indexOfLastStudent);
+
+  const headers = [
+    { label: 'Register Number', field: 'registerNumber' },
+    { label: 'Name', field: 'name' },
+    { label: 'University Marks', field: 'university', subHeaders: [] },
+    { label: `${exam.semester_name} Arrears`, field: 'semester_arrear' },
+    { label: 'History of Arrears', field: 'history_of_arrears' },
+    { label: 'GPA', field: 'gpa' },
+    { label: 'CGPA', field: 'cgpa' },
+  ];
+
+  const subjects = semesters[0].subjects.map(subject => ({
+    sub_id: subject._id,
+    label: subject.sub_short_name,
+    sub_type: subject.sub_type,
+    full_name: subject.sub_name,
+    field: subject.sub_code
+  }));
+
+  headers[2].subHeaders = subjects;
+
+  const passingYearOptions = generatePassingYearOptions(exam.batch_name);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const calculateGPA = (semesterScores) => {
+    if (!Array.isArray(semesterScores) || semesterScores.length === 0) return 0.00;
+    const totalScore = semesterScores.reduce((acc, score) => acc + score, 0);
+    return parseFloat((totalScore / semesterScores.length).toFixed(2));
+  };
+  
+  const calculateCGPA = (semesterStats) => {
+    if (!Array.isArray(semesterStats) || semesterStats.length === 0) return 0.00;
+    const totalGPA = semesterStats.reduce((acc, semester) => acc + semester.gpa, 0);
+    console.log(totalGPA)
+    return parseFloat((totalGPA / semesterStats.length).toFixed(2));
+  };
+  
+  const handleGradeChange = (student, subjectField, value) => {
+    const scoreData = {
+      stud_id: student._id,
+      registerNumber: student.registerNumber,
+      name: student.name,
+      passingYear: '',
+      score: Number(value),
+      examType: 'University',
+      sub_code: subjectField.field,
+      sub_id: subjectField.sub_id
+    };
+  
+    setScores(prevScores => [
+      ...prevScores.filter(score => !(score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id)),
+      scoreData
+    ]);
+  
+    const studentToUpdate = students.find(std => std._id === student._id);
+    if (studentToUpdate) {
+      const updatedStudents = students.map(std => {
+        if (std._id === studentToUpdate._id) {
+          let updatedHistoryOfArrears = [...std.history_of_arrears];
+          let updatedSemesterStats = [...std.semesterStats];
+  
+          if (value == 0) {
+            const hasArrear = studentToUpdate.history_of_arrears.includes(subjectField.sub_id);
+            if (!hasArrear) {
+              updatedHistoryOfArrears = [...std.history_of_arrears, subjectField.sub_id];
+            }
+            const semesterIndex = updatedSemesterStats.findIndex(semester => semester.semester.toString() === exam.semester_name);
+            if (semesterIndex > -1) {
+              updatedSemesterStats[semesterIndex] = {
+                ...updatedSemesterStats[semesterIndex],
+                arrears: [...updatedSemesterStats[semesterIndex].arrears, subjectField.sub_id]
+              };
+            } else {
+              updatedSemesterStats.push({
+                semester: exam.semester_name,
+                cgpa: 0.00,
+                gpa: 0.00,
+                arrears: [subjectField.sub_id]
+              });
+            }
+          } else {
+            updatedHistoryOfArrears = std.history_of_arrears.filter(id => id.toString() !== subjectField.sub_id.toString());
+            const semesterIndex = updatedSemesterStats.findIndex(semester => semester.semester.toString() === exam.semester_name);
+            if (semesterIndex > -1) {
+              updatedSemesterStats[semesterIndex] = {
+                ...updatedSemesterStats[semesterIndex],
+                arrears: updatedSemesterStats[semesterIndex].arrears.filter(id => id.toString() !== subjectField.sub_id.toString())
+              };
+            }
+          }
+  
+          // Update GPA and CGPA
+          const currentSemesterIndex = updatedSemesterStats.findIndex(semester => semester.semester.toString() === exam.semester_name);
+          if (currentSemesterIndex > -1) {
+            const currentSemester = updatedSemesterStats[currentSemesterIndex];
+            const currentSemesterScores = scores
+              .filter(score => score.stud_id === student._id && score.examType === 'University' && score.passingYear)
+              .map(score => score.score);
+  
+            const gpa = calculateGPA(currentSemesterScores);
+            updatedSemesterStats[currentSemesterIndex].gpa = gpa;
+          }
+  
+          const cgpa = calculateCGPA(updatedSemesterStats);
+  
+          return {
+            ...std,
+            history_of_arrears: updatedHistoryOfArrears,
+            semesterStats: updatedSemesterStats.map(semester => ({
+              ...semester,
+              arrears: semester.arrears || []
+            })),
+            cgpa: cgpa
+          };
+        }
+        return std;
+      });
+  
+      setStudents(updatedStudents);
+      console.log(students)
+    }
+  };
+  
+
+  const handlePassingYearChange = (student, subjectField, value) => {
+    const newScores = scores.map(score => {
+      if (score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id) {
+        return { ...score, passingYear: value };
+      }
+      return score;
+    });
+
+    setScores(newScores);
+  };
+
+  const getScoreValue = (studentId, subjectId) => {
+    const score = scores.find(score => score.stud_id === studentId && score.examType === 'University' && score.sub_id === subjectId);
+    return score ? score.score : '';
+  };
+
+  const getPassingYearValue = (studentId, subjectId) => {
+    const score = scores.find(score => score.stud_id === studentId && score.examType === 'University' && score.sub_id === subjectId);
+    return score ? score.passingYear : '';
+  };
+
+  const handleSaveChanges = () => {
+    const data = { ...exam, scores: scores };
+    console.log('Saving scores...', data);
+    API.postRequest('/score/update', data)
+      .then((result) => {
+        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
+      })
+      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
+  };
+
+
+  return (
+    <div className="overflow-x-auto row-span-12 w-full grid-rows-12 col-span-12 mt-4 h-[75vh]">
+      <table className="table table-sm overflow-auto row-span-12 w-full">
+        <thead className="bg-blue-700 border border-base-300 w-full text-white">
+          <tr className="border-b border-base-300">
+            <th></th>
+            {headers.map((header, index) => (
+              <th key={index} colSpan={header.subHeaders ? header.subHeaders.length * 2 : 1} className="font-medium border">{header.label}</th>
+            ))}
+          </tr>
+          <tr className="border-b border-base-300">
+            <th></th>
+            {headers.map((header, index) =>
+              header.subHeaders ? (
+                header.subHeaders.map((subHeader, subIndex) => (
+                  <React.Fragment key={`${index}-${subIndex}`}>
+                    <th className="font-medium border">
+                      <div className="flex items-start gap-x-1">
+                        {subHeader.label}
+                        <Tooltip content={subHeader.full_name}>
+                          <Icon icon={'ep:info-filled'} className="text-[10px] text-black cursor-pointer" />
+                        </Tooltip>
+                      </div>
+                    </th>
+                    <th className="font-medium border">Passing Year</th>
+                  </React.Fragment>
+                ))
+              ) : (
+                <th key={index} className="font-medium"></th>
+              )
+            )}
+          </tr>
+        </thead>
+
+        <tbody className="border border-base-200">
+          {currentStudents.length > 0 ? (
+            currentStudents.map((student, rowIndex) => {
+              return (
+                <tr key={student._id} className={`hover:bg-base-200 cursor-pointer h-10`}>
+                  <td>{indexOfFirstStudent + rowIndex + 1}</td>
+                  <td>{student.registerNumber}</td>
+                  <td>{student.name}</td>
+                  {subjects.map((subject, subIndex) => (
+                    <React.Fragment key={`${subject.field}-${subIndex}`}>
+                      <td>
+                        <select
+                          name={`Grade-${student._id}-${subject.field}`}
+                          className="input input-sm h-full w-full"
+                          value={getScoreValue(student._id, subject.sub_id)}
+                          onChange={(e) => handleGradeChange(student, subject, e.target.value)}
+                        >
+                          <option value="" disabled>Select Grade</option>
+                          {gradeOptions.map((option) => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          name={`PassingYear-${student._id}-${subject.field}`}
+                          className="input input-sm h-full w-full"
+                          value={getPassingYearValue(student._id, subject.sub_id)}
+                          onChange={(e) => handlePassingYearChange(student, subject, e.target.value)}
+                          disabled={getScoreValue(student._id, subject.sub_id) == 0 ? true : false}
+                        >
+                          <option value="" disabled>Select Passing Year</option>
+                          {passingYearOptions.map((option) => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                          ))}
+                        </select>
+                      </td>
+                    </React.Fragment>
+                  ))}
+                  <td>
+                    {
+                      student.semesterStats.length > 0 &&
+                        student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
+                        student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
+                        0
+                    }
+                  </td>
+                  <td>
+                    {
+                      student.semesterStats.length > 0 &&
+                      student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
+                      student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
+                      0
+                    }
+                  </td>
+                  <td>
+                    {
+                    student.semesterStats.length > 0 &&
+                    student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
+                    student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).gpa :
+                    0
+                    }
+                    </td>
+                  <td>
+                    {
+                      student.cgpa
+                    }
+                  </td>
+                </tr>
+              )
+            })
+          ) : (
+            <tr className="w-full">
+              <td colSpan={headers.length * 2} className="">
                 <div className="w-full flex justify-center items-center">
                   <div className="flex gap-2 items-center">
                     <Icon icon={"fluent:box-dismiss-24-filled"} className="text-lg"></Icon>

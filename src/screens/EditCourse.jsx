@@ -130,16 +130,13 @@ export const EditCourse = () => {
       />
       <PageHeading heading={"Edit Course"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={8}>
-        <InputLayout cols={"12"} rows={12}>
+      <FormLayout>
           <SelectInput
             label={"Institution"}
             placeholder={"Select Institution"}
             options={["M.A.M. College of Engineering & Technology"]}
             value={courseData.institution}
             required={true}
-            colStart={1}
-            rowStart={1}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, institution: value }))
             }
@@ -150,8 +147,6 @@ export const EditCourse = () => {
             options={["PG", "UG"]}
             value={courseData.program}
             required={true}
-            colStart={1}
-            rowStart={2}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, program: value }))
             }
@@ -161,8 +156,6 @@ export const EditCourse = () => {
             placeholder={"Select Department"}
             options={fetchedQuery.departments}
             required={true}
-            colStart={1}
-            rowStart={3}
             value={courseData.department}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, department: value }))
@@ -174,8 +167,6 @@ export const EditCourse = () => {
             value={courseData.duration}
             required={true}
             options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
-            colStart={1}
-            rowStart={3}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, duration: value }))
             }
@@ -186,8 +177,6 @@ export const EditCourse = () => {
             value={courseData.teaching_mode}
             required={true}
             options={["Online", "Offline"]}
-            colStart={6}
-            rowStart={1}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, teaching_mode: value }))
             }
@@ -197,8 +186,6 @@ export const EditCourse = () => {
             placeholder={"Enter course name"}
             value={courseData.name}
             required={true}
-            colStart={6}
-            rowStart={2}
             onChange={(value) =>
               setCourseData((prev) => ({ ...prev, name: value }))
             }
@@ -212,7 +199,6 @@ export const EditCourse = () => {
               setCourseData((prev) => ({ ...prev, regulation: value }))
             }
           />
-        </InputLayout>
       </FormLayout>
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton
@@ -230,8 +216,8 @@ export const EditCourse = () => {
           onClick={() => handleCourseDelete()}
         />
         <IconButton
-          text={"Cancel"}
-          icon={"ic:close"}
+          text={"Go Back"}
+          icon={"typcn:arrow-back"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
           onClick={() => navigator("/course/all")}

@@ -38,14 +38,14 @@ export const CreateCourse = () => {
   useEffect(() => {
     Queries.getRegulations()
       .then((snapshot) => {
-        setFetchedData((prev)=> ({...prev, regulations: snapshot.queries.regulation}))
+        setFetchedData((prev) => ({ ...prev, regulations: snapshot.queries.regulation }))
       })
       .catch((err) => {
         console.log(err.message);
       });
-      Queries.getDepartment()
+    Queries.getDepartment()
       .then((snapshot) => {
-        setFetchedData((prev)=> ({...prev, departments: snapshot.queries.department}))
+        setFetchedData((prev) => ({ ...prev, departments: snapshot.queries.department }))
       })
       .catch((err) => {
         console.log(err.message);
@@ -89,86 +89,70 @@ export const CreateCourse = () => {
       />
       <PageHeading heading={"Create Course"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={8}>
-        <InputLayout cols={"12"} rows={12}>
-          <SelectInput
-            label={"Institution"}
-            placeholder={"Select Institution"}
-            options={["M.A.M. College of Engineering & Technology"]}
-            required={true}
-            colStart={1}
-            rowStart={1}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, institution: value }))
-            }
-          />
-          <SelectInput
-            label={"Program"}
-            placeholder={"Select Program"}
-            options={["PG", "UG"]}
-            required={true}
-            colStart={1}
-            rowStart={2}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, program: value }))
-            }
-          />
-          <CustomCreateSelect
-            label={"Department"}
-            placeholder={"Select Department"}
-            options={fetchedData.departments}
-            required={true}
-            colStart={1}
-            rowStart={3}
-            value={courseData.department}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, department: value }))
-            }
-          />
-          <SelectInput
-            label={"Duration"}
-            placeholder={"Select Duration"}
-            required={true}
-            options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
-            colStart={1}
-            rowStart={4}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, duration: value }))
-            }
-          />
-          <SelectInput
-            label={"Teaching mode"}
-            placeholder={"Select Teaching mode"}
-            required={true}
-            options={["Online", "Offline"]}
-            colStart={2}
-            rowStart={1}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, teaching_mode: value }))
-            }
-          />
-          <TextInput
-            label={"Course name"}
-            placeholder={"Enter course name"}
-            required={true}
-            colStart={2}
-            rowStart={2}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, name: value }))
-            }
-          />
-          <CustomCreateSelect
-            label={"Regulation"}
-            options={fetchedData.regulations}
-            onChange={(value) =>
-              setCourseData((prev) => ({ ...prev, regulation: value }))
-            }
-            required={true}
-            value={courseData.regulation}
-            colStart={2}
-            rowStart={3}
-          />
-        </InputLayout>
+      <FormLayout>
+        <SelectInput
+          label={"Institution"}
+          placeholder={"Select Institution"}
+          options={["M.A.M. College of Engineering & Technology"]}
+          required={true}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, institution: value }))
+          }
+        />
+        <SelectInput
+          label={"Program"}
+          placeholder={"Select Program"}
+          options={["PG", "UG"]}
+          required={true}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, program: value }))
+          }
+        />
+        <CustomCreateSelect
+          label={"Department"}
+          placeholder={"Select Department"}
+          options={fetchedData.departments}
+          required={true}
+          value={courseData.department}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, department: value }))
+          }
+        />
+        <SelectInput
+          label={"Duration"}
+          placeholder={"Select Duration"}
+          required={true}
+          options={["1 YEAR", "2 YEARS", "3 YEARS", "4 YEARS", "5 YEARS"]}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, duration: value }))
+          }
+        />
+        <SelectInput
+          label={"Teaching mode"}
+          placeholder={"Select Teaching mode"}
+          required={true}
+          options={["Online", "Offline"]}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, teaching_mode: value }))
+          }
+        />
+        <TextInput
+          label={"Course name"}
+          placeholder={"Enter course name"}
+          required={true}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, name: value }))
+          }
+        />
+        <CustomCreateSelect
+          label={"Regulation"}
+          options={fetchedData.regulations}
+          onChange={(value) =>
+            setCourseData((prev) => ({ ...prev, regulation: value }))
+          }
+          required={true}
+          value={courseData.regulation}
+        />
       </FormLayout>
 
       <ButtonLayout cols={12} marginTop={14}>
@@ -180,8 +164,8 @@ export const CreateCourse = () => {
           onClick={() => handleCourseCreation()}
         />
         <IconButton
-          text={"Cancel"}
-          icon={"ic:close"}
+          text={"Go Back"}
+          icon={"typcn:arrow-back"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
           onClick={() => navigator("/course/all")}

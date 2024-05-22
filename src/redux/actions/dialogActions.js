@@ -13,3 +13,11 @@ export const ShowMarkAllocationDialog = () => ({
 export const HideMarkAllocationDialog = () => ({
     type: 'HIDE_MA',
 });
+
+export const ShowStudentsImportDialog = () => ({
+    type: 'SHOW_S',
+});
+
+export const HideStudentsImportDialog = () => ({
+    type: 'HIDE_S',
+});

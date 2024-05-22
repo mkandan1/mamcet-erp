@@ -15,28 +15,44 @@ export const TextInput = ({
   inputColSize,
 }) => {
   return (
-    <>
-      <div
-        className={`col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
-          rowStart ? rowStart : ""
-        } col-start-${colStart ? colStart : ""}`}
-      >
-        <Label label={label} required={required} />
-        <input
-          type={type}
-          value={value}
-          disabled={disabled ? disabled : false}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder ? placeholder : ''}
-          className={`bg-white border-[1px] col-span-${
-            inputColSize ? inputColSize : "2"
-          } border-gray-300 rounded-md pl-3 h-[42px] outline-blue-700 text-gray-500 font-manrope w-full text-sm`}
-        ></input>
-      </div>
-    </>
+    <div className={`row-span-1 col-span-12 xl:col-span-4 grid grid-cols-12 xl:${rowStart ? rowStart : ""} xl:${colStart ? colStart : ""}`}>
+      <Label label={label} required={required} />
+      <input
+        type={type}
+        value={value}
+        disabled={disabled ? disabled : false}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder ? placeholder : ''}
+        className={`bg-white border-[1px] col-span-${inputColSize ? inputColSize : "3"} border-gray-300 rounded-md pl-3 h-[42px] outline-blue-700 text-gray-500 font-manrope w-full text-sm`}
+      />
+    </div>
   );
 };
 
+export const CustomInput = ({
+  type,
+  value,
+  onChange,
+  label,
+  rowStart,
+  colStart,
+  disabled,
+  required,
+  placeholder,
+  inputColSize,
+  children
+}) => {
+  return (
+    <div className={`row-span-1 col-span-12 xl:col-span-4 grid grid-cols-12 xl:${rowStart ? rowStart : ""} xl:${colStart ? colStart : ""}`}>
+      <Label label={label} required={required} />
+      <div className="col-span-3">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// SelectInput.js
 export const SelectInput = ({
   value,
   onChange,
@@ -49,29 +65,23 @@ export const SelectInput = ({
   colStart,
 }) => {
   return (
-    <>
-      <div
-        className={`row-span-1 col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
-          rowStart ? rowStart : ""
-        } col-start-${colStart ? colStart : ""}`}
+    <div className={`row-span-1 col-span-12 xl:col-span-4 grid grid-cols-12 ${rowStart ? rowStart : ""} ${colStart ? colStart : ""}`}>
+      <Label label={label} required={required} />
+      <select
+        disabled={disabled ? disabled : false}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`bg-white border-[1px] col-span-3 border-gray-300 outline-none rounded-md h-[42px] text-gray-500 font-manrope w-full text-sm`}
       >
-        <Label label={label} required={required} />
-        <select
-          disabled={disabled ? disabled : false}
-          value={value}
-          onChange={(e) => onChange(e.target.value)} // Ensure you pass the selected value to the parent component
-          className={`bg-white border-[1px] col-span-2 border-gray-300 outline-none rounded-md h-[42px] text-gray-500 font-manrope w-full text-sm`}
-        >
-          <option value="">{placeholder}</option>
-          {options &&
-            options.map((option, i) => (
-              <option key={i} value={option}>
-                {option}
-              </option>
-            ))}
-        </select>
-      </div>
-    </>
+        <option value="">{placeholder}</option>
+        {options &&
+          options.map((option, i) => (
+            <option key={i} value={option}>
+              {option}
+            </option>
+          ))}
+      </select>
+    </div>
   );
 };
 
@@ -86,15 +96,15 @@ export const ToggleInput = ({
 }) => {
   return (
     <div
-      className={`row-span-1 col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
-        rowStart ? rowStart : ""
-      } col-start-${colStart ? colStart : ""}`}
+      className={`col-span-12 xl:col-span-4 grid grid-cols-12 lg:${rowStart ? rowStart : ""
+        } lg:${colStart ? colStart : ""}`}
     >
       <Label label={label} required={required} />
       <input
         type="checkbox"
         checked={checked}
-        onChange={(e)=> onChange(e.target.checked)}
+        className="col-span-3"
+        onChange={(e) => onChange(e.target.checked)}
         disabled={disabled ? disabled : false}
       />
     </div>
@@ -160,12 +170,9 @@ export const CustomCreateSelect = ({
   }));
   return (
     <div
-      className={`row-span-1 col-span-5 grid grid-rows-1 grid-cols-5 row-start-${
-        rowStart ? rowStart : ""
-      } col-start-${colStart ? colStart : ""}`}
-    >
+      className={`col-span-12 xl:col-span-4 grid grid-cols-12 lg:${rowStart ? rowStart : ""} lg:${colStart ? colStart : ""}`}>
       <Label required={required} label={label} />
-      <div className="col-span-2">
+      <div className="col-span-3">
         <CreateSelect
           options={rawOptions}
           placeholder={placeholder}
@@ -183,27 +190,31 @@ export const FileInput = ({ id, accept, label, bgColor, textColor, text, icon, o
   const fileInputRef = useRef(null);
 
   const handleFileSelect = () => {
-      // Access the selected file using the ref
-      const selectedFile = fileInputRef.current.files[0];
+    // Access the selected file using the ref
+    const selectedFile = fileInputRef.current.files[0];
 
-      // Pass the selected file to the parent component or perform other actions
-      onFileSelect(selectedFile);
+    // Pass the selected file to the parent component or perform other actions
+    onFileSelect(selectedFile);
   };
 
   return (
-      <>
-          <label htmlFor={id} className={`flex border rounded-md items-center gap-2 pl-4 text-xs outline font-manrope font-normal tracking-tight w-auto text-${textColor} px-2 bg-${bgColor} cursor-pointer`}>
-              {icon && (<Icon icon={icon} className={`text-${textColor} text-md`} />)}
-              {label}
-          </label>
-          <input type='file' onChange={handleFileSelect} accept={accept} className='hidden' id={id} ref={fileInputRef} />
-      </>
+    <>
+      <div
+        className={`row-span-1 col-span-12 xl:col-span-5 grid grid-cols-12`}>
+        <label htmlFor={id} className={`flex border rounded-md items-center gap-2 col-span-2 col-start-11 pl-4 py-3 text-xs outline font-manrope font-normal tracking-tight w-auto text-${textColor} px-2 bg-${bgColor} cursor-pointer`}>
+          {icon && (<Icon icon={icon} className={`text-${textColor} text-md`} />)}
+          {label}
+        </label>
+        <input type='file' onChange={handleFileSelect} accept={accept} className='hidden' id={id} ref={fileInputRef} />
+      </div>
+    </>
+
   );
 };
 
 const Label = ({ label, required }) => {
   return (
-    <label className="text-gray-500 col-span-2 font-medium text-base text-start">
+    <label className="text-gray-500 col-span-3 font-medium text-base text-end mr-20">
       {label} {required ? <span className="text-red-500">*</span> : <></>}
     </label>
   );
