@@ -22,6 +22,7 @@ export const CreateSubject = () => {
   });
   const [subjectData, setSubjectData] = useState({
     sub_name: null,
+    sub_short_name: null,
     sub_code: null,
     sub_credits: null,
     sub_type: null,
@@ -83,8 +84,8 @@ export const CreateSubject = () => {
       />
       <PageHeading heading={"Create Course"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={3}>
-        <InputLayout cols={"12"} rows={"3"}>
+      <FormLayout cols={"12"} rows={4}>
+        <InputLayout cols={"12"} rows={4}>
           <TextInput
             label={"Subject name"}
             placeholder={"Enter Subject Name"}
@@ -96,11 +97,21 @@ export const CreateSubject = () => {
             }
           />
           <TextInput
+            label={"Subject Short Name"}
+            placeholder={"Enter Subject Short Name"}
+            required={true}
+            colStart={1}
+            rowStart={2}
+            onChange={(value) =>
+              setSubjectData((prev) => ({ ...prev, sub_short_name: value }))
+            }
+          />
+          <TextInput
             label={"Subject code"}
             placeholder={"Enter Subject Code"}
             required={true}
             colStart={1}
-            rowStart={2}
+            rowStart={3}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_code: value }))
             }
@@ -109,8 +120,8 @@ export const CreateSubject = () => {
             label={"Subject credits"}
             placeholder={"Enter Subject Credits"}
             required={true}
-            colStart={1}
-            rowStart={3}
+            colStart={2}
+            rowStart={1}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_credits: value }))
             }
@@ -121,7 +132,7 @@ export const CreateSubject = () => {
             options={["Theory", "Lab"]}
             required={true}
             colStart={2}
-            rowStart={1}
+            rowStart={2}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_type: value }))
             }
@@ -131,7 +142,7 @@ export const CreateSubject = () => {
             placeholder={'Select regulation'}
             required={true}
             colStart={2}
-            rowStart={2}
+            rowStart={3}
             options={fetchedQuery.regulations}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_regulation: value }))
@@ -142,7 +153,7 @@ export const CreateSubject = () => {
             checked={subjectData.sub_mandatory}
             required={true}
             colStart={2}
-            rowStart={3}
+            rowStart={4}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_mandatory: value }))
             }
