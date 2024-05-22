@@ -82,10 +82,9 @@ export const CreateSubject = () => {
           "Create subject": "",
         }}
       />
-      <PageHeading heading={"Create Course"}></PageHeading>
+      <PageHeading heading={"Create Subject"}></PageHeading>
 
       <FormLayout cols={"12"} rows={4}>
-        <InputLayout cols={"12"} rows={4}>
           <TextInput
             label={"Subject name"}
             placeholder={"Enter Subject Name"}
@@ -158,7 +157,6 @@ export const CreateSubject = () => {
               setSubjectData((prev) => ({ ...prev, sub_mandatory: value }))
             }
           />
-        </InputLayout>
       </FormLayout>
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton
@@ -169,8 +167,8 @@ export const CreateSubject = () => {
           onClick={() => handleSubjectCreation()}
         />
         <IconButton
-          text={"Cancel"}
-          icon={"ic:close"}
+          text={"Go Back"}
+          icon={"typcn:arrow-back"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
           onClick={() => navigator("/course/subject")}

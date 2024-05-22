@@ -9,17 +9,18 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { headers } from "../data/constants";
 
-export const Batches = () => {
+export const Exams = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [Batches, setBatches] = useState([]);
+  const [Exams, setExams] = useState([]);
   const [selectedRowId, setSelectedRowId] = useState(null);
 
   useEffect(() => {
-    API.getRequest("/batch")
+    API.getRequest("/exam/all-exam-schedules")
       .then((snapshot) => {
         if (snapshot.success == true) {
-          setBatches(snapshot.batches);
+          setExams(snapshot.exams);
+          console.log(snapshot)
         }
       })
       .catch((err) => {
@@ -41,48 +42,48 @@ export const Batches = () => {
   
   const handleBatchEdit = () => {
     if(selectedRowId != null){
-      navigate('/course/batch/edit/'+selectedRowId)
+      navigate('/exam/edit/'+selectedRowId)
     }
   }
 
   const handleBatchView = () => {
     if(selectedRowId != null){
-      navigate('/course/batch/'+selectedRowId)
+      navigate('/exam/'+selectedRowId)
     }
   }
   return (
     <Container>
-      <Breadcamps paths={{ Home: "/", "Batch List": "/batch/batch" }} />
-      <PageHeading heading={"Batch List"}>
+      <Breadcamps paths={{ Home: "/", "Exams": "/exam" }} />
+      <PageHeading heading={"Exams List"}>
         {/* TODO: Add button components for create, view, edit */}
         {/* Use IconButton component in component folder*/}
         <IconButton
-          text={"New Batch"}
+          text={"New Schedule"}
           icon={"ic:round-plus"}
           bgColor={"bg-blue-500"}
           textColor={"white"}
-          onClick={() => navigate("/course/batch/create")}
+          onClick={() => navigate("/exam/schedule-exam")}
         />
-        <IconButton
-          text={"View Batch"}
+        {/* <IconButton
+          text={"View Schedule"}
           icon={"ep:view"}
           bgColor={"bg-blue-500"}
           textColor={"white"}
           onClick={() => handleBatchView()}
-        />
+        /> */}
         <IconButton
-          text={"Edit Batch"}
+          text={"Edit Schedule"}
           icon={"fa-regular:edit"}
           bgColor={"bg-blue-500"}
           textColor={"white"}
           onClick={() => handleBatchEdit()}
         />
       </PageHeading>
-      {/* TODO: Add table for listing all batches */}
+      {/* TODO: Add table for listing all Exams */}
       {/* Use Table component in component folder */}
       <SelectionTable
-        headers={headers.batchesTableHeader}
-        data={Batches}
+        headers={headers.ExamScheduleTableHeader}
+        data={Exams}
         onSelect={(id) => handleSelection(id)}
         rowId={selectedRowId}
       ></SelectionTable>

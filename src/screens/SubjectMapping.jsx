@@ -241,8 +241,8 @@ export const SubjectMapping = () => {
                     onClick={() => handleSemesterChanges()}
                 />
                 <IconButton
-                    text={"Cancel"}
-                    icon={"ic:close"}
+                    text={"Go Back"}
+                    icon={"typcn:arrow-back"}
                     textColor={"gray-500"}
                     bgColor={"bg-white"}
                     onClick={() => navigator("/course/all")}

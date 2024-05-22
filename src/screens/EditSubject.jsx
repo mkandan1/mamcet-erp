@@ -40,7 +40,7 @@ export const EditSubject = () => {
   useEffect(() => {
     Queries.getRegulations()
       .then((snapshot) => {
-        setFetchedQuery((prev)=> ({...prev, regulations: snapshot.queries.regulation}))
+        setFetchedQuery((prev) => ({ ...prev, regulations: snapshot.queries.regulation }))
       })
       .catch((err) => {
         console.log(err.message);
@@ -123,77 +123,63 @@ export const EditSubject = () => {
       />
       <PageHeading heading={"Edit Subject"}></PageHeading>
 
-      <FormLayout cols={"12"} rows={3}>
-        <InputLayout cols={"12"} rows={"3"}>
-          <TextInput
-            label={"Subject name"}
-            placeholder={"Enter Subject Name"}
-            required={true}
-            value={subjectData.sub_name}
-            colStart={1}
-            rowStart={1}
-            onChange={(value) =>
-              setSubjectData((prev) => ({ ...prev, sub_name: value }))
-            }
-          />
-          <TextInput
-            label={"Subject code"}
-            placeholder={"Enter Subject Code"}
-            required={true}
-            value={subjectData.sub_code}
-            colStart={1}
-            rowStart={2}
-            onChange={(value) =>
-              setSubjectData((prev) => ({ ...prev, sub_code: value }))
-            }
-          />
-          <TextInput
-            label={"Subject credits"}
-            placeholder={"Enter Subject Credits"}
-            required={true}
-            value={subjectData.sub_credits}
-            colStart={1}
-            rowStart={3}
-            onChange={(value) =>
-              setSubjectData((prev) => ({ ...prev, sub_credits: value }))
-            }
-          />
-          <SelectInput
-            label={"Subject Type"}
-            placeholder={"Select Subject Type"}
-            options={["Theory", "Lab"]}
-            required={true}
-            value={subjectData.sub_type}
-            colStart={2}
-            rowStart={1}
-            onChange={(value) =>
-              setSubjectData((prev) => ({ ...prev, sub_type: value }))
-            }
-          />
-          <SelectInput
-            label={"Regulation"}
-            placeholder={"Select regulation"}
-            required={true}
-            value={subjectData.sub_regulation}
-            options={fetchedQuery.regulations}
-            colStart={2}
-            rowStart={2}
-            onChange={(value) =>
-              setSubjectData((prev) => ({ ...prev, sub_regulation: value }))
-            }
-          />
-          <ToggleInput
-            label={"Mandatory course"}
-            checked={subjectData.sub_mandatory}
-            required={true}
-            value={subjectData.sub_mandatory}
-            colStart={2}
-            rowStart={3}
-            onChange={(value) =>
-              setSubjectData((prev) => ({ ...prev, sub_mandatory: value }))
-            }
-          />
-        </InputLayout>
+      <FormLayout>
+        <TextInput
+          label={"Subject name"}
+          placeholder={"Enter Subject Name"}
+          required={true}
+          value={subjectData.sub_name}
+          onChange={(value) =>
+            setSubjectData((prev) => ({ ...prev, sub_name: value }))
+          }
+        />
+        <TextInput
+          label={"Subject code"}
+          placeholder={"Enter Subject Code"}
+          required={true}
+          value={subjectData.sub_code}
+          onChange={(value) =>
+            setSubjectData((prev) => ({ ...prev, sub_code: value }))
+          }
+        />
+        <TextInput
+          label={"Subject credits"}
+          placeholder={"Enter Subject Credits"}
+          required={true}
+          value={subjectData.sub_credits}
+          onChange={(value) =>
+            setSubjectData((prev) => ({ ...prev, sub_credits: value }))
+          }
+        />
+        <SelectInput
+          label={"Subject Type"}
+          placeholder={"Select Subject Type"}
+          options={["Theory", "Lab"]}
+          required={true}
+          value={subjectData.sub_type}
+          onChange={(value) =>
+            setSubjectData((prev) => ({ ...prev, sub_type: value }))
+          }
+        />
+        <SelectInput
+          label={"Regulation"}
+          placeholder={"Select regulation"}
+          required={true}
+          value={subjectData.sub_regulation}
+          options={fetchedQuery.regulations}
+          onChange={(value) =>
+            setSubjectData((prev) => ({ ...prev, sub_regulation: value }))
+          }
+        />
+        <ToggleInput
+          label={"Mandatory course"}
+          checked={subjectData.sub_mandatory}
+          required={true}
+          value={subjectData.sub_mandatory}
+          onChange={(value) =>
+            setSubjectData((prev) => ({ ...prev, sub_mandatory: value }))
+          }
+        />
       </FormLayout>
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton
@@ -211,8 +197,8 @@ export const EditSubject = () => {
           onClick={() => handleSubjectDelete()}
         />
         <IconButton
-          text={"Cancel"}
-          icon={"ic:close"}
+          text={"Go Back"}
+          icon={"typcn:arrow-back"}
           textColor={"gray-500"}
           bgColor={"bg-white"}
           onClick={() => navigator("/course/subject")}

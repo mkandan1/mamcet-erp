@@ -1,13 +1,6 @@
-import { IconButton } from "./Button";
-import { Modal, Tooltip } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
-import { HideMarkAllocationDialog, HideSubjectImportDialog } from "../redux/actions/dialogActions";
-import { MarkAllocationTable, MultiSelectionTable } from "./Table";
-import { headers } from "../data/constants";
-import { useEffect, useState } from "react";
-import { API } from "../api/API";
-import { showToast } from "../redux/actions/toastActions";
-import { TextInput } from "./Input";
+import { HideMarkAllocationDialog } from "../redux/actions/dialogActions";
+import { InternalMarkAllocationTable, UniversityMarkAllocationTable } from "./Table";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 export const MarkAllocationDialog = ({exam, students, semesters}) => {
@@ -32,7 +25,7 @@ export const MarkAllocationDialog = ({exam, students, semesters}) => {
                     <Card heading={'Semester'} text={exam.semester_name} />
                     <Card heading={'Exam'} text={exam.exam_name} />
                 </div>
-                <MarkAllocationTable students={students} semesters={semesters} exam={exam}/>
+                {exam.exam_name == 'Internal Exams' ? <InternalMarkAllocationTable students={students} semesters={semesters} exam={exam}/> : <UniversityMarkAllocationTable studentsProp={students} semesters={semesters} exam={exam}/>}
             </div>
         </div>
     )

@@ -21,6 +21,9 @@ import { EditBatch } from "./screens/EditBatch";
 import { ViewBatch } from "./screens/ViewBatch";
 import { SubjectMapping } from "./screens/SubjectMapping";
 import { MarkAllocation } from "./screens/MarkAllocation";
+import { CreateExamSchedule } from "./screens/CreateExamSchedule";
+import { Exams } from "./screens/Exams";
+import { EditExamSchedule } from "./screens/EditExamSchedule";
 
 function App() {
   const dispatch = useDispatch()
@@ -53,6 +56,9 @@ function App() {
               <Route path="/course/batch/edit/:id" element={<EditBatch/>} />
               <Route path="/course/batch/:id" element={<ViewBatch/>} />
               <Route path="/course/subject-mapping" element={<SubjectMapping/>} />
+              <Route path="/exam/all" element={<Exams/>} />
+              <Route path="/exam/schedule-exam" element={<CreateExamSchedule/>} />
+              <Route path="/exam/edit/:id" element={<EditExamSchedule/>} />
               <Route path="/exam/mark-allocation" element={<MarkAllocation/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />

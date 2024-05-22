@@ -54,10 +54,9 @@ export const ViewSubject = () => {
       <Breadcamps
         paths={{ Home: "/", Courses: "/course/all", "View course": "" }}
       />
-      <PageHeading heading={"View Course"}></PageHeading>
+      <PageHeading heading={"View Subject"}></PageHeading>
 
       <FormLayout cols={"12"} rows={3}>
-        <InputLayout cols={"12"} rows={"3"}>
           <TextInput
             label={"Subject name"}
             placeholder={"Enter Subject Name"}
@@ -132,7 +131,6 @@ export const ViewSubject = () => {
               setSubjectData((prev) => ({ ...prev, sub_mandatory: value }))
             }
           />
-        </InputLayout>
       </FormLayout>
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton

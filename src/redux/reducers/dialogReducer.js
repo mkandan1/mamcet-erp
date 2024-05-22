@@ -40,3 +40,25 @@ export const MarkAllocationDialogReducer = (state = initialState2, action) => {
             return state;
     }
 }
+
+const initialState3 = {
+    show: false,
+}
+
+
+export const ImportStudentsDataReducer = (state = initialState3, action) => {
+    switch (action.type){
+        case 'SHOW_S':
+            return {
+                ...state,
+                show: true
+            };
+        case 'HIDE_S':
+            return {
+                ...state,
+                show: false
+            }
+        default:
+            return state;
+    }
+}
