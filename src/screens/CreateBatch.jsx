@@ -24,7 +24,6 @@ import { SelectionTable } from "../components/Table";
 import { ReadFile } from "../services/ReadFile";
 import { headers } from "../data/constants";
 import { BatchAPI } from "../api/BatchAPI";
-import { Batch } from "../../../server/models/Batch";
 import { ShowStudentsImportDialog } from "../redux/actions/dialogActions";
 import { StudentDataImportDialog } from "../components/Dialog";
 import { Icon } from "@iconify/react/dist/iconify.js";
