@@ -143,6 +143,14 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
       ...prevScores.filter(score => !(score.stud_id === student._id && score.examType === examType && score.sub_id === subjectField.sub_id)),
       scoreData
     ]);
+
+    const data = { ...exam, scores: scoreData }
+    console.log('Saving scores...');
+    API.postRequest('/score/update', data)
+      .then((result) => {
+        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }))
+      })
+      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })))
   };
 
   const getScoreValue = (studentId, examType, subjectId) => {
@@ -151,13 +159,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
   };
 
   const handleSaveChanges = () => {
-    const data = { ...exam, scores: scores }
-    console.log('Saving scores...');
-    API.postRequest('/score/update', data)
-      .then((result) => {
-        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }))
-      })
-      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })))
+    
   };
 
   return (
@@ -331,19 +333,6 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
     setCurrentPage(pageNumber);
   };
 
-  const calculateGPA = (semesterScores) => {
-    if (!Array.isArray(semesterScores) || semesterScores.length === 0) return 0.00;
-    const totalScore = semesterScores.reduce((acc, score) => acc + score, 0);
-    return parseFloat((totalScore / semesterScores.length).toFixed(2));
-  };
-  
-  const calculateCGPA = (semesterStats) => {
-    if (!Array.isArray(semesterStats) || semesterStats.length === 0) return 0.00;
-    const totalGPA = semesterStats.reduce((acc, semester) => acc + semester.gpa, 0);
-    console.log(totalGPA)
-    return parseFloat((totalGPA / semesterStats.length).toFixed(2));
-  };
-  
   const handleGradeChange = (student, subjectField, value) => {
     const scoreData = {
       stud_id: student._id,
@@ -360,74 +349,14 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
       ...prevScores.filter(score => !(score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id)),
       scoreData
     ]);
-  
-    const studentToUpdate = students.find(std => std._id === student._id);
-    if (studentToUpdate) {
-      const updatedStudents = students.map(std => {
-        if (std._id === studentToUpdate._id) {
-          let updatedHistoryOfArrears = [...std.history_of_arrears];
-          let updatedSemesterStats = [...std.semesterStats];
-  
-          if (value == 0) {
-            const hasArrear = studentToUpdate.history_of_arrears.includes(subjectField.sub_id);
-            if (!hasArrear) {
-              updatedHistoryOfArrears = [...std.history_of_arrears, subjectField.sub_id];
-            }
-            const semesterIndex = updatedSemesterStats.findIndex(semester => semester.semester.toString() === exam.semester_name);
-            if (semesterIndex > -1) {
-              updatedSemesterStats[semesterIndex] = {
-                ...updatedSemesterStats[semesterIndex],
-                arrears: [...updatedSemesterStats[semesterIndex].arrears, subjectField.sub_id]
-              };
-            } else {
-              updatedSemesterStats.push({
-                semester: exam.semester_name,
-                cgpa: 0.00,
-                gpa: 0.00,
-                arrears: [subjectField.sub_id]
-              });
-            }
-          } else {
-            updatedHistoryOfArrears = std.history_of_arrears.filter(id => id.toString() !== subjectField.sub_id.toString());
-            const semesterIndex = updatedSemesterStats.findIndex(semester => semester.semester.toString() === exam.semester_name);
-            if (semesterIndex > -1) {
-              updatedSemesterStats[semesterIndex] = {
-                ...updatedSemesterStats[semesterIndex],
-                arrears: updatedSemesterStats[semesterIndex].arrears.filter(id => id.toString() !== subjectField.sub_id.toString())
-              };
-            }
-          }
-  
-          // Update GPA and CGPA
-          const currentSemesterIndex = updatedSemesterStats.findIndex(semester => semester.semester.toString() === exam.semester_name);
-          if (currentSemesterIndex > -1) {
-            const currentSemester = updatedSemesterStats[currentSemesterIndex];
-            const currentSemesterScores = scores
-              .filter(score => score.stud_id === student._id && score.examType === 'University' && score.passingYear)
-              .map(score => score.score);
-  
-            const gpa = calculateGPA(currentSemesterScores);
-            updatedSemesterStats[currentSemesterIndex].gpa = gpa;
-          }
-  
-          const cgpa = calculateCGPA(updatedSemesterStats);
-  
-          return {
-            ...std,
-            history_of_arrears: updatedHistoryOfArrears,
-            semesterStats: updatedSemesterStats.map(semester => ({
-              ...semester,
-              arrears: semester.arrears || []
-            })),
-            cgpa: cgpa
-          };
-        }
-        return std;
-      });
-  
-      setStudents(updatedStudents);
-      console.log(students)
-    }
+
+    const data = { ...exam, scores: scoreData };
+    console.log('Saving scores...', data);
+    API.postRequest('/score/update', data)
+      .then((result) => {
+        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
+      })
+      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
   };
   
 
@@ -439,7 +368,12 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
       return score;
     });
 
-    setScores(newScores);
+    const updatedScore = newScores.find(score => score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id);
+    API.postRequest('/score/update', {...exam, scores: updatedScore})
+      .then((result) => {
+        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
+      })
+      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
   };
 
   const getScoreValue = (studentId, subjectId) => {

@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 export const TopNavBar = () => {
   return (
-    <div className="navbar fixed bg-blue-800">
+    <div className="navbar fixed bg-blue-800 z-10">
       <div className="navbar-start">
-        <a className="text-white text-base lx:text-lg">MAMCET</a>
+        <a className="text-white text-base lx:text-lg">M.A.M. COLLEGE OF ENGINEERING & TECHNOLOGY</a>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
