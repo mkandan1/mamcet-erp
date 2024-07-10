@@ -159,7 +159,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
   };
 
   const handleSaveChanges = () => {
-    
+
   };
 
   return (
@@ -344,13 +344,13 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
       sub_code: subjectField.field,
       sub_id: subjectField.sub_id
     };
-  
+
     setScores(prevScores => [
       ...prevScores.filter(score => !(score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id)),
       scoreData
     ]);
 
-    const data = { ...exam, scores: scoreData };
+    const data = { ...exam, score: scoreData };
     console.log('Saving scores...', data);
     API.postRequest('/score/update', data)
       .then((result) => {
@@ -358,23 +358,26 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
       })
       .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
   };
-  
 
-  const handlePassingYearChange = (student, subjectField, value) => {
-    const newScores = scores.map(score => {
-      if (score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id) {
-        return { ...score, passingYear: value };
-      }
-      return score;
-    });
 
-    const updatedScore = newScores.find(score => score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id);
-    API.postRequest('/score/update', {...exam, scores: updatedScore})
-      .then((result) => {
-        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
-      })
-      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
-  };
+const handlePassingYearChange = (student, subjectField, value) => {
+  // Update the scores state to reflect the new passing year
+  const newScores = scores.map(score => {
+    if (score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id) {
+      return { ...score, passingYear: value };
+    }
+    return score;
+  });
+
+  setScores(newScores); // Update the state with the new scores
+
+  const updatedScore = newScores.find(score => score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id);
+  API.postRequest('/score/update', { ...exam, scores: updatedScore }) // Updated scores instead of a single updatedScore
+    .then((result) => {
+      dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
+    })
+    .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
+};
 
   const getScoreValue = (studentId, subjectId) => {
     const score = scores.find(score => score.stud_id === studentId && score.examType === 'University' && score.sub_id === subjectId);
@@ -444,7 +447,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
                       <td>
                         <select
                           name={`Grade-${student._id}-${subject.field}`}
-                          className="input input-sm h-full w-full"
+                          className="input input-xs h-full w-full"
                           value={getScoreValue(student._id, subject.sub_id)}
                           onChange={(e) => handleGradeChange(student, subject, e.target.value)}
                         >
@@ -457,7 +460,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
                       <td>
                         <select
                           name={`PassingYear-${student._id}-${subject.field}`}
-                          className="input input-sm h-full w-full"
+                          className="input input-xs h-full w-full"
                           value={getPassingYearValue(student._id, subject.sub_id)}
                           onChange={(e) => handlePassingYearChange(student, subject, e.target.value)}
                           disabled={getScoreValue(student._id, subject.sub_id) == 0 ? true : false}
@@ -472,28 +475,28 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
                   ))}
                   <td>
                     {
-                      student.semesterStats.length > 0 &&
-                        student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
-                        student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
+                      // student.semesterStats.length > 0 &&
+                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
+                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
                         0
                     }
                   </td>
                   <td>
                     {
-                      student.semesterStats.length > 0 &&
-                      student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
-                      student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
-                      0
+                      // student.semesterStats.length > 0 &&
+                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
+                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
+                        0
                     }
                   </td>
                   <td>
                     {
-                    student.semesterStats.length > 0 &&
-                    student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
-                    student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).gpa :
-                    0
+                      // student.semesterStats.length > 0 &&
+                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
+                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).gpa :
+                        0
                     }
-                    </td>
+                  </td>
                   <td>
                     {
                       student.cgpa
