@@ -307,6 +307,10 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
   const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
   const currentStudents = students.slice(indexOfFirstStudent, indexOfLastStudent);
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const headers = [
     { label: 'Register Number', field: 'registerNumber' },
     { label: 'Name', field: 'name' },
@@ -329,8 +333,14 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
 
   const passingYearOptions = generatePassingYearOptions(exam.batch_name);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const getScoreValue = (studentId, subjectId) => {
+    const score = scores.find(score => score.stud_id === studentId && score.examType === 'University' && score.sub_id === subjectId);
+    return score ? score.score : '';
+  };
+
+  const getPassingYearValue = (studentId, subjectId) => {
+    const score = scores.find(score => score.stud_id === studentId && score.examType === 'University' && score.sub_id === subjectId);
+    return score ? score.passingYear : '';
   };
 
   const handleGradeChange = (student, subjectField, value) => {
@@ -344,79 +354,59 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
       sub_code: subjectField.field,
       sub_id: subjectField.sub_id
     };
-
+    const data = { ...exam, scoreData };
+    console.log('Saving scores...', data);
+    API.postRequest('/score/university/update', data)
+      .then((result) => {
+        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
+      })
+      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
     setScores(prevScores => [
       ...prevScores.filter(score => !(score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id)),
       scoreData
     ]);
+  };
 
-    const data = { ...exam, score: scoreData };
-    console.log('Saving scores...', data);
-    API.postRequest('/score/update', data)
+  const handlePassingYearChange = (student, subjectField, value) => {
+    const newScores = scores.map(score => {
+      if (score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id) {
+        return { ...score, passingYear: value };
+      }
+      return score;
+    });
+
+    setScores(newScores);
+
+    const scoreData = newScores.find(score => score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id);
+    API.postRequest('/score/university/update', { ...exam, scoreData })
       .then((result) => {
+        setStudents(result.students)
         dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
       })
       .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
   };
-
-
-const handlePassingYearChange = (student, subjectField, value) => {
-  // Update the scores state to reflect the new passing year
-  const newScores = scores.map(score => {
-    if (score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id) {
-      return { ...score, passingYear: value };
-    }
-    return score;
-  });
-
-  setScores(newScores); // Update the state with the new scores
-
-  const updatedScore = newScores.find(score => score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id);
-  API.postRequest('/score/update', { ...exam, scores: updatedScore }) // Updated scores instead of a single updatedScore
-    .then((result) => {
-      dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
-    })
-    .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
-};
-
-  const getScoreValue = (studentId, subjectId) => {
-    const score = scores.find(score => score.stud_id === studentId && score.examType === 'University' && score.sub_id === subjectId);
-    return score ? score.score : '';
-  };
-
-  const getPassingYearValue = (studentId, subjectId) => {
-    const score = scores.find(score => score.stud_id === studentId && score.examType === 'University' && score.sub_id === subjectId);
-    return score ? score.passingYear : '';
-  };
-
-  const handleSaveChanges = () => {
-    const data = { ...exam, scores: scores };
-    console.log('Saving scores...', data);
-    API.postRequest('/score/update', data)
-      .then((result) => {
-        dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }));
-      })
-      .catch((err) => dispatch(showToast({ type: 'err', text: err.message })));
-  };
-
 
   return (
-    <div className="overflow-x-auto row-span-12 w-full grid-rows-12 col-span-12 mt-4 h-[75vh]">
+    <div className="overflow-x-auto row-span-12 w-full grid-rows-12 mt-4 h-[75vh]">
       <table className="table table-sm overflow-auto row-span-12 w-full">
         <thead className="bg-blue-700 border border-base-300 w-full text-white">
-          <tr className="border-b border-base-300">
-            <th></th>
-            {headers.map((header, index) => (
+          <tr className="border-b border-base-300 bg-blue-700">
+            <th className="sticky left-0 top-0 z-20 bg-blue-700"></th>
+            <th className="sticky left-12 top-0 z-20 bg-blue-700">Register Number</th>
+            <th className="sticky left-40 top-0 z-20 bg-blue-700">Name</th>
+            {headers.slice(2).map((header, index) => (
               <th key={index} colSpan={header.subHeaders ? header.subHeaders.length * 2 : 1} className="font-medium border">{header.label}</th>
             ))}
           </tr>
-          <tr className="border-b border-base-300">
-            <th></th>
-            {headers.map((header, index) =>
+          <tr className="border-b border-base-300 bg-blue-700">
+            <th className="sticky left-0 top-10 z-10 bg-blue-700"></th>
+            <th className="sticky left-10 top-10 z-10 bg-blue-700"></th>
+            <th className="sticky left-32 top-10 z-10 bg-blue-700"></th>
+            {headers.slice(2).map((header, index) =>
               header.subHeaders ? (
                 header.subHeaders.map((subHeader, subIndex) => (
                   <React.Fragment key={`${index}-${subIndex}`}>
-                    <th className="font-medium border">
+                    <th className="font-medium border sticky top-10 bg-blue-700">
                       <div className="flex items-start gap-x-1">
                         {subHeader.label}
                         <Tooltip content={subHeader.full_name}>
@@ -424,87 +414,75 @@ const handlePassingYearChange = (student, subjectField, value) => {
                         </Tooltip>
                       </div>
                     </th>
-                    <th className="font-medium border">Passing Year</th>
+                    <th className="font-medium border sticky top-10 bg-blue-700">Passing Year</th>
                   </React.Fragment>
                 ))
               ) : (
-                <th key={index} className="font-medium"></th>
+                <th key={index} className="font-medium sticky top-10 bg-blue-700"></th>
               )
             )}
           </tr>
         </thead>
-
         <tbody className="border border-base-200">
           {currentStudents.length > 0 ? (
-            currentStudents.map((student, rowIndex) => {
-              return (
-                <tr key={student._id} className={`hover:bg-base-200 cursor-pointer h-10`}>
-                  <td>{indexOfFirstStudent + rowIndex + 1}</td>
-                  <td>{student.registerNumber}</td>
-                  <td>{student.name}</td>
-                  {subjects.map((subject, subIndex) => (
-                    <React.Fragment key={`${subject.field}-${subIndex}`}>
-                      <td>
-                        <select
-                          name={`Grade-${student._id}-${subject.field}`}
-                          className="input input-xs h-full w-full"
-                          value={getScoreValue(student._id, subject.sub_id)}
-                          onChange={(e) => handleGradeChange(student, subject, e.target.value)}
-                        >
-                          <option value="" disabled>Select Grade</option>
-                          {gradeOptions.map((option) => (
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                          ))}
-                        </select>
-                      </td>
-                      <td>
-                        <select
-                          name={`PassingYear-${student._id}-${subject.field}`}
-                          className="input input-xs h-full w-full"
-                          value={getPassingYearValue(student._id, subject.sub_id)}
-                          onChange={(e) => handlePassingYearChange(student, subject, e.target.value)}
-                          disabled={getScoreValue(student._id, subject.sub_id) == 0 ? true : false}
-                        >
-                          <option value="" disabled>Select Passing Year</option>
-                          {passingYearOptions.map((option) => (
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                          ))}
-                        </select>
-                      </td>
-                    </React.Fragment>
-                  ))}
-                  <td>
-                    {
-                      // student.semesterStats.length > 0 &&
-                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
-                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
-                        0
-                    }
-                  </td>
-                  <td>
-                    {
-                      // student.semesterStats.length > 0 &&
-                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
-                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).arrears.length :
-                        0
-                    }
-                  </td>
-                  <td>
-                    {
-                      // student.semesterStats.length > 0 &&
-                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name) ?
-                      //   student.semesterStats.find(semester => semester.semester.toString() === exam.semester_name).gpa :
-                        0
-                    }
-                  </td>
-                  <td>
-                    {
-                      student.cgpa
-                    }
-                  </td>
-                </tr>
-              )
-            })
+            currentStudents.map((student, rowIndex) => (
+              <tr key={student._id} className={`hover:bg-base-200 cursor-pointer bg-white h-10`}>
+                <td className="sticky left-0 z-10 bg-white">{indexOfFirstStudent + rowIndex + 1}</td>
+                <td className="sticky left-10 z-10 bg-white">{student.registerNumber}</td>
+                <td className="sticky left-36 z-10 bg-white">{student.name}</td>
+                {subjects.map((subject, subIndex) => (
+                  <React.Fragment key={`${subject.field}-${subIndex}`}>
+                    <td className="border border-gray-100">
+                      <select
+                        name={`Grade-${student._id}-${subject.field}`}
+                        className="border border-gray-300 input-xs h-full w-20"
+                        value={getScoreValue(student._id, subject.sub_id)}
+                        onChange={(e) => handleGradeChange(student, subject, e.target.value)}
+                      >
+                        <option value="" disabled>Choose</option>
+                        {gradeOptions.map((option) => (
+                          <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                      </select>
+                    </td>
+                    <td>
+                      <select
+                        name={`PassingYear-${student._id}-${subject.field}`}
+                        className="border border-gray-300  input-xs h-full w-32 text-gray-500"
+                        value={getPassingYearValue(student._id, subject.sub_id)}
+                        onChange={(e) => handlePassingYearChange(student, subject, e.target.value)}
+                        disabled={getScoreValue(student._id, subject.sub_id) == 0 ? true : false}
+                      >
+                        <option value="" disabled>Select Passing Year</option>
+                        {passingYearOptions.map((option) => (
+                          <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                      </select>
+                    </td>
+                  </React.Fragment>
+                ))}
+                <td>
+                  {student.semesterStats.length > 0 &&
+                    student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name) ?
+                    student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name).arrears.length : 0
+                  }
+                </td>
+                <td>
+                  {student.history_of_arrears.length > 0 ? 
+                    student.history_of_arrears.length : 0
+                  }
+                </td>
+                <td>
+                  {student.semesterStats.length > 0 &&
+                    student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name) ?
+                    student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name).gpa : 0
+                  }
+                </td>
+                <td>
+                  {student.cgpa}
+                </td>
+              </tr>
+            ))
           ) : (
             <tr className="w-full">
               <td colSpan={headers.length * 2} className="">
@@ -519,7 +497,7 @@ const handlePassingYearChange = (student, subjectField, value) => {
           )}
         </tbody>
       </table>
-      <div className="flex justify-end mt-4">
+      <div className="flex justify-end mt-4 absolute right-10">
         <div className="btn-group">
           <button
             className={`btn ${currentPage === 1 ? 'btn-disabled' : ''}`}
@@ -545,8 +523,10 @@ const handlePassingYearChange = (student, subjectField, value) => {
         </div>
       </div>
       <ButtonLayout>
-        <IconButton text={'Save Changes'} onClick={() => handleSaveChanges()} />
+        {/* <IconButton text={'Save Changes'} onClick={() => handleSaveChanges()} /> */}
       </ButtonLayout>
     </div>
   );
+  
+
 };

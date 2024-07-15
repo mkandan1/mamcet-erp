@@ -1,0 +1,5 @@
+
+
+select option[disabled] {
+    color: gray;
+}

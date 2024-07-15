@@ -27,7 +27,7 @@ export const CreateSubject = () => {
     sub_credits: null,
     sub_type: null,
     sub_regulation: null,
-    sub_mandatory: null,
+    sub_mandatory: false,
   });
 
   useEffect(() => {
@@ -54,6 +54,15 @@ export const CreateSubject = () => {
     API.postRequest("/subject/add", subjectData)
       .then((data) => {
         if (data.success == true) {
+          setSubjectData({
+            sub_name: null,
+            sub_short_name: null,
+            sub_code: null,
+            sub_credits: null,
+            sub_type: null,
+            sub_regulation: null,
+            sub_mandatory: false,
+          })
           dispatch(
             showToast({
               type: "success",
@@ -88,6 +97,7 @@ export const CreateSubject = () => {
           <TextInput
             label={"Subject name"}
             placeholder={"Enter Subject Name"}
+            value={subjectData.sub_name}
             required={true}
             colStart={1}
             rowStart={1}
@@ -98,6 +108,7 @@ export const CreateSubject = () => {
           <TextInput
             label={"Subject Short Name"}
             placeholder={"Enter Subject Short Name"}
+            value={subjectData.sub_short_name}
             required={true}
             colStart={1}
             rowStart={2}
@@ -108,6 +119,7 @@ export const CreateSubject = () => {
           <TextInput
             label={"Subject code"}
             placeholder={"Enter Subject Code"}
+            value={subjectData.sub_code}
             required={true}
             colStart={1}
             rowStart={3}
@@ -118,6 +130,7 @@ export const CreateSubject = () => {
           <TextInput
             label={"Subject credits"}
             placeholder={"Enter Subject Credits"}
+            value={subjectData.sub_credits}
             required={true}
             colStart={2}
             rowStart={1}
@@ -129,6 +142,7 @@ export const CreateSubject = () => {
             label={"Subject Type"}
             placeholder={"Select Subject Type"}
             options={["Theory", "Lab"]}
+            value={subjectData.sub_type}
             required={true}
             colStart={2}
             rowStart={2}
@@ -139,6 +153,7 @@ export const CreateSubject = () => {
           <SelectInput 
             label={'Regulation'}
             placeholder={'Select regulation'}
+            value={subjectData.sub_regulation}
             required={true}
             colStart={2}
             rowStart={3}
