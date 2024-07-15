@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { API } from "../api/API";
 import { showToast } from "../redux/actions/toastActions";
 import { useDispatch } from "react-redux";
-import { hasNullValues } from "../services/DataPreprocessing";
+import { hasEmptyValues } from "../services/DataPreprocessing";
 import { Queries } from "../api/Query";
 
 export const CreateSubject = () => {
@@ -21,12 +21,12 @@ export const CreateSubject = () => {
     regulations: [],
   });
   const [subjectData, setSubjectData] = useState({
-    sub_name: null,
-    sub_short_name: null,
-    sub_code: null,
-    sub_credits: null,
-    sub_type: null,
-    sub_regulation: null,
+    sub_name: "",
+    sub_short_name: "",
+    sub_code: "",
+    sub_credits: "",
+    sub_type: "",
+    sub_regulation: "",
     sub_mandatory: false,
   });
 
@@ -42,7 +42,7 @@ export const CreateSubject = () => {
   }, []);
 
   const handleSubjectCreation = () => {
-    if (hasNullValues(subjectData)) {
+    if (hasEmptyValues(subjectData)) {
       return dispatch(
         showToast({
           type: "error",
@@ -54,15 +54,6 @@ export const CreateSubject = () => {
     API.postRequest("/subject/add", subjectData)
       .then((data) => {
         if (data.success == true) {
-          setSubjectData({
-            sub_name: null,
-            sub_short_name: null,
-            sub_code: null,
-            sub_credits: null,
-            sub_type: null,
-            sub_regulation: null,
-            sub_mandatory: false,
-          })
           dispatch(
             showToast({
               type: "success",
@@ -80,6 +71,15 @@ export const CreateSubject = () => {
         );
         console.trace(err)
       });
+      setSubjectData({
+        sub_name: "",
+        sub_short_name: "",
+        sub_code: "",
+        sub_credits: "",
+        sub_type: "",
+        sub_regulation: "",
+        sub_mandatory: false,
+      })
   };
 
   return (
@@ -94,6 +94,17 @@ export const CreateSubject = () => {
       <PageHeading heading={"Create Subject"}></PageHeading>
 
       <FormLayout cols={"12"} rows={4}>
+      <TextInput
+            label={"Subject code"}
+            placeholder={"Enter Subject Code"}
+            value={subjectData.sub_code}
+            required={true}
+            colStart={1}
+            rowStart={3}
+            onChange={(value) =>
+              setSubjectData((prev) => ({ ...prev, sub_code: value }))
+            }
+          />
           <TextInput
             label={"Subject name"}
             placeholder={"Enter Subject Name"}
@@ -114,17 +125,6 @@ export const CreateSubject = () => {
             rowStart={2}
             onChange={(value) =>
               setSubjectData((prev) => ({ ...prev, sub_short_name: value }))
-            }
-          />
-          <TextInput
-            label={"Subject code"}
-            placeholder={"Enter Subject Code"}
-            value={subjectData.sub_code}
-            required={true}
-            colStart={1}
-            rowStart={3}
-            onChange={(value) =>
-              setSubjectData((prev) => ({ ...prev, sub_code: value }))
             }
           />
           <TextInput

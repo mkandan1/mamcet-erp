@@ -146,7 +146,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
 
     const data = { ...exam, scores: scoreData }
     console.log('Saving scores...');
-    API.postRequest('/score/update', data)
+    API.postRequest('/score/internals/update', data)
       .then((result) => {
         dispatch(showToast({ type: result.success ? 'success' : 'err', text: result.message }))
       })
@@ -208,11 +208,11 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
                         (header.label !== 'Model Exam' && subject.sub_type !== 'Lab') // Exclude lab subjects for CIA exams
                       ) {
                         return (
-                          <td key={`${index}-${subIndex}`} className={`${getScoreValue(student._id, header.label, subject.sub_id) < 50 && getScoreValue(student._id, header.label, subject.sub_id) != '' ? 'bg-red-500' : 'text-base-content'}`}>
+                          <td key={`${index}-${subIndex}`} className={`${getScoreValue(student._id, header.label, subject.sub_id) < 50 && getScoreValue(student._id, header.label, subject.sub_id) != '' ? 'bg-red-200' : 'text-base-content'}`}>
                             <input
                               type="number"
                               name={`${header.label}-${student._id}-${subject.field}`}
-                              className={`input input-sm w-full ${getScoreValue(student._id, header.label, subject.sub_id) < 50 && getScoreValue(student._id, header.label, subject.sub_id) != '' ? 'bg-red-500' : 'text-base-content'}`}
+                              className={`border border-gray-300 input-sm w-20 ${getScoreValue(student._id, header.label, subject.sub_id) < 50 && getScoreValue(student._id, header.label, subject.sub_id) != '' ? 'bg-red-200' : 'text-base-content'}`}
                               value={getScoreValue(student._id, header.label, subject.sub_id)}
                               onChange={(e) => handleInputChange(student, header.label, subject, e.target.value)}
                             />
