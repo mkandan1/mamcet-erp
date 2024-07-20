@@ -24,6 +24,8 @@ import { MarkAllocation } from "./screens/MarkAllocation";
 import { CreateExamSchedule } from "./screens/CreateExamSchedule";
 import { Exams } from "./screens/Exams";
 import { EditExamSchedule } from "./screens/EditExamSchedule";
+import { EmployeesOnboarding } from "./screens/EmployeesOnboarding";
+import { Employees } from "./screens/Employees";
 
 function App() {
   const dispatch = useDispatch()
@@ -60,6 +62,8 @@ function App() {
               <Route path="/exam/schedule-exam" element={<CreateExamSchedule/>} />
               <Route path="/exam/edit/:id" element={<EditExamSchedule/>} />
               <Route path="/exam/mark-allocation" element={<MarkAllocation/>} />
+              <Route path="/employee/all" element={<Employees/>} />
+              <Route path="/employee/onboarding" element={<EmployeesOnboarding/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/Profile" element={<Profile/>} />

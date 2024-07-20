@@ -30,8 +30,6 @@ export const CreateExamSchedule = () => {
         academic_year: null,
         semester_name: null,
         exam_name: null,
-        start_date: null,
-        end_date: null
     });
 
     const [fetchedData, setFetchedData] = useState({
@@ -215,30 +213,6 @@ export const CreateExamSchedule = () => {
                     value={QueryData.exam_name}
                     onChange={(value) =>
                         setQueryData((prev) => ({ ...prev, exam_name: value }))
-                    }
-                />
-                <TextInput
-                    label={"Start Date"}
-                    placeholder={"Pick Start Date"}
-                    type={'date'}
-                    required={true}
-                    colStart={"col-start-8"}
-                    rowStart={"row-start-2"}
-                    value={QueryData.start_date}
-                    onChange={(value) =>
-                        setQueryData((prev) => ({ ...prev, start_date: value }))
-                    }
-                />
-                <TextInput
-                    label={"End Date"}
-                    type={'date'}
-                    placeholder={"Pick End Date"}
-                    required={true}
-                    colStart={"col-start-8"}
-                    rowStart={"row-start-3"}
-                    value={QueryData.end_date}
-                    onChange={(value) =>
-                        setQueryData((prev) => ({ ...prev, end_date: value }))
                     }
                 />
             </FormLayout>

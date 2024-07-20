@@ -8,8 +8,8 @@ import { SelectInput, TextInput } from "../components/Input"
 import { InputLayout } from "../components/InputLayout"
 import { PageHeading } from "../components/PageHeading"
 import { EssentialQueries } from "../api/Query"
-import { mapAcademicYearToSemesters } from "../services/academicYear"
-import { useDispatch } from "react-redux"
+import { generateAcademicYears, mapAcademicYearToSemesters } from "../services/academicYear"
+import { batch, useDispatch } from "react-redux"
 import { ShowMarkAllocationDialog } from "../redux/actions/dialogActions"
 import { API } from "../api/API"
 import { showToast } from "../redux/actions/toastActions"
@@ -32,8 +32,6 @@ export const EditExamSchedule = () => {
         academic_year: null,
         semester_name: null,
         exam_name: null,
-        start_date: null,
-        end_date: null
     });
     const [exam, setExam] = useState(null);
     const [semester, setSemester] = useState(null);
@@ -118,8 +116,11 @@ export const EditExamSchedule = () => {
         if (QueryData.course_name) {
 
             const fetchData = async () => {
-                const { batch_name, academic_year } = await EssentialQueries.getBatch(QueryData.program, QueryData.department, QueryData.regulation, QueryData.course_name);
-                setFetchedData((prev) => ({ ...prev, batch_name, academic_year }));
+                const { batch_name } = await EssentialQueries.getBatch(QueryData.program, QueryData.department, QueryData.regulation, QueryData.course_name);
+                setFetchedData((prev) => ({ ...prev, batch_name: [batch_name] }));
+
+                const academicYears = generateAcademicYears(batch_name);
+                setFetchedData((prev) => ({ ...prev, academic_year: academicYears }))
             }
             fetchData()
         }
@@ -213,7 +214,7 @@ export const EditExamSchedule = () => {
                 <SelectInput
                     label={"Academic Year"}
                     placeholder={"Select Academic"}
-                    options={[fetchedData.academic_year]}
+                    options={fetchedData.academic_year}
                     required={true}
                     colStart={"col-start-5"}
                     rowStart={"row-start-3"}
@@ -237,37 +238,13 @@ export const EditExamSchedule = () => {
                 <SelectInput
                     label={"Exam"}
                     placeholder={"Select Exam"}
-                    options={['Internal Exams', 'University Exam']}
+                    options={['Internal Exam', 'University Exam']}
                     required={true}
                     colStart={"col-start-8"}
                     rowStart={"row-start-1"}
                     value={QueryData.exam_name}
                     onChange={(value) =>
                         setQueryData((prev) => ({ ...prev, exam_name: value }))
-                    }
-                />
-                <TextInput
-                    label={"Start Date"}
-                    placeholder={"Pick Start Date"}
-                    type={'date'}
-                    required={true}
-                    colStart={"col-start-8"}
-                    rowStart={"row-start-2"}
-                    value={QueryData.start_date}
-                    onChange={(value) =>
-                        setQueryData((prev) => ({ ...prev, start_date: value }))
-                    }
-                />
-                <TextInput
-                    label={"End Date"}
-                    type={'date'}
-                    placeholder={"Pick End Date"}
-                    required={true}
-                    colStart={"col-start-8"}
-                    rowStart={"row-start-3"}
-                    value={QueryData.end_date}
-                    onChange={(value) =>
-                        setQueryData((prev) => ({ ...prev, end_date: value }))
                     }
                 />
             </FormLayout>

@@ -31,6 +31,7 @@ export const Login = () => {
     await Auth.signInWithEmailAndPassword(email, password)
       .then((data) => {
         setStatus("success");
+        localStorage.setItem('uid', data.user._id)
         setTimeout(()=>{
           window.location.href = '/'
         }, 2000)

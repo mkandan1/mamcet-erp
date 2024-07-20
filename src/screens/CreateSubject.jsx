@@ -30,6 +30,10 @@ export const CreateSubject = () => {
     sub_mandatory: false,
   });
 
+  useEffect(()=> {
+    
+  },[])
+
   useEffect(() => {
     Queries.getRegulations()
       .then((snapshot) => {
@@ -165,7 +169,6 @@ export const CreateSubject = () => {
           <ToggleInput
             label={"Mandatory course"}
             checked={subjectData.sub_mandatory}
-            required={true}
             colStart={2}
             rowStart={4}
             onChange={(value) =>

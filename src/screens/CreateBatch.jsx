@@ -25,7 +25,7 @@ import { ReadFile } from "../services/ReadFile";
 import { headers } from "../data/constants";
 import { BatchAPI } from "../api/BatchAPI";
 import { ShowStudentsImportDialog } from "../redux/actions/dialogActions";
-import { StudentDataImportDialog } from "../components/Dialog";
+import { AddStudentDialog, StudentDataImportDialog } from "../components/Dialog";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 export const CreateBatch = () => {
@@ -213,6 +213,8 @@ export const CreateBatch = () => {
 
         <StudentDataImportDialog onImport={(students) => setBatchData((prev) => ({ ...prev, students: students }))} students={BatchData.students} />
       </FormLayout>
+      
+      <AddStudentDialog onAdd={((student)=> setBatchData((prev)=> ({...prev, students: student})))}/>
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton
           text={"Create Batch"}

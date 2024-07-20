@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { HideMarkAllocationDialog } from "../redux/actions/dialogActions";
-import { InternalMarkAllocationTable, UniversityMarkAllocationTable } from "./Table";
+import { InternalMarkAllocationTable } from "./Table";
+import { UniversityMarkAllocationTable } from './UniversityTable'
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 export const MarkAllocationDialog = ({ exam, students, semesters }) => {
@@ -9,6 +10,7 @@ export const MarkAllocationDialog = ({ exam, students, semesters }) => {
     if (!show) {
         return
     }
+    console.log(exam)
     return (
         <div className="absolute top-0 bottom-0 left-0 right-0 bg-white z-10">
             <div className="p-5">
@@ -28,7 +30,7 @@ export const MarkAllocationDialog = ({ exam, students, semesters }) => {
                     <Card heading={'Semester'} text={exam.semester_name} />
                     <Card heading={'Exam'} text={exam.exam_name} />
                 </div>
-                {exam.exam_name == 'Internal Exams' ? <InternalMarkAllocationTable students={students} semesters={semesters} exam={exam} /> : <UniversityMarkAllocationTable studentsProp={students} semesters={semesters} exam={exam} />}
+                {exam.exam_name == 'Internal Exam' ? <InternalMarkAllocationTable students={students} semesters={semesters} exam={exam} /> : <UniversityMarkAllocationTable studentsProp={students} semesters={semesters} exam={exam} />}
             </div>
         </div>
     )

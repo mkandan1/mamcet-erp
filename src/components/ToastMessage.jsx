@@ -18,7 +18,7 @@ export const ToastMessage = () => {
     return;
   }
   return (
-    <div className="absolute right-10 bottom-24 z-20">
+    <div className="absolute right-10 bottom-24 z-50">
       <Toast>
         <Icon
           icon={type == "success" ? "lets-icons:check-fill" : "carbon:close-filled"}
