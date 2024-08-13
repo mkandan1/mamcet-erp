@@ -1,4 +1,4 @@
-import mamcetLogo from "../assets/images/mamcet-logo.jpg";
+import mamcetLogo from "../assets/images/mamcet-logo.png";
 import masterLogo from "../assets/images/master-logo.jpg";
 
 export const LoginFooter = () => {

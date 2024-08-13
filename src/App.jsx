@@ -29,53 +29,55 @@ import { Employees } from "./screens/Employees";
 
 function App() {
   const dispatch = useDispatch()
-  const isAuthenticated = useSelector((state)=> (state.auth.loggedin))
-  const isLoading = useSelector((state)=> (state.auth.loading))
+  const isAuthenticated = useSelector((state) => (state.auth.loggedin))
+  const isLoading = useSelector((state) => (state.auth.loading))
 
-  useEffect(()=> {
+  useEffect(() => {
     Authorization.onAuthState(dispatch)
   }, [dispatch])
 
-  if(isLoading){
-    return 
+  if (isLoading) {
+    return
   }
   return (
-      <Router>
-        <div className="relative">
-          {isAuthenticated ? (
-            <Routes>
-              <Route path="/" element={<Dashboard/>} />
-              <Route path="/course/all" element={<Courses/>} />
-              <Route path="/course/create" element={<CreateCourse/>} />
-              <Route path="/course/edit/:id" element={<EditCourse/>} />
-              <Route path="/course/:id" element={<ViewCourse/>} />
-              <Route path="/course/subject" element={<Subjects/>} />
-              <Route path="/course/subject/create" element={<CreateSubject/>} />
-              <Route path="/course/subject/edit/:id" element={<EditSubject/>} />
-              <Route path="/course/subject/:id" element={<ViewSubject/>} />
-              <Route path="/course/batch" element={<Batches/>} />
-              <Route path="/course/batch/create" element={<CreateBatch/>} />
-              <Route path="/course/batch/edit/:id" element={<EditBatch/>} />
-              <Route path="/course/batch/:id" element={<ViewBatch/>} />
-              <Route path="/course/subject-mapping" element={<SubjectMapping/>} />
-              <Route path="/exam/all" element={<Exams/>} />
-              <Route path="/exam/schedule-exam" element={<CreateExamSchedule/>} />
-              <Route path="/exam/edit/:id" element={<EditExamSchedule/>} />
-              <Route path="/exam/mark-allocation" element={<MarkAllocation/>} />
-              <Route path="/employee/all" element={<Employees/>} />
-              <Route path="/employee/onboarding" element={<EmployeesOnboarding/>} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/Profile" element={<Profile/>} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/*" element={<Login />} />
-            </Routes>
-          )}
-        </div>
-      </Router>
+    <Router>
+      <div className="relative">
+        {isAuthenticated ? (
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/course/all" element={<Courses />} />
+            <Route path="/course/create" element={<CreateCourse />} />
+            <Route path="/course/edit/:id" element={<EditCourse />} />
+            <Route path="/course/:id" element={<ViewCourse />} />
+            <Route path="/course/subject" element={<Subjects />} />
+            <Route path="/course/subject/create" element={<CreateSubject />} />
+            <Route path="/course/subject/edit/:id" element={<EditSubject />} />
+            <Route path="/course/subject/:id" element={<ViewSubject />} />
+            <Route path="/course/batch" element={<Batches />} />
+            <Route path="/course/batch/create" element={<CreateBatch />} />
+            <Route path="/course/batch/edit/:id" element={<EditBatch />} />
+            <Route path="/course/batch/:id" element={<ViewBatch />} />
+            <Route path="/course/subject-mapping" element={<SubjectMapping />} />
+            <Route path="/exam/all" element={<Exams />} />
+            <Route path="/exam/schedule-exam" element={<CreateExamSchedule />} />
+            <Route path="/exam/edit/:id" element={<EditExamSchedule />} />
+            <Route path="/exam/mark-allocation" element={<MarkAllocation />} />
+            <Route path="/employee/all" element={<Employees />} />
+            <Route path="/employee/onboarding" element={<EmployeesOnboarding />} />
+            <Route path="/employee/:id" element={<EmployeesOnboarding />} />
+            <Route path="/employee/edit/:id" element={<EmployeesOnboarding />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/Profile" element={<Profile />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/*" element={<Login />} />
+          </Routes>
+        )}
+      </div>
+    </Router>
   );
 }
 

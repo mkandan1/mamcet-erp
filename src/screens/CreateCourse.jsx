@@ -21,6 +21,7 @@ import { Queries } from "../api/Query";
 export const CreateCourse = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
+  const [creatCourseBtnLoading, setCreateCourseBtnLoading] = useState(false);
   const [courseData, setCourseData] = useState({
     institution: null,
     program: null,
@@ -53,6 +54,7 @@ export const CreateCourse = () => {
   }, []);
 
   const handleCourseCreation = () => {
+    setCreateCourseBtnLoading(true)
     if (hasNullValues(courseData)) {
       return dispatch(
         showToast({
@@ -79,11 +81,14 @@ export const CreateCourse = () => {
             text: err.response.data.message,
           })
         );
-      });
+      })
+      .finally(()=>{
+        setCreateCourseBtnLoading(false)
+      })
   };
 
   return (
-    <Container>
+    <Container title='Courses'>
       <Breadcamps
         paths={{ Home: "/", Courses: "/courses/all", "Create course": "" }}
       />
@@ -153,14 +158,14 @@ export const CreateCourse = () => {
           required={true}
           value={courseData.regulation}
         />
-      </FormLayout>
-
+        
       <ButtonLayout cols={12} marginTop={14}>
         <IconButton
           text={"Create course"}
           icon={"ic:round-plus"}
           textColor={"white"}
           bgColor={"bg-blue-700"}
+          loading={creatCourseBtnLoading}
           onClick={() => handleCourseCreation()}
         />
         <IconButton
@@ -171,6 +176,7 @@ export const CreateCourse = () => {
           onClick={() => navigator("/course/all")}
         />
       </ButtonLayout>
+      </FormLayout>
     </Container>
   );
 };

@@ -60,7 +60,7 @@ export const Courses = () => {
   }
 
   return (
-    <Container>
+    <Container title={'Courses'}>
       <Breadcamps paths={{ Home: "/", Courses: "/courses/all" }} />
       <PageHeading heading={"Course List"}>
         <IconButton

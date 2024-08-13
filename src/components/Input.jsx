@@ -2,57 +2,48 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useRef } from "react";
 import CreateSelect from "react-select/creatable";
 
+const Label = ({ label, required }) => {
+  return (
+    <label className="text-gray-700 font-medium text-sm pr-4 w-32 flex-shrink-0">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+  );
+};
+
 export const TextInput = ({
   type,
   value,
   onChange,
   label,
-  rowStart,
-  colStart,
   disabled,
   required,
   placeholder,
-  inputColSize,
+  inputFlexSize,
 }) => {
   return (
-    <div className={`row-span-1 col-span-12 xl:col-span-4 grid grid-cols-12 xl:${rowStart ? rowStart : ""} xl:${colStart ? colStart : ""}`}>
+    <div className="flex items-center mb-4">
       <Label label={label} required={required} />
       <input
         type={type}
         value={value}
-        disabled={disabled ? disabled : false}
+        disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder ? placeholder : ''}
-        className={`bg-white border-[1px] col-span-${inputColSize ? inputColSize : "3"} border-gray-300 rounded-md pl-3 h-[42px] outline-blue-700 text-gray-500 font-manrope w-full text-sm`}
+        placeholder={placeholder}
+        className={`flex-${inputFlexSize || "1"} bg-white border border-gray-300 rounded-md pl-4 py-2 h-10 outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-gray-700 text-sm`}
       />
     </div>
   );
 };
 
-export const CustomInput = ({
-  type,
-  value,
-  onChange,
-  label,
-  rowStart,
-  colStart,
-  disabled,
-  required,
-  placeholder,
-  inputColSize,
-  children
-}) => {
+export const CustomInput = ({ label, required, children }) => {
   return (
-    <div className={`row-span-1 col-span-12 xl:col-span-4 grid grid-cols-12 xl:${rowStart ? rowStart : ""} xl:${colStart ? colStart : ""}`}>
+    <div className="flex items-center mb-4">
       <Label label={label} required={required} />
-      <div className="col-span-3">
-        {children}
-      </div>
+      <div className="flex-1">{children}</div>
     </div>
   );
 };
 
-// SelectInput.js
 export const SelectInput = ({
   value,
   onChange,
@@ -60,18 +51,16 @@ export const SelectInput = ({
   placeholder,
   label,
   disabled,
-  rowStart,
   required,
-  colStart,
 }) => {
   return (
-    <div className={`row-span-1 col-span-12 xl:col-span-4 grid grid-cols-12 ${rowStart ? rowStart : ""} ${colStart ? colStart : ""}`}>
+    <div className="flex w-full items-center mb-4">
       <Label label={label} required={required} />
       <select
-        disabled={disabled ? disabled : false}
+        disabled={disabled}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`bg-white border-[1px] col-span-3 border-gray-300 outline-none rounded-md h-[42px] text-gray-500 font-manrope w-full text-sm`}
+        className="flex-1 bg-white border border-gray-300 rounded-md pl-4 py-2 h-10 outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-gray-700 text-sm"
       >
         <option value="">{placeholder}</option>
         {options &&
@@ -89,24 +78,21 @@ export const ToggleInput = ({
   label,
   checked,
   onChange,
-  colStart,
   required,
   disabled,
-  rowStart,
 }) => {
   return (
-    <div
-      className={`col-span-12 xl:col-span-4 grid grid-cols-12 lg:${rowStart ? rowStart : ""
-        } lg:${colStart ? colStart : ""}`}
-    >
+    <div className="flex items-center mb-4">
       <Label label={label} required={required} />
-      <input
-        type="checkbox"
-        checked={checked}
-        className="col-span-3"
-        onChange={(e) => onChange(e.target.checked)}
-        disabled={disabled ? disabled : false}
-      />
+      <div className="flex-1 flex items-center">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+          disabled={disabled}
+          className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+      </div>
     </div>
   );
 };
@@ -119,64 +105,50 @@ export const CustomCreateSelect = ({
   label,
   required,
   disabled,
-  rowStart,
-  colStart,
 }) => {
   const styles = {
     control: (provided) => ({
       ...provided,
       height: "42px",
-      padding: 0,
+      borderRadius: "0.375rem",
+      borderColor: disabled ? "#D1D5DB" : "#E5E7EB",
+      "&:hover": {
+        borderColor: disabled ? "#D1D5DB" : "#9CA3AF",
+      },
     }),
     menu: (provided) => ({
       ...provided,
-      fontSize: "14px",
-      margin: 0,
+      fontSize: "0.875rem",
     }),
     singleValue: (provided) => ({
       ...provided,
-      fontSize: "14px",
-      color: "#6b7280",
-      paddingTop: 0,
+      fontSize: "0.875rem",
+      color: "#374151",
     }),
     placeholder: (provided) => ({
       ...provided,
-      color: "#6b7280",
-      fontSize: "14px",
+      fontSize: "0.875rem",
+      color: "#9CA3AF",
     }),
     valueContainer: (provided) => ({
       ...provided,
-      padding: "0px",
-      paddingLeft: "2px",
-      height: "42px",
-      "&css-1ftr8wv-Input2": {
-        marginTop: "0px",
-      },
-      "&css-y4b4ky-Input2": {
-        height: "42px",
-      },
-    }),
-    input: (provided) => ({
-      ...provided,
-      marginTop: "0px",
-      margin: "0px",
-      padding: "0px",
+      padding: "0 0.75rem",
     }),
   };
 
-  const rawOptions = options.map(option => ({
+  const rawOptions = options.map((option) => ({
     label: option,
-    value: option
+    value: option,
   }));
+
   return (
-    <div
-      className={`col-span-12 xl:col-span-4 grid grid-cols-12 lg:${rowStart ? rowStart : ""} lg:${colStart ? colStart : ""}`}>
-      <Label required={required} label={label} />
-      <div className="col-span-3">
+    <div className="flex items-center mb-4">
+      <Label label={label} required={required} />
+      <div className="flex-1">
         <CreateSelect
           options={rawOptions}
           placeholder={placeholder}
-          disabled={disabled ? disabled : false}
+          disabled={disabled}
           styles={styles}
           value={{ label: value, value: value }}
           onChange={(selectedOption) => onChange(selectedOption.value)}
@@ -186,36 +158,42 @@ export const CustomCreateSelect = ({
   );
 };
 
-export const FileInput = ({ id, accept, label, bgColor, textColor, text, icon, onFileSelect }) => {
+export const FileInput = ({
+  id,
+  accept,
+  label,
+  bgColor = "blue-600",
+  textColor = "white",
+  text = "Upload",
+  icon,
+  onFileSelect,
+}) => {
   const fileInputRef = useRef(null);
 
   const handleFileSelect = () => {
-    // Access the selected file using the ref
     const selectedFile = fileInputRef.current.files[0];
-
-    // Pass the selected file to the parent component or perform other actions
     onFileSelect(selectedFile);
   };
 
   return (
-    <>
-      <div
-        className={`row-span-1 col-span-12 xl:col-span-5 grid grid-cols-12`}>
-        <label htmlFor={id} className={`flex border rounded-md items-center gap-2 col-span-2 col-start-11 pl-4 py-3 text-xs outline font-manrope font-normal tracking-tight w-auto text-${textColor} px-2 bg-${bgColor} cursor-pointer`}>
-          {icon && (<Icon icon={icon} className={`text-${textColor} text-md`} />)}
-          {label}
+    <div className="flex items-center mb-4">
+      <div className="flex-grow">
+        <label
+          htmlFor={id}
+          className={`flex items-center justify-center gap-2 pl-4 py-2 text-sm rounded-md cursor-pointer bg-${bgColor} text-${textColor}`}
+        >
+          {icon && <Icon icon={icon} className={`text-${textColor} text-lg`} />}
+          {text}
         </label>
-        <input type='file' onChange={handleFileSelect} accept={accept} className='hidden' id={id} ref={fileInputRef} />
+        <input
+          type="file"
+          id={id}
+          accept={accept}
+          ref={fileInputRef}
+          onChange={handleFileSelect}
+          className="hidden"
+        />
       </div>
-    </>
-
-  );
-};
-
-const Label = ({ label, required }) => {
-  return (
-    <label className="text-gray-500 col-span-3 font-medium text-base text-end mr-20">
-      {label} {required ? <span className="text-red-500">*</span> : <></>}
-    </label>
+    </div>
   );
 };

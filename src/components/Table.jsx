@@ -348,7 +348,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
   const statistics = calculateStatistics(students, subjects);
 
   return (
-    <div className="overflow-x-auto row-span-12 col-span-12 mt-4">
+    <div className="overflow-x-auto row-span-12 col-span-12 mt-4 z-60">
       <ExamStatistics statistics={statistics} />
       <table className="table table-sm">
         <thead className="bg-blue-700 border border-base-300 text-white">

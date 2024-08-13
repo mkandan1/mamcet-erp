@@ -3,5 +3,18 @@
 @tailwind utilities;
 
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
 }
+
+.z-60 {
+    z-index: 1000;
+}
+
+.bgImage {
+    position: relative;
+    background-image: url('https://img.jagranjosh.com/images/2024/April/442024/M.A.M.%20College%20of%20Engineering%20and%20Technology%20(MAMCET),%20Tiruchirappalli%202.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+  

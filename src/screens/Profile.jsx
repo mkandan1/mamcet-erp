@@ -1,119 +1,85 @@
-import { Avatar } from '../components/Avatar';
-import React from 'react';
+import React from "react";
+import { Icon } from "@iconify/react";
+import { Container } from "../components/Container";
+import { useSelector } from "react-redux";
 
 export const Profile = () => {
-  const studentData ={
-    name:'Elamaran',
-    rolenumber:'812021205013',
-    role:'Student',
-    year:'III',
-    dept:'IT',
-    mail:'elamaran.it21@mamcet.com',
-    mobile:'9025893850',
-    batch:'2021 - 2025'
+  const { user } = useSelector((state)=> (state.auth.user))
 
-  };
   return (
-    <>
-      <div className='grid gap-4 p-4  bg-gradient-to-r from-violet-200 to-pink-200 relative overflow-hidden'>
-        {/* Profile Header Section */}
-        <div className='rounded-lg border-2 w-full h-80 flex items-center p-4 '>
-          <div className='relative flex items-center'>
-            {/* Profile Picture */}
-            <div className='w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gray-200 flex-shrink-0'>
-              <div className='w-full h-full flex items-center justify-center'>
-                <Avatar/>
-              </div>
-            </div>
-            {/* Profile Details */}
-            <div className='ml-4 relative z-10'>
-              <h1 className='text-2xl font-bold'>{studentData.name}</h1>
-              <p className='text-md text-gray-500'>{studentData.rolenumber}</p>
-              <p className='text-sm text-primary'>{studentData.batch}</p>
-            </div>
-            <div className='ml-20 relative z-10'>
-            <div className="overflow-x-auto">
-                <table className="table">
-                  <tbody>
-                    <tr>
-                      <th>Year :</th>
-                      <td>{studentData.year}</td>
-                    </tr>
-                    {/* row 2 */}
-                    <tr>
-                      <th>Department :</th>
-                      <td>{studentData.dept}</td>
-                    </tr>
-                    {/* row 3 */}
-                    <tr>
-                      <th>E-Mail :</th>
-                      <td>elamaran.it21@mamcet.com</td>
-                    </tr>
-                    <tr>
-                      <th>Mobile :</th>
-                      <td>+91 {studentData.mobile}</td>
-                    </tr>
-                  </tbody>
-                </table>
+    <Container title={'My Account'}>
+      <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+        <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl">
+          {/* Profile Header */}
+          <div className="flex items-center p-6 border-b">
+            <img
+              src={user.photo + '?alt=media'}
+              alt="User Profile"
+              className="h-24 w-24 rounded-full border-4 border-white shadow-md"
+            />
+            <div className="ml-6">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                {user.firstName} {user.lastName}
+              </h2>
+              <p className="text-gray-600">{user.designation}</p>
+              <div className="mt-2">
+                {user.roles.map((role) => (
+                  <span
+                    key={role}
+                    className="inline-block bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded"
+                  >
+                    {role.toUpperCase()}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-        
-        {/* Profile Content Section */}
-        <div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-4'>
-          <div className='flex gap-10 w-full h-48 flex items-center justify-center text-white text-xl'>
-          <div className="radial-progress" style={{"--value":80}} role="progressbar">80%</div>
-          <div className="radial-progress text-primary" style={{"--value":70}} role="progressbar">70%</div>
-          <div className="radial-progress bg-primary text-primary-content border-4 border-primary" style={{"--value":70}} role="progressbar">70%</div>
+
+          {/* Profile Details */}
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <Icon icon="mdi:email-outline" className="w-6 h-6 text-gray-500" />
+                <p className="ml-3 text-gray-700">{user.email}</p>
+              </div>
+              <div className="flex items-center">
+                <Icon icon="mdi:account-check-outline" className={`w-6 h-6 ${user.email_verified ? 'text-green-500' : 'text-red-500'}`} />
+                <p className="ml-3 text-gray-700">
+                  {user.email_verified ? "Email Verified" : "Email Not Verified"}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <Icon icon="mdi:account-outline" className="w-6 h-6 text-gray-500" />
+                <p className="ml-3 text-gray-700">Status: {user.status}</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <Icon icon="mdi:calendar-clock" className="w-6 h-6 text-gray-500" />
+                <p className="ml-3 text-gray-700">
+                  Created At: {new Date(user.createdAt * 1000).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <Icon icon="mdi:calendar-edit" className="w-6 h-6 text-gray-500" />
+                <p className="ml-3 text-gray-700">
+                  Last Updated: {new Date(user.updatedAt * 1000).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
           </div>
-          <div className='w-full h-48 flex items-center justify-center text-white text-xl'>
-          <ul className="timeline text-sm">
-            <li>
-              <div className="timeline-start timeline-box text-gray-700">2021 - 2022</div>
-              <div className="timeline-middle">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
-              </div>
-              <hr className="bg-primary"/>
-            </li>
-            <li>
-            <hr className="bg-primary"/>
-              <div className="timeline-middle">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
-              </div>
-              <div className="timeline-end timeline-box text-gray-700">2022 - 2023</div>
-              <hr className="bg-primary"/>
-            </li>
-            <li>
-              <hr className="bg-primary"/>
-              <div className="timeline-start timeline-box text-gray-700">2023 - 2024</div>
-              <div className="timeline-middle">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
-              </div>
-              <hr/>
-            </li>
-            <li>
-              <hr/>
-              <hr/>
-            </li>
-            <li>
-              <hr/>
-              <div className="timeline-end timeline-box text-gray-700">2021 - 2022</div>
-              <div className="timeline-middle">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
-              </div>
-            </li>
-          </ul>
-          </div>
-          {/* IF NEEDED */}
-          <div className='bg-tranparent w-full h-48 flex items-center justify-center text-white text-xl'>
-            {/* Content Block 3 */}
-          </div>
-          <div className='bg-tranparent w-full h-48 flex items-center justify-center text-white text-xl'>
-            {/* Content Block 4 */}
+
+          {/* Action Buttons */}
+          <div className="flex justify-end p-6 border-t">
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              Edit Profile
+            </button>
+            <button className="bg-red-600 text-white px-4 py-2 ml-4 rounded-md hover:bg-red-700">
+              Delete Account
+            </button>
           </div>
         </div>
       </div>
-    </>
+    </Container>
   );
 };
