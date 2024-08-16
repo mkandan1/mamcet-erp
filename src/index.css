@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", sans-serif !important;
 }
 
 .z-60 {
@@ -12,7 +12,7 @@ body {
 
 .bgImage {
     position: relative;
-    background-image: url('https://img.jagranjosh.com/images/2024/April/442024/M.A.M.%20College%20of%20Engineering%20and%20Technology%20(MAMCET),%20Tiruchirappalli%202.jpg');
+    background-image: url('./assets/images/M.A.M. College of Engineering and Technology (MAMCET), Tiruchirappalli 2.jpg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
