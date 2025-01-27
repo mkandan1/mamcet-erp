@@ -192,7 +192,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
     faculty_name: subject.facultyId ? `${subject.facultyId.firstName} ${subject.facultyId.lastName}` : 'Not Assigned',
   }));
 
-  subjects.forEach(subject => {
+  subjects?.forEach(subject => {
     if (subject.sub_type === 'Lab') {
       headers[4].subHeaders.push(subject);
     } else {
@@ -248,8 +248,8 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
       'Model Exam': { passed: 0, failed: 0 },
     };
   
-    students.forEach(student => {
-      ['CIA I Exam', 'CIA II Exam', 'Model Exam'].forEach(examType => {
+    students?.forEach(student => {
+      ['CIA I Exam', 'CIA II Exam', 'Model Exam']?.forEach(examType => {
         const hasFailed = subjects.some(subject => {
           const score = getScoreValue(student._id, examType, subject.sub_id);
           return parseFloat(score) < 50;
@@ -302,7 +302,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
     worksheetData.push(excelHeaders);
 
     // Populate rows with student data
-    students.forEach(student => {
+    students?.forEach(student => {
       // Get scores for each exam
       const cia1Score = getScoreValue(student._id, 'CIA I Exam', subjects[0]?.sub_id);
       const cia2Score = getScoreValue(student._id, 'CIA II Exam', subjects[0]?.sub_id);
