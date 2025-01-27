@@ -21,7 +21,7 @@ export const SelectionTable = ({ headers, data, onSelect, rowId }) => {
           </tr>
         </thead>
         <tbody className="border border-base-200">
-          {data.length > 0 ? (
+          {data?.length > 0 ? (
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${row._id == rowId ? 'bg-blue-300' : 'bg-white'}`}>
                 <td>{rowIndex + 1}</td>
@@ -32,7 +32,7 @@ export const SelectionTable = ({ headers, data, onSelect, rowId }) => {
             ))
           ) : (
             <tr className="w-full">
-              <td colSpan={headers.length + 1} className="">
+              <td colSpan={headers?.length + 1} className="">
                 <div className="w-full flex justify-center items-center">
                   <div className="flex gap-2 items-center">
                     <Icon icon={"fluent:box-dismiss-24-filled"} className="text-lg"></Icon>
@@ -77,7 +77,7 @@ export const SubjectSelectionTable = ({ headers, onAssignFaculty, data, onSelect
           </tr>
         </thead>
         <tbody className="border border-base-200">
-          {data.length > 0 ? (
+          {data?.length > 0 ? (
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${row._id === rowId ? 'bg-blue-300' : 'bg-white'}`}>
                 <td>{rowIndex + 1}</td>
@@ -103,7 +103,7 @@ export const SubjectSelectionTable = ({ headers, onAssignFaculty, data, onSelect
             ))
           ) : (
             <tr className="w-full">
-              <td colSpan={headers.length + 1} className="">
+              <td colSpan={headers?.length + 1} className="">
                 <div className="w-full flex justify-center items-center">
                   <div className="flex gap-2 items-center">
                     <Icon icon={"fluent:box-dismiss-24-filled"} className="text-lg"></Icon>
@@ -133,7 +133,7 @@ export const MultiSelectionTable = ({ headers, data, onSelect, selectedRow }) =>
           </tr>
         </thead>
         <tbody className="border border-base-200">
-          {data.length > 0 ? (
+          {data?.length > 0 ? (
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${selectedRow.some(subject => subject._id === row._id) ? 'bg-blue-300' : 'bg-white'}`}              >
                 <td>{rowIndex + 1}</td>
@@ -144,7 +144,7 @@ export const MultiSelectionTable = ({ headers, data, onSelect, selectedRow }) =>
             ))
           ) : (
             <tr className="w-full">
-              <td colSpan={headers.length + 1} className="">
+              <td colSpan={headers?.length + 1} className="">
                 <div className="w-full flex justify-center items-center">
                   <div className="flex gap-2 items-center">
                     <Icon icon={"fluent:box-dismiss-24-filled"} className="text-lg"></Icon>
