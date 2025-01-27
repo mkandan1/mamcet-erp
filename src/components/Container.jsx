@@ -89,13 +89,13 @@ export const Container = ({ children, title }) => {
     <div className="flex w-screen h-screen bg-gray-100">
       {/* Sidebar */}
       <div
-        className={`fixed inset-0 z-50 md:hidden bg-gray-900 bg-opacity-50 transition-opacity duration-200 ${
+        className={`fixed inset-0 z-10 md:hidden bg-gray-900 bg-opacity-50 transition-opacity duration-200 ${
           isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={toggleMobileMenu}
       ></div>
       <div
-        className={`fixed inset-y-0 left-0 transform ${
+        className={`fixed inset-y-0 left-0 z-50 transform ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col w-[280px] md:w-[280px] bg-white text-gray-800 dark:bg-gray-50 dark:text-gray-800 shadow-lg`}
       >
