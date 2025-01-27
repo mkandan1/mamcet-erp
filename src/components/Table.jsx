@@ -15,17 +15,17 @@ export const SelectionTable = ({ headers, data, onSelect, rowId }) => {
         <thead className="bg-violet-700 border border-base-300 text-white">
           <tr className="border-b border-base-300">
             <th></th>
-            {headers.map((header, index) => (
+            {headers?.map((header, index) => (
               <th key={index} className="font-medium">{header.label}</th>
             ))}
           </tr>
         </thead>
         <tbody className="border border-base-200">
           {data?.length > 0 ? (
-            data.map((row, rowIndex) => (
+            data?.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${row._id == rowId ? 'bg-blue-300' : 'bg-white'}`}>
                 <td>{rowIndex + 1}</td>
-                {headers.map((header, colIndex) => (
+                {headers?.map((header, colIndex) => (
                   <td key={colIndex} onClick={() => onSelect(row._id)}>{row[header.field]}</td>
                 ))}
               </tr>
@@ -71,17 +71,17 @@ export const SubjectSelectionTable = ({ headers, onAssignFaculty, data, onSelect
         <thead className="bg-violet-700 border border-base-300 text-white">
           <tr className="border-b border-base-300">
             <th></th>
-            {headers.map((header, index) => (
+            {headers?.map((header, index) => (
               <th key={index} className="font-medium">{header.label}</th>
             ))}
           </tr>
         </thead>
         <tbody className="border border-base-200">
           {data?.length > 0 ? (
-            data.map((row, rowIndex) => (
+            data?.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${row._id === rowId ? 'bg-blue-300' : 'bg-white'}`}>
                 <td>{rowIndex + 1}</td>
-                {headers.map((header, colIndex) => (
+                {headers?.map((header, colIndex) => (
                   <td key={colIndex} onClick={() => onSelect(row._id)}>
                     {header.field === 'sub_faculty' ? (
                       <select
@@ -90,7 +90,7 @@ export const SubjectSelectionTable = ({ headers, onAssignFaculty, data, onSelect
                         value={row.sub_faculty || ''}
                       >
                         <option value="">Select Faculty</option>
-                        {staffs.map((staff) => (
+                        {staffs?.map((staff) => (
                           <option key={staff._id} value={staff._id}>{staff.firstName} {staff.lastName}</option>
                         ))}
                       </select>
@@ -127,17 +127,17 @@ export const MultiSelectionTable = ({ headers, data, onSelect, selectedRow }) =>
         <thead className="bg-violet-700 border border-base-300 text-white">
           <tr className="border-b border-base-300">
             <th></th>
-            {headers.map((header, index) => (
+            {headers?.map((header, index) => (
               <th key={index} className="font-medium">{header.label}</th>
             ))}
           </tr>
         </thead>
         <tbody className="border border-base-200">
           {data?.length > 0 ? (
-            data.map((row, rowIndex) => (
+            data?.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${selectedRow.some(subject => subject._id === row._id) ? 'bg-blue-300' : 'bg-white'}`}              >
                 <td>{rowIndex + 1}</td>
-                {headers.map((header, colIndex) => (
+                {headers?.map((header, colIndex) => (
                   <td key={colIndex} onClick={() => onSelect(row)}>{row[header.field]}</td>
                 ))}
               </tr>
@@ -169,7 +169,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
   const [scores, setScores] = useState(exam.scores || []);
   const studentsPerPage = 10;
 
-  const totalPages = Math.ceil(students.length / studentsPerPage);
+  const totalPages = Math.ceil(students?.length / studentsPerPage);
   const indexOfLastStudent = currentPage * studentsPerPage;
   const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
   const currentStudents = students.slice(indexOfFirstStudent, indexOfLastStudent);
@@ -182,7 +182,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
     { label: 'Model Exam', field: 'model', subHeaders: [] },
   ];
 
-  const subjects = semesters[0].subjects.map(subject => ({
+  const subjects = semesters[0].subjects?.map(subject => ({
     sub_id: subject.subjectId._id,
     label: subject.subjectId.sub_short_name,
     sub_type: subject.subjectId.sub_type,
@@ -270,7 +270,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
   const ExamStatistics = ({ statistics }) => {
     return (
       <div className="stats">
-        {Object.keys(statistics).map(examType => (
+        {Object.keys(statistics)?.map(examType => (
           <div key={examType} className="stat">
             <h3 className="stat-title">{examType}</h3>
             <div className="stat-values">
@@ -333,8 +333,8 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
     // Add summary at the bottom
     worksheetData.push([]);
     worksheetData.push(['Summary']);
-    worksheetData.push(['Total Passed', passedStudents.length]);
-    worksheetData.push(['Total Failed', failedStudents.length]);
+    worksheetData.push(['Total Passed', passedStudents?.length]);
+    worksheetData.push(['Total Failed', failedStudents?.length]);
 
     // Generate the worksheet and workbook
     const ws = XLSX.utils.aoa_to_sheet(worksheetData);
@@ -354,15 +354,15 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
         <thead className="bg-blue-700 border border-base-300 text-white">
           <tr className="border-b border-base-300">
             <th></th>
-            {headers.map((header, index) => (
-              <th key={index} colSpan={header.subHeaders ? header.subHeaders.length : 1} className="font-medium border max-w-10">{header.label}</th>
+            {headers?.map((header, index) => (
+              <th key={index} colSpan={header.subHeaders ? header.subHeaders?.length : 1} className="font-medium border max-w-10">{header.label}</th>
             ))}
           </tr>
           <tr className="border-b border-base-300">
             <th></th>
-            {headers.map((header, index) =>
+            {headers?.map((header, index) =>
               header.subHeaders ? (
-                header.subHeaders.map((subHeader, subIndex) => (
+                header.subHeaders?.map((subHeader, subIndex) => (
                   <th key={`${index}-${subIndex}`} className="font-medium border">
                     <div className="flex items-start gap-x-1 max-w-2">
                       {subHeader.label}
@@ -379,15 +379,15 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
           </tr>
         </thead>
         <tbody className="border border-base-200">
-          {currentStudents.length > 0 ? (
-            currentStudents.map((student, rowIndex) => (
+          {currentStudents?.length > 0 ? (
+            currentStudents?.map((student, rowIndex) => (
               <tr key={student._id} className={`hover:bg-base-200 cursor-pointer`}>
                 <td>{indexOfFirstStudent + rowIndex + 1}</td>
                 <td>{student.registerNumber}</td>
                 <td>{student.name}</td>
-                {headers.map((header, index) => {
+                {headers?.map((header, index) => {
                   if (index >= 2) {
-                    return header.subHeaders.map((subject, subIndex) => {
+                    return header.subHeaders?.map((subject, subIndex) => {
                       if (
                         (header.label === 'Model Exam') ||
                         (header.label !== 'Model Exam' && subject.sub_type !== 'Lab')
@@ -416,7 +416,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
             ))
           ) : (
             <tr className="w-full">
-              <td colSpan={headers.length}>
+              <td colSpan={headers?.length}>
                 <div className="w-full flex justify-center items-center">
                   <div className="flex gap-2 items-center">
                     <Icon icon={"fluent:box-dismiss-24-filled"} className="text-lg"></Icon>

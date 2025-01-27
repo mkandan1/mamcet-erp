@@ -35,7 +35,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
     const [students, setStudents] = useState(studentsProp);
     const studentsPerPage = 10;
   
-    const totalPages = Math.ceil(students.length / studentsPerPage);
+    const totalPages = Math.ceil(students?.length / studentsPerPage);
     const indexOfLastStudent = currentPage * studentsPerPage;
     const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
     const currentStudents = students.slice(indexOfFirstStudent, indexOfLastStudent);
@@ -140,7 +140,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
               <th className="sticky left-12 top-0 z-20 bg-blue-700">Register Number</th>
               <th className="sticky left-40 top-0 z-20 bg-blue-700">Name</th>
               {headers.slice(2).map((header, index) => (
-                <th key={index} colSpan={header.subHeaders ? header.subHeaders.length * 2 : 1} className="font-medium border">{header.label}</th>
+                <th key={index} colSpan={header.subHeaders ? header.subHeaders?.length * 2 : 1} className="font-medium border">{header.label}</th>
               ))}
             </tr>
             <tr className="border-b border-base-300 bg-blue-700">
@@ -169,7 +169,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
             </tr>
           </thead>
           <tbody className="border border-base-200">
-            {currentStudents.length > 0 ? (
+            {currentStudents?.length > 0 ? (
               currentStudents.map((student, rowIndex) => (
                 <tr key={student._id} className={`hover:bg-base-200 cursor-pointer bg-white h-10`}>
                   <td className="sticky left-0 z-10 bg-white">{indexOfFirstStudent + rowIndex + 1}</td>
@@ -207,18 +207,18 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
                     </React.Fragment>
                   ))}
                   <td>
-                    {student.semesterStats.length > 0 &&
+                    {student.semesterStats?.length > 0 &&
                       student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name) ?
-                      student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name).arrears.length : 0
+                      student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name).arrears?.length : 0
                     }
                   </td>
                   <td>
-                    {student.history_of_arrears.length > 0 ?
-                      student.history_of_arrears.length : 0
+                    {student.history_of_arrears?.length > 0 ?
+                      student.history_of_arrears?.length : 0
                     }
                   </td>
                   <td>
-                    {student.semesterStats.length > 0 &&
+                    {student.semesterStats?.length > 0 &&
                       student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name) ?
                       student.semesterStats.find(semester => semester.semester_name.toString() === exam.semester_name).gpa : 0
                     }
@@ -230,7 +230,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
               ))
             ) : (
               <tr className="w-full">
-                <td colSpan={headers.length * 2} className="">
+                <td colSpan={headers?.length * 2} className="">
                   <div className="w-full flex justify-center items-center">
                     <div className="flex gap-2 items-center">
                       <Icon icon={"fluent:box-dismiss-24-filled"} className="text-lg"></Icon>
