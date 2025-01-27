@@ -18,7 +18,7 @@ const gradeOptions = [
   ];
   
   const generatePassingYearOptions = (batchName) => {
-    const [startYear, endYear] = batchName.split(' - ').map(Number);
+    const [startYear, endYear] = batchName.split(' - ')?.map(Number);
     const options = [];
     for (let year = startYear; year <= endYear; year++) {
       options.push({ label: `APRIL / MAY ${year}`, value: `APRIL / MAY ${year}` });
@@ -38,7 +38,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
     const totalPages = Math.ceil(students?.length / studentsPerPage);
     const indexOfLastStudent = currentPage * studentsPerPage;
     const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
-    const currentStudents = students.slice(indexOfFirstStudent, indexOfLastStudent);
+    const currentStudents = students?.slice(indexOfFirstStudent, indexOfLastStudent);
   
     const handlePageChange = (pageNumber) => {
       setCurrentPage(pageNumber);
@@ -54,7 +54,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
       { label: 'CGPA', field: 'cgpa' },
     ];
   
-    const subjects = semesters[0].subjects.map(subject => ({
+    const subjects = semesters[0].subjects?.map(subject => ({
       sub_id: subject.subjectId._id,
       label: subject.subjectId.sub_short_name,
       sub_type: subject.subjectId.sub_type,
@@ -105,7 +105,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
     };
   
     const handlePassingYearChange = (student, subjectField, value) => {
-        const updatedScores = scores.map(score => {
+        const updatedScores = scores?.map(score => {
           if (score.stud_id === student._id && score.examType === 'University' && score.sub_id === subjectField.sub_id) {
             return { ...score, passingYear: value };
           }
@@ -139,7 +139,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
               <th className="sticky left-0 top-0 z-20 bg-blue-700"></th>
               <th className="sticky left-12 top-0 z-20 bg-blue-700">Register Number</th>
               <th className="sticky left-40 top-0 z-20 bg-blue-700">Name</th>
-              {headers.slice(2).map((header, index) => (
+              {headers?.slice(2)?.map((header, index) => (
                 <th key={index} colSpan={header.subHeaders ? header.subHeaders?.length * 2 : 1} className="font-medium border">{header.label}</th>
               ))}
             </tr>
@@ -147,9 +147,9 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
               <th className="sticky left-0 top-10 z-10 bg-blue-700"></th>
               <th className="sticky left-10 top-10 z-10 bg-blue-700"></th>
               <th className="sticky left-32 top-10 z-10 bg-blue-700"></th>
-              {headers.slice(2).map((header, index) =>
+              {headers?.slice(2)?.map((header, index) =>
                 header.subHeaders ? (
-                  header.subHeaders.map((subHeader, subIndex) => (
+                  header.subHeaders?.map((subHeader, subIndex) => (
                     <React.Fragment key={`${index}-${subIndex}`}>
                       <th className="font-medium border bg-blue-700">
                         <div className="flex items-start gap-x-1">
@@ -170,12 +170,12 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
           </thead>
           <tbody className="border border-base-200">
             {currentStudents?.length > 0 ? (
-              currentStudents.map((student, rowIndex) => (
+              currentStudents?.map((student, rowIndex) => (
                 <tr key={student._id} className={`hover:bg-base-200 cursor-pointer bg-white h-10`}>
                   <td className="sticky left-0 z-10 bg-white">{indexOfFirstStudent + rowIndex + 1}</td>
                   <td className="sticky left-10 z-10 bg-white">{student.registerNumber}</td>
                   <td className="sticky left-36 z-10 bg-white">{student.name}</td>
-                  {subjects.map((subject, subIndex) => (
+                  {subjects?.map((subject, subIndex) => (
                     <React.Fragment key={`${subject.field}-${subIndex}`}>
                       <td className="border border-gray-100">
                         <select
@@ -185,7 +185,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
                           onChange={(e) => handleGradeChange(student, subject, e.target.value)}
                         >
                           <option value="" disabled>Choose</option>
-                          {gradeOptions.map((option) => (
+                          {gradeOptions?.map((option) => (
                             <option key={option.value} value={option.value}>{option.label}</option>
                           ))}
                         </select>
@@ -199,7 +199,7 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
                           disabled={getScoreValue(student._id, subject.sub_id) == 0 ? true : false}
                         >
                           <option value="" disabled>Select Passing Year</option>
-                          {passingYearOptions.map((option) => (
+                          {passingYearOptions?.map((option) => (
                             <option key={option.value} value={option.value}>{option.label}</option>
                           ))}
                         </select>

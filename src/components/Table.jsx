@@ -172,7 +172,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
   const totalPages = Math.ceil(students?.length / studentsPerPage);
   const indexOfLastStudent = currentPage * studentsPerPage;
   const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
-  const currentStudents = students.slice(indexOfFirstStudent, indexOfLastStudent);
+  const currentStudents = students?.slice(indexOfFirstStudent, indexOfLastStudent);
 
   const headers = [
     { label: 'Register Number', field: 'registerNumber' },
