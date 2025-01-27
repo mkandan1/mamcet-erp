@@ -30,7 +30,7 @@ export const MarkAllocationDialog = ({ exam, students, semesters }) => {
                     <Card heading={'Semester'} text={exam.semester_name} />
                     <Card heading={'Exam'} text={exam.exam_name} />
                 </div>
-                {exam.exam_name == 'Internal Exam' ? <InternalMarkAllocationTable students={students} semesters={semesters} exam={exam} /> : <UniversityMarkAllocationTable studentsProp={students} semesters={semesters} exam={exam} />}
+                {exam?.exam_name == 'Internal Exam' ? <InternalMarkAllocationTable students={students} semesters={semesters} exam={exam} /> : <UniversityMarkAllocationTable studentsProp={students} semesters={semesters} exam={exam} />}
             </div>
         </div>
     )
