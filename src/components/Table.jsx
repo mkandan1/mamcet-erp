@@ -135,7 +135,7 @@ export const MultiSelectionTable = ({ headers, data, onSelect, selectedRow }) =>
         <tbody className="border border-base-200">
           {data?.length > 0 ? (
             data?.map((row, rowIndex) => (
-              <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${selectedRow.some(subject => subject._id === row._id) ? 'bg-blue-300' : 'bg-white'}`}              >
+              <tr key={rowIndex} className={`hover:bg-base-200 cursor-pointer ${selectedRow?.some(subject => subject._id === row._id) ? 'bg-blue-300' : 'bg-white'}`}              >
                 <td>{rowIndex + 1}</td>
                 {headers?.map((header, colIndex) => (
                   <td key={colIndex} onClick={() => onSelect(row)}>{row[header.field]}</td>
@@ -250,7 +250,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
   
     students?.forEach(student => {
       ['CIA I Exam', 'CIA II Exam', 'Model Exam']?.forEach(examType => {
-        const hasFailed = subjects.some(subject => {
+        const hasFailed = subjects?.some(subject => {
           const score = getScoreValue(student._id, examType, subject.sub_id);
           return parseFloat(score) < 50;
         });
@@ -309,7 +309,7 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
       const modelScore = getScoreValue(student._id, 'Model Exam', subjects[0]?.sub_id);
 
       // Check if any score is below 50
-      const hasFailed = [cia1Score, cia2Score, modelScore].some(score => parseFloat(score) < 50);
+      const hasFailed = [cia1Score, cia2Score, modelScore]?.some(score => parseFloat(score) < 50);
 
       let row = [
         student.registerNumber,
