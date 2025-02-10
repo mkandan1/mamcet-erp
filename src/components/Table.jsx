@@ -215,7 +215,8 @@ export const InternalMarkAllocationTable = ({ students, semesters, exam, onSelec
       score: numericValue,
       examType,
       sub_code: subjectField.field,
-      sub_id: subjectField.sub_id
+      sub_id: subjectField.sub_id,
+      exam_id: exam._id
     };
 
     setScores(prevScores => [

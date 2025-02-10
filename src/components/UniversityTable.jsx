@@ -88,7 +88,8 @@ export const UniversityMarkAllocationTable = ({ studentsProp, semesters, exam, o
         score: Number(value),
         examType: 'University',
         sub_code: subjectField.field,
-        sub_id: subjectField.sub_id
+        sub_id: subjectField.sub_id,
+        exam_id: exam._id
       };
       const data = { ...exam, scoreData };
       console.log('Saving scores...', data);

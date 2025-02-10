@@ -26,6 +26,8 @@ import { Exams } from "./screens/Exams";
 import { EditExamSchedule } from "./screens/EditExamSchedule";
 import { EmployeesOnboarding } from "./screens/EmployeesOnboarding";
 import { Employees } from "./screens/Employees";
+import { ViewResult } from "./screens/ViewResult";
+import { FullScreenLoading } from "./components/Loading";
 
 function App() {
   const dispatch = useDispatch()
@@ -37,7 +39,7 @@ function App() {
   }, [dispatch])
 
   if (isLoading) {
-    return
+    return <FullScreenLoading/>
   }
   return (
     <Router>
@@ -67,12 +69,14 @@ function App() {
             <Route path="/employee/:id" element={<EmployeesOnboarding />} />
             <Route path="/employee/edit/:id" element={<EmployeesOnboarding />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/viewResult" element={<ViewResult/>} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/Profile" element={<Profile />} />
           </Routes>
         ) : (
           <Routes>
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/viewResult" element={<ViewResult/>} />
             <Route path="/*" element={<Login />} />
           </Routes>
         )}

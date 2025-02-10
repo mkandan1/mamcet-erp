@@ -11,7 +11,7 @@ export class Authorization {
       if (!userAuthStateResult.success) {
         dispatch(authFailure())
         dispatch(logOut());
-        if (currentPath == "/login") {
+        if (currentPath == "/login" || currentPath == '/viewResult') {
           return;
         }
         window.location.href = "/login";
