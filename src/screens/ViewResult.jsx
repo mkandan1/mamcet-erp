@@ -28,27 +28,32 @@ export const ViewResult = () => {
         setLoading(true);
         const formattedDob = dob.split("-").reverse().join("-");
 
-        try {
-            const response = await fetch(
-                `http://localhost:3030/api/score/university/get?regNo=${rollNumber}&dob=${formattedDob}`
-            );
-
-            const data = await response.json();
-            console.log("API Response:", data);
-
-            if (data.success) {
-                setStudent(data.data);
+        API.getRequest(`/score/university/get?regNo=${rollNumber}&dob=${formattedDob}`)
+        .then((response) => {
+            console.log("API Response:", response);
+    
+            if (response.success) {
+                setStudent(response.data);
                 setStudent((prev) => ({ ...prev }));
             } else {
                 setStudent(null);
-                setError(data.message || "No results found.");
+                setError(response.message || "No results found.");
             }
-        } catch (err) {
+        })
+        .catch((err) => {
             console.error("Error fetching results:", err);
+            dispatch(
+                showToast({
+                    type: "error",
+                    text: err.response?.data?.message || "Failed to fetch results.",
+                    icon: "carbon:close-filled",
+                })
+            );
             setError("Failed to fetch results. Please try again later.");
-        } finally {
+        })
+        .finally(() => {
             setLoading(false);
-        }
+        });    
     };
 
     return (
