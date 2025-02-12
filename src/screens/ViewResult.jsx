@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API } from "../api/API";
 
 export const ViewResult = () => {
     const [rollNumber, setRollNumber] = useState("");
