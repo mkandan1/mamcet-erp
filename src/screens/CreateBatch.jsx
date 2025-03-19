@@ -124,7 +124,7 @@ export const CreateBatch = () => {
         <SelectInput
           label={"Institution"}
           placeholder={"Select Institution"}
-          options={["M.A.M. College of Engineering & Technology"]}
+          options={["Selvamm Arts and Science College"]}
           required={true}
           colStart={1}
           rowStart={1}

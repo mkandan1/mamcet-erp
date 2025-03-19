@@ -182,7 +182,7 @@ export const EditBatch = () => {
         <SelectInput
           label={"Institution"}
           placeholder={"Select Institution"}
-          options={["M.A.M. College of Engineering & Technology"]}
+          options={["Selvamm Arts and Science College"]}
           required={true}
           value={BatchData.institution}
           onChange={(value) =>

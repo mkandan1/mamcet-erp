@@ -60,7 +60,7 @@ export const ViewCourse = () => {
         <SelectInput
           label={"Institution"}
           placeholder={"Select Institution"}
-          options={["M.A.M. College of Engineering & Technology"]}
+          options={["Selvamm Arts and Science College"]}
           required={true}
           value={courseData.institution}
           colStart={"col-start-1"}

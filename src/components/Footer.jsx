@@ -14,7 +14,7 @@ export const LoginFooter = () => {
           <img src={mamcetLogo} alt="mamcet logo" className="w-16" />
         </div>
         <p className="text-gray-600 pt-2">
-          Developed @ M.A.M. College of Engineering & Technology, Trichy.
+          Developed @ Selvamm Arts and Science College, Trichy.
         </p>
         <p className="text-gray-400 leading-6 pt-2">
           An AI experimental enterprise resource software developed under the

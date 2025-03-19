@@ -109,7 +109,7 @@ export const CreateExamSchedule = () => {
                 <SelectInput
                     label={"Institution"}
                     placeholder={"Select Institution"}
-                    options={["M.A.M. College of Engineering & Technology"]}
+                    options={["Selvamm Arts and Science College"]}
                     required={true}
                     colStart={"col-start-1"}
                     rowStart={"row-start-1"}

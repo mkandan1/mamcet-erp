@@ -98,7 +98,7 @@ export const CreateCourse = () => {
         <SelectInput
           label={"Institution"}
           placeholder={"Select Institution"}
-          options={["M.A.M. College of Engineering & Technology"]}
+          options={["Selvamm Arts and Science College"]}
           required={true}
           onChange={(value) =>
             setCourseData((prev) => ({ ...prev, institution: value }))

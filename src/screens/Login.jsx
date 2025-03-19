@@ -6,7 +6,7 @@ import { Button } from "../components/Button";
 import { LinkTag } from "../components/Link";
 import { FailedAlert, SuccessAlert } from "../components/Alert";
 import { Auth } from "../api/Auth";
-import mamcet_logo from '../assets/images/mamcet-logo.png';
+import mamcet_logo from '../assets/images/SAC.jpeg';
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -58,10 +58,10 @@ export const Login = () => {
             <img src={mamcet_logo} alt="MAMCET" className="w-auto h-28" />
           </div>
           <h3 className="text-lg uppercase leading-6 font-normal mt-4 mb-1">
-            M.A.M. College of Engineering and Technology
+            Selvamm Arts and Science College
           </h3>
           <h4 className="text-sm uppercase text-blue-500 font-medium tracking-tight">
-            Department of Information Technology
+            Department of Computer Science
           </h4>
           <p className="mt-4 font-medium">Login to ERP</p>
         </div>

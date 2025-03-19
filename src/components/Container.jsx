@@ -147,9 +147,9 @@ export const Container = ({ children, title }) => {
             <p className="text-xs text-gray-500 leading-6">
               &copy; 2024{" "}
               <span className="uppercase">
-                M.A.M. College of Engineering and Technology
+              Selvamm Arts and Science College
               </span>
-              , Siruganur, Trichy
+              , Namakkal
             </p>
             <p className="text-xs text-gray-400">www.mamcet.com</p>
             <p className="text-xs text-gray-400">v0.0.12</p>
