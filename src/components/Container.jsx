@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import mamcet_logo from "../assets/images/mamcet-logo.png";
+import mamcet_logo from "../assets/images/SAC.jpeg";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -101,7 +101,7 @@ export const Container = ({ children, title }) => {
       >
         <div className="py-4 flex flex-col items-center border-b">
           <img src={mamcet_logo} alt="MAMCET" className="h-24 w-24" />
-          <h3 className="pl-4 font-bold text-lg">MAMCET ERP</h3>
+          <h3 className="pl-4 font-bold text-lg">SASC ERP</h3>
         </div>
 
         <nav className="flex-grow p-4 overflow-y-auto">
