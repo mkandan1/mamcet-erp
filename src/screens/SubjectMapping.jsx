@@ -122,7 +122,7 @@ export const SubjectMapping = () => {
         <SelectInput
           label={'Institution'}
           placeholder={'Select Institution'}
-          options={['Selvamm Arts and Science College']}
+          options={['Selvam Arts and Science College']}
           required={true}
           value={BatchData.institution}
           onChange={(value) =>

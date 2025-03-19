@@ -63,7 +63,7 @@ export const ViewResult = () => {
             <header className="flex flex-col items-center text-center mb-8">
                 <img src="/logo.jpg" alt="SASC Logo" className="w-28 mb-3 shadow-lg rounded-full" />
                 <h1 className="text-2xl font-bold text-gray-800">
-                    SELVAMM ARTS AND SCIENCE COLLEGE (Autonomous)
+                    Selvam Arts and Science College (Autonomous)
                 </h1>
             </header>
 

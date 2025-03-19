@@ -134,7 +134,7 @@ export const EditCourse = () => {
           <SelectInput
             label={"Institution"}
             placeholder={"Select Institution"}
-            options={["Selvamm Arts and Science College"]}
+            options={["Selvam Arts and Science College"]}
             value={courseData.institution}
             required={true}
             onChange={(value) =>
